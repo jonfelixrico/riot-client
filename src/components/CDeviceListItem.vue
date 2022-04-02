@@ -1,5 +1,5 @@
 <template>
-  <q-item>
+  <q-item :clickable="clickable" @click="$emit('click')">
     <q-item-section>
       <div class="column q-gutter-y-sm">
         <div class="row items-center">
@@ -7,8 +7,8 @@
             <div data-cy="version" class="text-caption text-grey-7">
               {{ device.firmwareVersion }}
             </div>
-            <h6 class="text-h6 q-my-none">
-              Device <span v-text="device.deviceId" data-cy="device-id" />
+            <h6 class="text-h6 q-my-none" data-cy="device-id">
+              {{ device.deviceId }}
             </h6>
           </div>
           <q-space />
@@ -92,7 +92,11 @@ export default defineComponent({
       type: Object as PropType<Device>,
       required: true,
     },
+
+    clickable: Boolean,
   },
+
+  emits: ['click'],
 
   setup(props) {
     const isOnline = computed(() => {
