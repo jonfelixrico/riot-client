@@ -17,10 +17,10 @@
 
 <script lang="ts">
 import { DateTime } from 'luxon'
-import { Device } from 'src/types/device.interface'
+import { Device } from 'types/device.interface'
 import { defineComponent, PropType } from 'vue'
 import CDeviceListItem from './CDeviceListItem.vue'
-import { EPOCH } from 'utils/date.utils'
+import { EPOCH } from 'src/utils/date.utils'
 
 export default defineComponent({
   components: {
