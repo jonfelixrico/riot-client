@@ -4,7 +4,7 @@
   "description": "Web client for the RIOT project",
   "productName": "RIOT Client",
   "author": "Felix <jonfelixrico@gmail.com>",
-  "private": true,
+  "license": "GPL-3.0",
   "scripts": {
     "lint": "eslint --ext .js,.ts,.vue ./",
     "format": "prettier --write \"**/*.{js,ts,vue,scss,html,md,json}\" --ignore-path .gitignore",
