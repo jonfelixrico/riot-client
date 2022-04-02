@@ -7,8 +7,8 @@
             <div data-cy="version" class="text-caption text-grey-7">
               {{ device.firmwareVersion }}
             </div>
-            <h6 class="text-h6 q-my-none" data-cy="device-id">
-              {{ device.deviceId }}
+            <h6 class="text-h6 q-my-none" data-cy="label">
+              {{ device.alias ?? device.deviceId }}
             </h6>
           </div>
           <q-space />
