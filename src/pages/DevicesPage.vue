@@ -1,61 +1,57 @@
 <template>
   <q-page>
-    <CDeviceList :refDt="now" />
+    <CDeviceList :refDt="now" :devices="devices" :lastHeartbeats="heartbeats" />
   </q-page>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, onBeforeUnmount, ref } from 'vue'
 import CDeviceList from 'components/CDeviceList.vue'
 import { useTickingDateTime } from 'src/composables/ticking-datetime.composable'
-import { Device } from 'src/types/device.interface'
 import { DateTime } from 'luxon'
 import { useApi } from 'composables/axios.composable'
-import { DeviceHeartbeatDto, IDeviceHeartbeatDto } from 'src/dtos/device.dto'
+import {
+  DeviceHeartbeatDto,
+  IDeviceHeartbeatDto,
+} from 'dtos/device-heartbeat.dto'
 import { plainToInstance } from 'class-transformer'
+import { IDeviceDto, DeviceDto } from 'dtos/device.dto'
 
 function useDeviceRepo() {
-  const devices = ref<Device[]>([])
+  const devices = ref<DeviceDto[]>([])
+  const heartbeats = ref<Record<string, DateTime>>({})
   const axios = useApi()
 
-  async function fetchDevices() {
-    const { data } = await axios.get<Device[]>('device')
-    devices.value = data
-    return data
+  function updateHeartbeats(arr: IDeviceHeartbeatDto<DateTime>[]) {
+    for (const { deviceId, lastHeartbeatDt } of arr) {
+      heartbeats.value[deviceId] = lastHeartbeatDt
+    }
+  }
+
+  async function fetchDevices(): Promise<void> {
+    const { data } = await axios.get<IDeviceDto[]>('device')
+    devices.value = plainToInstance(DeviceDto, data)
+
+    updateHeartbeats(devices.value)
+  }
+
+  async function fetchHeartbeats(): Promise<void> {
+    const { data } = await axios.get<IDeviceHeartbeatDto<string>[]>(
+      'device/heartbeat'
+    )
+    const transformed = plainToInstance(DeviceHeartbeatDto, data)
+    updateHeartbeats(transformed)
   }
 
   return {
     devices,
     fetchDevices,
-  }
-}
-
-function useDeviceHeartbeatRepo() {
-  const heartbeats = ref<Record<string, DateTime>>({})
-  const axios = useApi()
-
-  async function fetchHeartbeats() {
-    const { data } = await axios.get<IDeviceHeartbeatDto<string>[]>(
-      'device/heartbeat'
-    )
-    const transformed = plainToInstance(DeviceHeartbeatDto, data)
-
-    heartbeats.value = transformed.reduce<Record<string, DateTime>>(
-      (acc, { deviceId, lastHeartbeatDt }) => {
-        acc[deviceId] = lastHeartbeatDt
-        return acc
-      },
-      {}
-    )
-
-    return heartbeats.value
-  }
-
-  return {
-    heartbeats,
     fetchHeartbeats,
+    heartbeats,
   }
 }
+
+const HEARTBEAT_FETCH_INTERVAL = 5000
 
 export default defineComponent({
   components: {
@@ -63,11 +59,20 @@ export default defineComponent({
   },
 
   setup() {
-    const { devices, fetchDevices } = useDeviceRepo()
-    const { heartbeats, fetchHeartbeats } = useDeviceHeartbeatRepo()
+    const { devices, fetchDevices, heartbeats, fetchHeartbeats } =
+      useDeviceRepo()
 
     void fetchDevices()
-    void fetchHeartbeats()
+
+    const intervalId = setInterval(() => {
+      void fetchHeartbeats()
+    }, HEARTBEAT_FETCH_INTERVAL)
+
+    onBeforeUnmount(() => {
+      if (intervalId !== undefined) {
+        clearInterval(intervalId)
+      }
+    })
 
     return {
       ...useTickingDateTime(),
