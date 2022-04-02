@@ -10,6 +10,6 @@ export class DeviceHeartbeatDto implements IDeviceHeartbeatDto {
   deviceId!: string
 
   @Type(() => Date)
-  @Transform(({ value }) => DateTime.fromJSDate(value))
+  @Transform(({ value }) => value && DateTime.fromJSDate(value))
   lastHeartbeatDt!: DateTime
 }
