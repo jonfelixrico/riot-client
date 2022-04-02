@@ -4,12 +4,12 @@
       <div class="column q-gutter-y-sm">
         <div class="row items-center">
           <div class="row q-gutter-x-sm items-center">
-            <div data-cy="version" class="text-caption text-grey-7">
-              {{ device.firmwareVersion }}
-            </div>
             <h6 class="text-h6 q-my-none" data-cy="label">
               {{ device.alias ?? device.deviceId }}
             </h6>
+            <q-badge div data-cy="version" color="info">
+              v{{ device.firmwareVersion }}
+            </q-badge>
           </div>
           <q-space />
           <q-badge
