@@ -18,6 +18,7 @@
             color="green"
             text-color="white"
             data-cy="online-ind"
+            :clickable="false"
           >
             ONLINE
           </q-chip>
@@ -27,6 +28,7 @@
             color="grey-7"
             text-color="white"
             data-cy="offline-ind"
+            :clickable="false"
           >
             OFFLINE
           </q-chip>
@@ -37,6 +39,7 @@
             :key="type"
             :data-cy="`module-chip-${type}`"
             dense
+            :clickable="false"
           >
             <q-avatar
               data-cy="count"
