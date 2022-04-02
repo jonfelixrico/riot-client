@@ -79,6 +79,7 @@ module.exports = configure(function (/* ctx */) {
           types: path.resolve(__dirname, './src/types'),
           composables: path.resolve(__dirname, './src/composables'),
           utils: path.resolve(__dirname, './src/utils'),
+          dtos: path.resolve(__dirname, './src/dtos'),
         }
       },
       // viteVuePluginOptions: {},

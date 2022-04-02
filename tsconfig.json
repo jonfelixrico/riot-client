@@ -18,7 +18,8 @@
        */
       "types/*": ["src/types/*"],
       "composables/*": ["src/composables/*"],
-      "utils/*": ["src/utils/*"]
+      "utils/*": ["src/utils/*"],
+      "dtos/*": ["src/dtos/*"]
     }
   },
   "include": [
