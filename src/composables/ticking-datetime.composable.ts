@@ -5,7 +5,7 @@ import { ref } from 'vue'
  * This updates the date every second.
  */
 const dateTime = ref(DateTime.now())
-setTimeout(() => {
+setInterval(() => {
   dateTime.value = DateTime.now()
 }, 1000)
 
