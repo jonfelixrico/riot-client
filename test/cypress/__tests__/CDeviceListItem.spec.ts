@@ -1,7 +1,7 @@
 import { mount } from '@cypress/vue'
 import CDeviceListItem from 'components/CDeviceListItem.vue'
 import { DateTime } from 'luxon'
-import { Device } from 'src/types/device.interface'
+import { Device } from 'types/device.interface'
 
 describe('CDeviceListItem', () => {
   const props: { device: Device } & Record<string, unknown> = {
