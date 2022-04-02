@@ -10,5 +10,7 @@ setTimeout(() => {
 }, 1000)
 
 export function useTickingDateTime() {
-  return dateTime
+  return {
+    now: dateTime,
+  }
 }
