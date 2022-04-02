@@ -57,7 +57,7 @@
 <script lang="ts">
 import { DateTime } from 'luxon'
 import { computed, defineComponent, PropType } from 'vue'
-import { Device } from 'types/device.interface'
+import { Device } from 'src/types/device.interface'
 import { sortBy } from 'lodash'
 
 interface ModuleGroup {
