@@ -29,8 +29,8 @@ describe('CDeviceListItem', () => {
         },
       ],
       firmwareVersion: '6.2.1',
+      alias: 'my device',
     },
-    alias: 'my device',
   }
 
   it('should show the online indicator if time has not yet lapsed', () => {
@@ -68,7 +68,7 @@ describe('CDeviceListItem', () => {
       },
     })
 
-    cy.dataCy('alias').should('contain.text', props.device.deviceId)
+    cy.dataCy('displayed-name').should('contain.text', props.device.deviceId)
   })
 
   it('should show the alias if an alias is defined', () => {
