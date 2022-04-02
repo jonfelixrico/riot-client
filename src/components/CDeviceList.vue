@@ -1,5 +1,5 @@
 <template>
-  <q-list>
+  <q-list separator>
     <CDeviceListItem
       v-for="device of devices"
       :refDt="refDt"
