@@ -2,7 +2,7 @@ import { Transform, Type } from 'class-transformer'
 import { DateTime } from 'luxon'
 import { Device } from 'src/types/device.interface'
 
-export interface IDeviceDto<T extends string | DateTime = DateTime>
+export interface IDeviceDto<T extends string | DateTime = string>
   extends Device {
   lastHeartbeatDt: T
 }
