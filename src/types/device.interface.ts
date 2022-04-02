@@ -1,4 +1,4 @@
-export interface DeviceData {
+export interface Device {
   deviceId: string
   modules: {
     moduleId: string
