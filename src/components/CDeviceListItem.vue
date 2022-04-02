@@ -12,26 +12,24 @@
             </h6>
           </div>
           <q-space />
-          <q-chip
+          <q-badge
             v-if="isOnline"
             dense
             color="green"
             text-color="white"
             data-cy="online-ind"
-            :clickable="false"
           >
             ONLINE
-          </q-chip>
-          <q-chip
+          </q-badge>
+          <q-badge
             v-else
             dense
             color="grey-7"
             text-color="white"
             data-cy="offline-ind"
-            :clickable="false"
           >
             OFFLINE
-          </q-chip>
+          </q-badge>
         </div>
         <div class="row">
           <q-chip
@@ -39,7 +37,6 @@
             :key="type"
             :data-cy="`module-chip-${type}`"
             dense
-            :clickable="false"
           >
             <q-avatar
               data-cy="count"
