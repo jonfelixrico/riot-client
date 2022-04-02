@@ -70,7 +70,17 @@ module.exports = configure(function (/* ctx */) {
       // polyfillModulePreload: true,
       // distDir
 
-      // extendViteConf (viteConf) {},
+      extendViteConf(viteConf) {
+        /**
+         * Reference: {@link https://javascript.plainenglish.io/how-to-set-up-path-resolving-in-vite-ad284e0d9eae}
+         */
+        viteConf.resolve.alias = {
+          ...(viteConf.resolve?.alias ?? {}), // to avoid ditching already-existing resolves
+          types: path.resolve(__dirname, './src/types'),
+          composables: path.resolve(__dirname, './src/composables'),
+          utils: path.resolve(__dirname, './src/utils'),
+        }
+      },
       // viteVuePluginOptions: {},
 
       vitePlugins: [
