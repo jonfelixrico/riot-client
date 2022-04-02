@@ -1,9 +1,10 @@
 import { mount } from '@cypress/vue'
 import CDeviceListItem from 'components/CDeviceListItem.vue'
 import { DateTime } from 'luxon'
+import { Device } from 'src/types/device.interface'
 
 describe('CDeviceListItem', () => {
-  const props = {
+  const props: { device: Device } & Record<string, unknown> = {
     lastHeartbeatDt: DateTime.fromISO('2022-01-01T00:00:00.000Z'),
     refDt: DateTime.fromISO('2022-01-01T00:00:01.000Z'),
     heartbeatLapseThreshold: 5000,
@@ -27,6 +28,7 @@ describe('CDeviceListItem', () => {
           moduleId: 'ph-sensor-1',
         },
       ],
+      firmwareVersion: '6.2.1',
     },
   }
 
@@ -69,5 +71,11 @@ describe('CDeviceListItem', () => {
 
     cy.dataCy('module-chip-SWITCH').dataCy('count').should('contain.text', 3)
     cy.dataCy('module-chip-PH_SENSOR').dataCy('count').should('contain.text', 1)
+  })
+
+  it('should show the version of the device', () => {
+    mount(CDeviceListItem, {
+      props,
+    })
   })
 })
