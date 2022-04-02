@@ -68,7 +68,7 @@ describe('CDeviceListItem', () => {
       },
     })
 
-    cy.dataCy('displayed-name').should('contain.text', props.device.deviceId)
+    cy.dataCy('label').should('contain.text', props.device.deviceId)
   })
 
   it('should show the alias if an alias is defined', () => {
@@ -76,7 +76,7 @@ describe('CDeviceListItem', () => {
       props,
     })
 
-    cy.dataCy('alias').should('contain.text', props.device.alias)
+    cy.dataCy('label').should('contain.text', props.device.alias)
   })
 
   it('should show chips to indicate modules', () => {
