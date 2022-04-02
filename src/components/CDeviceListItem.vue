@@ -2,30 +2,36 @@
   <q-item>
     <q-item-section>
       <div class="column q-gutter-y-sm">
-        <div class="row justify-between items-center">
-          <div class="row items-center q-gutter-x-sm">
-            <q-icon
-              v-if="isOnline"
-              name="circle"
-              class="text-green"
-              data-cy="online-ind"
-            />
-            <q-icon
-              v-else
-              name="radio_button_unchecked"
-              class="text-grey-6"
-              data-cy="offline-ind"
-            />
-
+        <div class="row items-center">
+          <div class="row q-gutter-x-sm items-center">
+            <div data-cy="version" class="text-caption text-grey-7">
+              {{ device.firmwareVersion }}
+            </div>
             <h6 class="text-h6 q-my-none">
               Device <span v-text="device.deviceId" data-cy="device-id" />
             </h6>
           </div>
-          <div data-cy="version" class="text-caption text-grey-7">
-            {{ device.firmwareVersion }}
-          </div>
+          <q-space />
+          <q-chip
+            v-if="isOnline"
+            dense
+            color="green"
+            text-color="white"
+            data-cy="online-ind"
+          >
+            ONLINE
+          </q-chip>
+          <q-chip
+            v-else
+            dense
+            color="grey-7"
+            text-color="white"
+            data-cy="offline-ind"
+          >
+            OFFLINE
+          </q-chip>
         </div>
-        <div class="row justify-end">
+        <div class="row">
           <q-chip
             v-for="{ type, count } of moduleGroups"
             :key="type"
