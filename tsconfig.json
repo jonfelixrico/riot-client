@@ -11,6 +11,11 @@
       "assets/*": ["src/assets/*"],
       "boot/*": ["src/boot/*"],
       "stores/*": ["src/stores/*"],
+
+      /*
+       * Anything past this point are not part of the quasar paths.
+       * These should be added in the vite config resolve.
+       */
       "types/*": ["src/types/*"],
       "composables/*": ["src/composables/*"],
       "utils/*": ["src/utils/*"]
