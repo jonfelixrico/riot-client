@@ -77,5 +77,7 @@ describe('CDeviceListItem', () => {
     mount(CDeviceListItem, {
       props,
     })
+
+    cy.dataCy('version').should('contain.text', '6.2.1')
   })
 })
