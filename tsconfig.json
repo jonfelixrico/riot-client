@@ -1,6 +1,7 @@
 {
   "extends": "@quasar/app-vite/tsconfig-preset",
   "compilerOptions": {
+    "experimentalDecorators": true,
     "baseUrl": ".",
     "paths": {
       "src/*": ["src/*"],
@@ -18,7 +19,8 @@
        */
       "types/*": ["src/types/*"],
       "composables/*": ["src/composables/*"],
-      "utils/*": ["src/utils/*"]
+      "utils/*": ["src/utils/*"],
+      "dtos/*": ["src/dtos/*"]
     }
   },
   "include": [

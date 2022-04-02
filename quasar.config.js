@@ -28,7 +28,12 @@ module.exports = configure(function (/* ctx */) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
-    boot: ['i18n', 'axios'],
+    boot: [
+      // Should be the first boot because we want the reflect-metadata shim to happen ASAP.
+      'reflect-metadata',
+      'i18n',
+      'axios',
+    ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
     css: ['app.scss'],
@@ -79,6 +84,7 @@ module.exports = configure(function (/* ctx */) {
           types: path.resolve(__dirname, './src/types'),
           composables: path.resolve(__dirname, './src/composables'),
           utils: path.resolve(__dirname, './src/utils'),
+          dtos: path.resolve(__dirname, './src/dtos'),
         }
       },
       // viteVuePluginOptions: {},
@@ -101,6 +107,12 @@ module.exports = configure(function (/* ctx */) {
     devServer: {
       // https: true
       open: false, // opens browser window automatically
+
+      proxy: {
+        '/api': {
+          target: 'http://localhost:3000',
+        },
+      },
     },
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework
