@@ -9,7 +9,8 @@
       :lastHeartbeatDt="lastHeartbeats[device.deviceId] ?? EPOCH"
       clickable
       @click="$emit('click', device)"
-      :data-cy="`device-${device.deviceId}`"
+      data-cy="list-item"
+      :data-device-id="device.deviceId"
     />
   </q-list>
 </template>
