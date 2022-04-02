@@ -30,6 +30,7 @@ describe('CDeviceListItem', () => {
       ],
       firmwareVersion: '6.2.1',
     },
+    alias: 'my device',
   }
 
   it('should show the online indicator if time has not yet lapsed', () => {
@@ -56,12 +57,26 @@ describe('CDeviceListItem', () => {
     cy.dataCy('offline-ind').should('exist')
   })
 
-  it('should show the device id', () => {
+  it('should show the device id if no alias is defined', () => {
+    mount(CDeviceListItem, {
+      props: {
+        ...props,
+        device: {
+          ...props.device,
+          alias: null,
+        },
+      },
+    })
+
+    cy.dataCy('alias').should('contain.text', props.device.deviceId)
+  })
+
+  it('should show the alias if an alias is defined', () => {
     mount(CDeviceListItem, {
       props,
     })
 
-    cy.dataCy('device-id').should('contain.text', props.device.deviceId)
+    cy.dataCy('alias').should('contain.text', props.device.alias)
   })
 
   it('should show chips to indicate modules', () => {

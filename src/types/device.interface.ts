@@ -5,4 +5,5 @@ export interface Device {
     type: string
   }[]
   firmwareVersion: string
+  alias?: string
 }
