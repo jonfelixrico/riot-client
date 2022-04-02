@@ -20,7 +20,7 @@ import { DateTime } from 'luxon'
 import { Device } from 'types/device.interface'
 import { defineComponent, PropType } from 'vue'
 import CDeviceListItem from './CDeviceListItem.vue'
-import { EPOCH } from 'src/utils/date.utils'
+import { EPOCH } from 'utils/date.utils'
 
 export default defineComponent({
   components: {
