@@ -1,6 +1,11 @@
 <template>
   <q-page>
-    <CDeviceList :refDt="now" :devices="devices" :lastHeartbeats="heartbeats" />
+    <CDeviceList
+      :refDt="now"
+      :devices="devices"
+      :lastHeartbeats="heartbeats"
+      @click="onDeviceClick"
+    />
   </q-page>
 </template>
 
@@ -16,6 +21,7 @@ import {
 } from 'dtos/device-heartbeat.dto'
 import { plainToInstance } from 'class-transformer'
 import { IDeviceDto, DeviceDto } from 'dtos/device.dto'
+import { useRouter } from 'vue-router'
 
 function useDeviceRepo() {
   const devices = ref<DeviceDto[]>([])
@@ -74,10 +80,19 @@ export default defineComponent({
       }
     })
 
+    const router = useRouter()
+    function onDeviceClick({ deviceId }: { deviceId: string }) {
+      void router.push({
+        name: 'device-details',
+        params: { deviceId },
+      })
+    }
+
     return {
       ...useTickingDateTime(),
       devices,
       heartbeats,
+      onDeviceClick,
     }
   },
 })
