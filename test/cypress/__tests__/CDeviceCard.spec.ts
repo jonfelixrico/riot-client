@@ -61,10 +61,8 @@ describe('CDeviceCard', () => {
   it('should show static elements', () => {
     mount(CDeviceCard, { props })
 
-    cy.dataCy('last-fetch-dt').should('exist')
     cy.dataCy('device-id').should('contain', device.deviceId)
     cy.dataCy('version').should('contain', device.firmwareVersion)
-    cy.dataCy('refresh-btn').should('exist')
   })
 
   it('should show the online indicator', () => {
