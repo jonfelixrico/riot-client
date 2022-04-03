@@ -10,6 +10,7 @@
 
 const { configure } = require('quasar/wrappers')
 const path = require('path')
+const { version } = require('./package.json')
 
 module.exports = configure(function (/* ctx */) {
   return {
@@ -28,7 +29,12 @@ module.exports = configure(function (/* ctx */) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
-    boot: ['i18n', 'axios'],
+    boot: [
+      // Should be the first boot because we want the reflect-metadata shim to happen ASAP.
+      'reflect-metadata',
+      'i18n',
+      'axios',
+    ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
     css: ['app.scss'],
@@ -54,7 +60,7 @@ module.exports = configure(function (/* ctx */) {
         node: 'node16',
       },
 
-      vueRouterMode: 'hash', // available values: 'hash', 'history'
+      vueRouterMode: 'history', // available values: 'hash', 'history'
       // vueRouterBase,
       // vueDevtools,
       // vueOptionsAPI: false,
@@ -63,14 +69,27 @@ module.exports = configure(function (/* ctx */) {
 
       // publicPath: '/',
       // analyze: true,
-      // env: {},
+      env: {
+        FE_VERSION: version,
+      },
       // rawDefine: {}
       // ignorePublicFolder: true,
       // minify: false,
       // polyfillModulePreload: true,
       // distDir
 
-      // extendViteConf (viteConf) {},
+      extendViteConf(viteConf) {
+        /**
+         * Reference: {@link https://javascript.plainenglish.io/how-to-set-up-path-resolving-in-vite-ad284e0d9eae}
+         */
+        viteConf.resolve.alias = {
+          ...(viteConf.resolve?.alias ?? {}), // to avoid ditching already-existing resolves
+          types: path.resolve(__dirname, './src/types'),
+          composables: path.resolve(__dirname, './src/composables'),
+          utils: path.resolve(__dirname, './src/utils'),
+          dtos: path.resolve(__dirname, './src/dtos'),
+        }
+      },
       // viteVuePluginOptions: {},
 
       vitePlugins: [
@@ -91,11 +110,21 @@ module.exports = configure(function (/* ctx */) {
     devServer: {
       // https: true
       open: false, // opens browser window automatically
+
+      proxy: {
+        '/api': {
+          target: 'http://localhost:3000',
+        },
+      },
     },
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework
     framework: {
-      config: {},
+      config: {
+        screen: {
+          bodyClasses: true,
+        },
+      },
 
       // iconSet: 'material-icons', // Quasar icon set
       // lang: 'en-US', // Quasar language pack

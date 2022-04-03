@@ -1,6 +1,7 @@
 {
   "extends": "@quasar/app-vite/tsconfig-preset",
   "compilerOptions": {
+    "experimentalDecorators": true,
     "baseUrl": ".",
     "paths": {
       "src/*": ["src/*"],
@@ -10,8 +11,26 @@
       "pages/*": ["src/pages/*"],
       "assets/*": ["src/assets/*"],
       "boot/*": ["src/boot/*"],
-      "stores/*": ["src/stores/*"]
+      "stores/*": ["src/stores/*"],
+
+      /*
+       * Anything past this point are not part of the quasar paths.
+       * These should be added in the vite config resolve.
+       */
+      "types/*": ["src/types/*"],
+      "composables/*": ["src/composables/*"],
+      "utils/*": ["src/utils/*"],
+      "dtos/*": ["src/dtos/*"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "test/**/*.ts",
+    "test/**/*.d.ts",
+    "test/**/*.tsx",
+    "test/**/*.vue"
+  ]
 }

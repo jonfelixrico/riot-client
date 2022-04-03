@@ -1,6 +1,6 @@
 {
   "name": "riot-client",
-  "version": "0.0.1",
+  "version": "0.0.1-1.SNAPSHOT",
   "description": "Web client for the RIOT project",
   "productName": "RIOT Client",
   "author": "Felix <jonfelixrico@gmail.com>",
@@ -25,8 +25,12 @@
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "axios": "^0.21.1",
+    "class-transformer": "^0.5.1",
+    "lodash": "^4.17.21",
+    "luxon": "^2.3.1",
     "pinia": "^2.0.11",
     "quasar": "^2.6.0",
+    "reflect-metadata": "^0.1.13",
     "vue": "^3.0.0",
     "vue-i18n": "^9.0.0",
     "vue-router": "^4.0.0"
@@ -36,8 +40,11 @@
     "@quasar/app-vite": "^1.0.0-alpha.0",
     "@quasar/babel-preset-app": "^2.0.1",
     "@quasar/quasar-app-extension-testing": "^2.0.3",
-    "@quasar/quasar-app-extension-testing-e2e-cypress": "4.1.0",
+    "@quasar/quasar-app-extension-testing-e2e-cypress": "^4.1.0",
     "@quasar/quasar-app-extension-testing-unit-jest": "^3.0.0-alpha.10",
+    "@types/jest": "^27.4.1",
+    "@types/lodash": "^4.14.181",
+    "@types/luxon": "^2.3.1",
     "@types/node": "^12.20.21",
     "@typescript-eslint/eslint-plugin": "^5.10.0",
     "@typescript-eslint/parser": "^5.10.0",
