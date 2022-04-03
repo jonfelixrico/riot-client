@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <q-header>
       <q-toolbar>
         <q-toolbar-title>RIOT Client</q-toolbar-title>
 
@@ -8,7 +8,7 @@
       </q-toolbar>
     </q-header>
     <q-page-container>
-      <router-view />
+      <router-view class="bg-grey-3" />
     </q-page-container>
   </q-layout>
 </template>

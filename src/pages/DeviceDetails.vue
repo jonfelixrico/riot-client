@@ -1,6 +1,6 @@
 <template>
-  <q-page class="row justify-center bg-grey-3">
-    <div class="column q-pa-md q-gutter-y-sm page-width">
+  <q-page>
+    <div class="column q-pa-md q-gutter-y-sm page-width q-mx-auto">
       <div class="row items-center q-gutter-x-sm">
         <q-btn icon="arrow_back" flat dense round @click="onBackClick" />
         <q-space />

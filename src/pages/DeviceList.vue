@@ -1,11 +1,17 @@
 <template>
   <q-page>
-    <CDeviceList
-      :refDt="now"
-      :devices="devices"
-      :lastHeartbeats="heartbeats"
-      @click="onDeviceClick"
-    />
+    <div class="page-width q-mx-auto q-pa-sm">
+      <q-card flat>
+        <q-card-section>
+          <CDeviceList
+            :refDt="now"
+            :devices="devices"
+            :lastHeartbeats="heartbeats"
+            @click="onDeviceClick"
+          />
+        </q-card-section>
+      </q-card>
+    </div>
   </q-page>
 </template>
 
