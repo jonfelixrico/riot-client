@@ -3,17 +3,32 @@
     <div class="content column q-pa-md q-gutter-y-sm">
       <div class="row items-center q-gutter-x-sm">
         <q-btn icon="arrow_back" flat dense round @click="onBackClick" />
+        <q-space />
+        <div class="row q-guter-x-sm items-center">
+          <span>{{ formattedLastFetchDt }}</span>
+          <q-btn
+            icon="refresh"
+            :loading="isLoading"
+            flat
+            dense
+            round
+            @click="fetch"
+          />
+        </div>
       </div>
       <q-card class="col" flat>
-        <q-card-content>
-          <!-- TODO add content here -->
-        </q-card-content>
+        <CDeviceDetails
+          v-if="device && lastHeartbeatDt"
+          :device="device"
+          :lastHeartbeatDt="lastHeartbeatDt"
+        />
       </q-card>
     </div>
   </q-page>
 </template>
 
 <script lang="ts">
+import { computed } from '@vue/reactivity'
 import { plainToInstance } from 'class-transformer'
 import { DateTime } from 'luxon'
 import { useApi } from 'src/composables/axios.composable'
@@ -21,6 +36,8 @@ import { DeviceDto, IDeviceDto } from 'src/dtos/device.dto'
 import { Device } from 'src/types/device.interface'
 import { defineComponent, onBeforeMount, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { getRelativeFormattingToken } from 'utils/date.utils'
+import CDeviceDetails from 'components/CDeviceDetails.vue'
 
 interface DeviceQuery {
   deviceId: string
@@ -65,10 +82,15 @@ function useDeviceFetcher({ deviceId, firmwareVersion }: DeviceQuery) {
     device,
     fetch,
     isLoading,
+    lastHeartbeatDt,
   }
 }
 
 export default defineComponent({
+  components: {
+    CDeviceDetails,
+  },
+
   setup() {
     const router = useRouter()
     function onBackClick() {
@@ -76,13 +98,24 @@ export default defineComponent({
     }
 
     const route = useRoute()
-    const { device, fetch, isLoading, lastFetchDt } = useDeviceFetcher({
-      deviceId: route.params.deviceId as string,
-      firmwareVersion: route.params.version as string,
-    })
+    const { device, fetch, isLoading, lastFetchDt, lastHeartbeatDt } =
+      useDeviceFetcher({
+        deviceId: route.params.deviceId as string,
+        firmwareVersion: route.params.version as string,
+      })
 
     onBeforeMount(() => {
       void fetch()
+    })
+
+    const formattedLastFetchDt = computed(() => {
+      if (!lastFetchDt.value) {
+        return null
+      }
+
+      return lastFetchDt.value.toLocaleString(
+        getRelativeFormattingToken(lastFetchDt.value)
+      )
     })
 
     return {
@@ -91,6 +124,8 @@ export default defineComponent({
       isLoading,
       lastFetchDt,
       fetch,
+      formattedLastFetchDt,
+      lastHeartbeatDt,
     }
   },
 })
