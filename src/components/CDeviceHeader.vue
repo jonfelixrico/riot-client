@@ -5,7 +5,7 @@
         <h5 v-if="device.alias" class="q-my-none" data-cy="alias">
           {{ device.alias }}
         </h5>
-        <h5 v-else data-cy="no-alias">No Alias</h5>
+        <h5 v-else class="q-my-none" data-cy="no-alias">No Alias</h5>
       </div>
 
       <q-badge v-if="isOnline" data-cy="online-ind" color="green">
