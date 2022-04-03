@@ -40,7 +40,7 @@ export default defineComponent({
   props: {
     device: {
       required: true,
-      type: Object as PropType<Device>,
+      type: Object as PropType<Omit<Device, 'modules'>>,
     },
 
     refDt: {

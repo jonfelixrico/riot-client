@@ -1,9 +1,9 @@
 import { mount } from '@cypress/vue'
-import CDeviceCard from 'components/CDeviceCard.vue'
+import CDeviceHeader from 'components/CDeviceHeader.vue'
 import { DateTime } from 'luxon'
 import { Device } from 'src/types/device.interface'
 
-describe('CDeviceCard', () => {
+describe('CDeviceHeader', () => {
   const device: Device = {
     deviceId: 'this-is-a-device-id',
     modules: [
@@ -37,14 +37,14 @@ describe('CDeviceCard', () => {
   }
 
   it('should show the alias if available', () => {
-    mount(CDeviceCard, { props })
+    mount(CDeviceHeader, { props })
 
     cy.dataCy('alias').should('contain', device.alias)
     cy.dataCy('no-alias').should('not.exist')
   })
 
   it('should show no alias if alias is not available', () => {
-    mount(CDeviceCard, {
+    mount(CDeviceHeader, {
       props: {
         ...props,
         device: {
@@ -59,20 +59,20 @@ describe('CDeviceCard', () => {
   })
 
   it('should show static elements', () => {
-    mount(CDeviceCard, { props })
+    mount(CDeviceHeader, { props })
 
     cy.dataCy('device-id').should('contain', device.deviceId)
     cy.dataCy('version').should('contain', device.firmwareVersion)
   })
 
   it('should show the online indicator', () => {
-    mount(CDeviceCard, { props })
+    mount(CDeviceHeader, { props })
     cy.dataCy('online-ind').should('exist')
     cy.dataCy('offline-ind').should('not.exist')
   })
 
   it('should show the offline indicator', () => {
-    mount(CDeviceCard, {
+    mount(CDeviceHeader, {
       props: {
         ...props,
         lastHeartbeatDt: DateTime.fromISO('2021-12-25T00:00:00Z'),
