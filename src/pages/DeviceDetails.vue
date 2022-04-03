@@ -16,12 +16,21 @@
           />
         </div>
       </div>
-      <q-card class="col" flat>
-        <CDeviceDetails
-          v-if="device && lastHeartbeatDt"
-          :device="device"
-          :lastHeartbeatDt="lastHeartbeatDt"
-        />
+
+      <q-card flat>
+        <q-card-section>
+          <CDeviceHeader
+            v-if="device"
+            :device="device"
+            :lastHeartbeatDt="lastHeartbeatDt ?? undefined"
+          />
+        </q-card-section>
+      </q-card>
+
+      <q-card flat>
+        <q-card-section>
+          <CDeviceModuleList v-if="device" :deviceModules="device.modules" />
+        </q-card-section>
       </q-card>
     </div>
   </q-page>
@@ -37,7 +46,8 @@ import { Device } from 'src/types/device.interface'
 import { defineComponent, onBeforeMount, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getRelativeFormattingToken } from 'utils/date.utils'
-import CDeviceDetails from 'components/CDeviceDetails.vue'
+import CDeviceHeader from 'components/CDeviceHeader.vue'
+import CDeviceModuleList from 'components/CDeviceModuleList.vue'
 
 interface DeviceQuery {
   deviceId: string
@@ -88,7 +98,8 @@ function useDeviceFetcher({ deviceId, firmwareVersion }: DeviceQuery) {
 
 export default defineComponent({
   components: {
-    CDeviceDetails,
+    CDeviceModuleList,
+    CDeviceHeader,
   },
 
   setup() {
