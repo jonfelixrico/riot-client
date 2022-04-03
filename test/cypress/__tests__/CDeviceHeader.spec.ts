@@ -4,26 +4,8 @@ import { DateTime } from 'luxon'
 import { Device } from 'src/types/device.interface'
 
 describe('CDeviceHeader', () => {
-  const device: Device = {
+  const device: Omit<Device, 'modules'> = {
     deviceId: 'this-is-a-device-id',
-    modules: [
-      {
-        type: 'SWITCH',
-        moduleId: 'switch-1',
-      },
-      {
-        type: 'SWITCH',
-        moduleId: 'switch-2',
-      },
-      {
-        type: 'SWITCH',
-        moduleId: 'switch-3',
-      },
-      {
-        type: 'PH_SENSOR',
-        moduleId: 'ph-sensor-1',
-      },
-    ],
     firmwareVersion: '6.2.1',
     alias: 'my device',
   }
