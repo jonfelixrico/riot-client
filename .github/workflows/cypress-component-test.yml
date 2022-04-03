@@ -31,4 +31,4 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
       - run: yarn install
-      - run: yarn test:component
+      - run: yarn test:component:ci
