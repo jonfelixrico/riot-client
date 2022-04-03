@@ -31,8 +31,9 @@
 <script lang="ts">
 import { computed } from '@vue/reactivity'
 import { DateTime } from 'luxon'
-import { Device } from 'src/types/device.interface'
+import { Device } from 'types/device.interface'
 import { defineComponent, PropType } from 'vue'
+import { EPOCH } from 'utils/date.utils'
 
 const DEFAULT_OFFLINE_THRESHOLD = 5000
 
@@ -59,7 +60,7 @@ export default defineComponent({
 
     lastHeartbeatDt: {
       type: DateTime,
-      required: true,
+      default: () => EPOCH,
     },
   },
 
