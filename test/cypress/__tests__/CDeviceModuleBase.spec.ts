@@ -20,7 +20,7 @@ describe('CDeviceModuleBase', () => {
     })
 
     cy.dataCy('label-alias').should('contain', deviceModule.alias)
-    cy.dataCy('device-id').should('exist')
+    cy.dataCy('module-id').should('exist')
     cy.dataCy('label-id').should('not.exist')
   })
 
@@ -36,7 +36,7 @@ describe('CDeviceModuleBase', () => {
     })
 
     cy.dataCy('label-alias').should('not.exist')
-    cy.dataCy('device-id').should('not.exist')
+    cy.dataCy('module-id').should('not.exist')
     cy.dataCy('label-id').should('exist')
   })
 
