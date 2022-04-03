@@ -22,7 +22,7 @@ describe('CDeviceHeader', () => {
     mount(CDeviceHeader, { props })
 
     cy.dataCy('label-alias').should('contain', device.alias)
-    cy.dataCy('caption-device-id').should('exist')
+    cy.dataCy('caption-id').should('exist')
 
     cy.dataCy('label-id').should('not.exist')
     cy.dataCy('caption-no-alias').should('not.exist')
@@ -40,7 +40,7 @@ describe('CDeviceHeader', () => {
     })
 
     cy.dataCy('label-alias').should('not.exist')
-    cy.dataCy('caption-device-id').should('not.exist')
+    cy.dataCy('caption-id').should('not.exist')
 
     cy.dataCy('label-id').should('exist')
     cy.dataCy('caption-no-alias').should('exist')
@@ -49,7 +49,6 @@ describe('CDeviceHeader', () => {
   it('should show static elements', () => {
     mount(CDeviceHeader, { props })
 
-    cy.dataCy('device-id').should('contain', device.deviceId)
     cy.dataCy('version').should('contain', device.firmwareVersion)
   })
 

@@ -18,7 +18,7 @@
 
     <div class="row q-gutter-x-sm">
       <div class="text-caption text-grey-7">
-        <span v-if="device.alias" data-cy="caption-device-id">
+        <span v-if="device.alias" data-cy="caption-id">
           {{ device.deviceId }}
         </span>
         <span v-else data-cy="caption-no-alias">No alias</span>
