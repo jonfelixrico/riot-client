@@ -1,0 +1,7 @@
+.page-width {
+  body.screen--lg,
+  body.screen--md,
+  body.screen--xl & {
+    width: 1024px;
+  }
+}

@@ -1,11 +1,17 @@
 <template>
   <q-page>
-    <CDeviceList
-      :refDt="now"
-      :devices="devices"
-      :lastHeartbeats="heartbeats"
-      @click="onDeviceClick"
-    />
+    <div class="page-width q-mx-auto q-pa-sm">
+      <q-card flat>
+        <q-card-section>
+          <CDeviceList
+            :refDt="now"
+            :devices="devices"
+            :lastHeartbeats="heartbeats"
+            @click="onDeviceClick"
+          />
+        </q-card-section>
+      </q-card>
+    </div>
   </q-page>
 </template>
 
@@ -81,10 +87,16 @@ export default defineComponent({
     })
 
     const router = useRouter()
-    function onDeviceClick({ deviceId }: { deviceId: string }) {
+    function onDeviceClick({
+      deviceId,
+      firmwareVersion,
+    }: {
+      deviceId: string
+      firmwareVersion: string
+    }) {
       void router.push({
         name: 'device-details',
-        params: { deviceId },
+        params: { deviceId, version: firmwareVersion },
       })
     }
 
