@@ -81,10 +81,16 @@ export default defineComponent({
     })
 
     const router = useRouter()
-    function onDeviceClick({ deviceId }: { deviceId: string }) {
+    function onDeviceClick({
+      deviceId,
+      firmwareVersion,
+    }: {
+      deviceId: string
+      firmwareVersion: string
+    }) {
       void router.push({
         name: 'device-details',
-        params: { deviceId },
+        params: { deviceId, version: firmwareVersion },
       })
     }
 
