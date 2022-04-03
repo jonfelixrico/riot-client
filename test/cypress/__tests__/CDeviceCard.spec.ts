@@ -36,18 +36,9 @@ describe('CDeviceCard', () => {
     lastFetchDt: DateTime.fromISO('2022-01-01T00:00:00.000Z'),
   }
 
-  beforeEach(() => {
-    if (
-      Cypress.currentTest.title ===
-      'should show no alias if alias is not available'
-    ) {
-      return
-    }
-
-    mount(CDeviceCard, { props })
-  })
-
   it('should show the alias if available', () => {
+    mount(CDeviceCard, { props })
+
     cy.dataCy('alias').should('contain', device.alias)
     cy.dataCy('no-alias').should('not.exist')
   })
@@ -67,9 +58,30 @@ describe('CDeviceCard', () => {
     cy.dataCy('no-alias').should('exist')
   })
 
-  it('should show static details', () => {
-    cy.dataCy('last-fetch').should('exist')
+  it('should show static elements', () => {
+    mount(CDeviceCard, { props })
+
+    cy.dataCy('last-fetch-dt').should('exist')
     cy.dataCy('device-id').should('contain', device.deviceId)
     cy.dataCy('version').should('contain', device.firmwareVersion)
+    cy.dataCy('refresh-btn').should('exist')
+  })
+
+  it('should show the online indicator', () => {
+    mount(CDeviceCard, { props })
+    cy.dataCy('online-ind').should('exist')
+    cy.dataCy('offline-ind').should('not.exist')
+  })
+
+  it('should show the offline indicator', () => {
+    mount(CDeviceCard, {
+      props: {
+        ...props,
+        lastHeartbeatDt: DateTime.fromISO('2021-12-25T00:00:00Z'),
+      },
+    })
+
+    cy.dataCy('offline-ind').should('exist')
+    cy.dataCy('online-ind').should('not.exist')
   })
 })
