@@ -22,6 +22,10 @@ export default defineComponent({
       required: true,
     },
 
+    /**
+     * Defines the heading level of the main label of the module.
+     * This is for a11y purposes.
+     */
     headingLevel: {
       type: Number,
       default: 6,
