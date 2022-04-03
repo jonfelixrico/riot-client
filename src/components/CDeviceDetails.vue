@@ -10,12 +10,13 @@
     </q-card-section>
 
     <q-card-section>
-      <q-list separator>
+      <q-list separator class="bg-grey-3">
         <q-item
           v-for="deviceModule of device.modules"
           :key="deviceModule.moduleId"
           data-cy="device-module"
           :data-module-id="deviceModule.moduleId"
+          clickable
         >
           <q-item-section>
             <CDeviceModuleHeader
