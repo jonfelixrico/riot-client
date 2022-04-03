@@ -16,12 +16,11 @@
       <q-badge data-cy="type">{{ deviceModule.type }}</q-badge>
     </div>
 
-    <div
-      v-if="deviceModule.alias"
-      data-cy="module-id"
-      class="text-caption text-grey-7"
-    >
-      {{ deviceModule.moduleId }}
+    <div class="text-caption text-grey-7">
+      <span v-if="deviceModule.alias" data-cy="caption-id">
+        {{ deviceModule.moduleId }}
+      </span>
+      <span v-else data-cy="caption-no-alias">No alias</span>
     </div>
   </div>
 </template>

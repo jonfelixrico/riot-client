@@ -20,8 +20,10 @@ describe('CDeviceModuleHeader', () => {
     })
 
     cy.dataCy('label-alias').should('contain', deviceModule.alias)
-    cy.dataCy('module-id').should('exist')
+    cy.dataCy('caption-id').should('exist')
+
     cy.dataCy('label-id').should('not.exist')
+    cy.dataCy('caption-no-alias').should('not.exist')
   })
 
   it('should show device module if alias is not available', () => {
@@ -36,8 +38,10 @@ describe('CDeviceModuleHeader', () => {
     })
 
     cy.dataCy('label-alias').should('not.exist')
-    cy.dataCy('module-id').should('not.exist')
+    cy.dataCy('caption-id').should('not.exist')
+
     cy.dataCy('label-id').should('exist')
+    cy.dataCy('caption-no-alias').should('exist')
   })
 
   it('should show static elements', () => {
