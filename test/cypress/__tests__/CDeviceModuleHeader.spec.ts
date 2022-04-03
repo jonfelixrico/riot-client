@@ -1,8 +1,8 @@
 import { DeviceModule } from 'src/types/device.interface'
 import { mount } from '@cypress/vue'
-import CDeviceModuleBase from 'components/CDeviceModuleBase.vue'
+import CDeviceModuleHeader from 'components/CDeviceModuleHeader.vue'
 
-describe('CDeviceModuleBase', () => {
+describe('CDeviceModuleHeader', () => {
   const deviceModule: DeviceModule = {
     moduleId: 'switch-1',
     type: 'SWITCH',
@@ -15,7 +15,7 @@ describe('CDeviceModuleBase', () => {
   }
 
   it('should show alias if available', () => {
-    mount(CDeviceModuleBase, {
+    mount(CDeviceModuleHeader, {
       props,
     })
 
@@ -25,7 +25,7 @@ describe('CDeviceModuleBase', () => {
   })
 
   it('should show device module if alias is not available', () => {
-    mount(CDeviceModuleBase, {
+    mount(CDeviceModuleHeader, {
       props: {
         ...props,
         deviceModule: {
@@ -41,7 +41,7 @@ describe('CDeviceModuleBase', () => {
   })
 
   it('should show static elements', () => {
-    mount(CDeviceModuleBase, {
+    mount(CDeviceModuleHeader, {
       props,
     })
 
