@@ -2,10 +2,12 @@
   <div>
     <div class="row items-center q-gutter-x-sm">
       <div class="text-h6">
-        <h5 v-if="device.alias" class="q-my-none" data-cy="alias">
+        <h5 v-if="device.alias" class="q-my-none" data-cy="label-alias">
           {{ device.alias }}
         </h5>
-        <h5 v-else class="q-my-none" data-cy="no-alias">No Alias</h5>
+        <h5 v-else class="q-my-none" data-cy="label-id">
+          {{ device.deviceId }}
+        </h5>
       </div>
 
       <q-badge v-if="isOnline" data-cy="online-ind" color="green">
@@ -15,11 +17,13 @@
     </div>
 
     <div class="row q-gutter-x-sm">
-      <div class="text-caption text-grey-7" data-cy="device-id">
-        {{ device.deviceId }}
-      </div>
+      <template v-if="device.alias">
+        <div class="text-caption text-grey-7" data-cy="device-id">
+          {{ device.deviceId }}
+        </div>
 
-      <q-separator vertical />
+        <q-separator vertical />
+      </template>
 
       <div class="text-caption text-grey-7" data-cy="version">
         v{{ device.firmwareVersion }}
