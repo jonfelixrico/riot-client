@@ -2,9 +2,9 @@
   <q-layout view="lHh Lpr lFf">
     <q-header>
       <q-toolbar>
-        <q-toolbar-title>RIOT Client</q-toolbar-title>
+        <q-toolbar-title>RIOT Project</q-toolbar-title>
 
-        <div>RIOT_C v{{ version }}</div>
+        <div>Client v{{ version }}</div>
       </q-toolbar>
     </q-header>
     <q-page-container>
