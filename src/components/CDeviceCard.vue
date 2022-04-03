@@ -1,33 +1,31 @@
 <template>
-  <q-card>
-    <q-card-section class="column">
-      <div class="row items-center q-gutter-x-sm">
-        <div class="text-h6">
-          <h5 v-if="device.alias" class="q-my-none" data-cy="alias">
-            {{ device.alias }}
-          </h5>
-          <h5 v-else data-cy="no-alias">No Alias</h5>
-        </div>
-
-        <q-badge v-if="isOnline" data-cy="online-ind" color="green">
-          ONLINE
-        </q-badge>
-        <q-badge v-else data-cy="offline-ind" color="grey">OFFLINE</q-badge>
+  <div>
+    <div class="row items-center q-gutter-x-sm">
+      <div class="text-h6">
+        <h5 v-if="device.alias" class="q-my-none" data-cy="alias">
+          {{ device.alias }}
+        </h5>
+        <h5 v-else data-cy="no-alias">No Alias</h5>
       </div>
 
-      <div class="row q-gutter-x-sm">
-        <div class="text-caption text-grey-7" data-cy="device-id">
-          {{ device.deviceId }}
-        </div>
+      <q-badge v-if="isOnline" data-cy="online-ind" color="green">
+        ONLINE
+      </q-badge>
+      <q-badge v-else data-cy="offline-ind" color="grey">OFFLINE</q-badge>
+    </div>
 
-        <q-separator vertical />
-
-        <div class="text-caption text-grey-7" data-cy="version">
-          v{{ device.firmwareVersion }}
-        </div>
+    <div class="row q-gutter-x-sm">
+      <div class="text-caption text-grey-7" data-cy="device-id">
+        {{ device.deviceId }}
       </div>
-    </q-card-section>
-  </q-card>
+
+      <q-separator vertical />
+
+      <div class="text-caption text-grey-7" data-cy="version">
+        v{{ device.firmwareVersion }}
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
