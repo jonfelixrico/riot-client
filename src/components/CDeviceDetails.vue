@@ -56,10 +56,7 @@ export default defineComponent({
      */
     heartbeatLapseThreshold: Number,
 
-    lastHeartbeatDt: {
-      type: DateTime,
-      required: true,
-    },
+    lastHeartbeatDt: DateTime,
   },
 })
 </script>
