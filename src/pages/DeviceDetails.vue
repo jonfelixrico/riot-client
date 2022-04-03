@@ -4,7 +4,7 @@
       <div class="row items-center q-gutter-x-sm">
         <q-btn icon="arrow_back" flat dense round @click="onBackClick" />
         <q-space />
-        <div class="row q-guter-x-sm items-center">
+        <div class="row q-gutter-x-sm items-center">
           <span>{{ formattedLastFetchDt }}</span>
           <q-btn
             icon="refresh"
