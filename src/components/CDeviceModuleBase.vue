@@ -1,14 +1,29 @@
 <template>
-  <q-card>
-    <q-card-section>
-      <div role="heading" :aria-level="headingLevel">
+  <div>
+    <div class="row items-center q-gutter-x-sm">
+      <div
+        role="heading"
+        :aria-level="headingLevel"
+        data-cy="label-container"
+        class="text-h6"
+      >
         <span v-if="deviceModule.alias" data-cy="label-alias">
           {{ deviceModule.alias }}
         </span>
         <span v-else data-cy="label-id">{{ deviceModule.moduleId }}</span>
       </div>
-    </q-card-section>
-  </q-card>
+
+      <q-badge data-cy="type">{{ deviceModule.type }}</q-badge>
+    </div>
+
+    <div
+      v-if="deviceModule.alias"
+      data-cy="module-id"
+      class="text-caption text-grey-7"
+    >
+      {{ deviceModule.moduleId }}
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
