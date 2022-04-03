@@ -42,7 +42,7 @@ export default defineComponent({
      * This is for a11y purposes.
      */
     headingLevel: {
-      type: Number,
+      type: [Number, String],
       default: 6,
     },
   },
