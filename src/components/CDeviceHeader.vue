@@ -17,13 +17,14 @@
     </div>
 
     <div class="row q-gutter-x-sm">
-      <template v-if="device.alias">
-        <div class="text-caption text-grey-7" data-cy="device-id">
+      <div class="text-caption text-grey-7">
+        <span v-if="device.alias" data-cy="caption-device-id">
           {{ device.deviceId }}
-        </div>
+        </span>
+        <span v-else data-cy="caption-no-alias">No alias</span>
+      </div>
 
-        <q-separator vertical />
-      </template>
+      <q-separator vertical />
 
       <div class="text-caption text-grey-7" data-cy="version">
         v{{ device.firmwareVersion }}

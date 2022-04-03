@@ -22,8 +22,10 @@ describe('CDeviceHeader', () => {
     mount(CDeviceHeader, { props })
 
     cy.dataCy('label-alias').should('contain', device.alias)
+    cy.dataCy('caption-device-id').should('exist')
+
     cy.dataCy('label-id').should('not.exist')
-    cy.dataCy('device-id').should('exist')
+    cy.dataCy('caption-no-alias').should('not.exist')
   })
 
   it('should show id instead if alias is not available', () => {
@@ -38,8 +40,10 @@ describe('CDeviceHeader', () => {
     })
 
     cy.dataCy('label-alias').should('not.exist')
-    cy.dataCy('device-id').should('not.exist')
+    cy.dataCy('caption-device-id').should('not.exist')
+
     cy.dataCy('label-id').should('exist')
+    cy.dataCy('caption-no-alias').should('exist')
   })
 
   it('should show static elements', () => {
