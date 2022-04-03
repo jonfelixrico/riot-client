@@ -10,6 +10,7 @@
 
 const { configure } = require('quasar/wrappers')
 const path = require('path')
+const { version } = require('./package.json')
 
 module.exports = configure(function (/* ctx */) {
   return {
@@ -68,7 +69,9 @@ module.exports = configure(function (/* ctx */) {
 
       // publicPath: '/',
       // analyze: true,
-      // env: {},
+      env: {
+        FE_VERSION: version,
+      },
       // rawDefine: {}
       // ignorePublicFolder: true,
       // minify: false,
