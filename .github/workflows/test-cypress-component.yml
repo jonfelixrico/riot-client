@@ -22,7 +22,5 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
-      # Sol'n for can't find yarn issue: https://github.com/actions/setup-node/issues/182#issuecomment-1086296667
-      - run: corepack enable
       - run: yarn install
       - run: yarn test:component:ci
