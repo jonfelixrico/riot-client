@@ -24,7 +24,8 @@ jobs:
           cache: 'npm'
       - run: npm install
         name: Install packages
+      - run: apt-get update
       - run: apt-get --yes install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
-        name: Install Cypress dependencies
+        name: apt-get install
       - run: npm run test:component:ci
         name: Run Cypress component testing
