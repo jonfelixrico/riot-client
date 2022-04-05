@@ -42,10 +42,8 @@ describe('CUnregisteredDeviceListItem', () => {
 
   it('should render the module summary', () => {
     cy.dataCy('module-group').should('have.length', 2)
-    cy.dataCy('module-group').get('[data-module-type="SWITCH"]').should('exist')
-    cy.dataCy('module-group')
-      .get('[data-module-type="PH_SENSOR"]')
-      .should('exist')
+    cy.dataCy('module-group').get('[data-type="SWITCH"]').should('exist')
+    cy.dataCy('module-group').get('[data-type="PH_SENSOR"]').should('exist')
   })
 
   it('should render the register button', () => {
