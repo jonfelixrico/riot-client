@@ -43,7 +43,11 @@ describe('CUnregisteredDeviceListItem', () => {
   })
 
   it('should render the register button', () => {
-    cy.dataCy('register-btn').should('exist')
-    Cypress.vueWrapper.emitted('register-btn-click')
+    cy.dataCy('register-btn')
+      .should('exist')
+      .click()
+      .should(() => {
+        expect(Cypress.vueWrapper.emitted('register-click')).to.have.lengthOf(1)
+      })
   })
 })
