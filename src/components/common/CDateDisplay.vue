@@ -12,7 +12,6 @@
 <script lang="ts">
 import { computed } from '@vue/reactivity'
 import { DateTime } from 'luxon'
-import { useStaticDateTime } from 'src/composables/static-datetime.composable'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
@@ -21,13 +20,16 @@ export default defineComponent({
       type: DateTime,
       required: true,
     },
+
+    refDt: {
+      type: DateTime,
+      default: () => DateTime.now(),
+    },
   },
 
   setup(props) {
-    const now = useStaticDateTime()
-
     const relative = computed(() => {
-      if (!props.date.hasSame(now, 'day')) {
+      if (!props.date.hasSame(props.refDt, 'day')) {
         return null
       }
 
