@@ -4,6 +4,8 @@
       v-for="device of devices"
       :key="[device.deviceId, device.firmwareVersion].join('/')"
       :device="device"
+      data-cy="device"
+      :data-device-id="device.deviceId"
     />
   </q-page>
 </template>
