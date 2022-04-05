@@ -1,6 +1,7 @@
 import { mount } from '@cypress/vue'
 import CUnregisteredDeviceItem from 'components/unregistered-devices/CUnregisteredDeviceListItem.vue'
 import { DateTime } from 'luxon'
+import { i18n } from 'src/boot/i18n'
 import { UnregisteredDevice } from 'src/types/unregistered-device.interface'
 
 describe('CUnregisteredDeviceListItem', () => {
@@ -25,13 +26,18 @@ describe('CUnregisteredDeviceListItem', () => {
   }
 
   beforeEach(() => {
-    mount(CUnregisteredDeviceItem, { props: { device } })
+    mount(CUnregisteredDeviceItem, {
+      props: { device },
+      global: {
+        plugins: [i18n],
+      },
+    })
   })
 
   it('should render the device details', () => {
     cy.dataCy('device-id').should('exist')
     cy.dataCy('version').should('exist')
-    cy.dataCy('last-queued').should('exist')
+    cy.dataCy('last-activity').should('exist')
   })
 
   it('should render the module summary', () => {
