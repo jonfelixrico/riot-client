@@ -1,12 +1,12 @@
 <template>
-  <div v-if="relative">
+  <span v-if="relative">
     <span class="cursor-pointer text-underline-dotted">{{ relative }}</span>
     <q-tooltip>{{ absolute }}</q-tooltip>
-  </div>
+  </span>
 
-  <div v-else>
+  <span v-else>
     {{ absolute }}
-  </div>
+  </span>
 </template>
 
 <script lang="ts">
