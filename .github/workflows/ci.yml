@@ -8,7 +8,7 @@ on: pull_request
 jobs:
   lint:
     name: Lint
-    runs-on: [self-hosted, lint]
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
@@ -22,13 +22,13 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-      - run: npm install
-      - run: npm run lint
+          cache: 'yarn'
+      - run: yarn install
+      - run: yarn lint
 
   jest:
     name: Jest Unit Testing
-    runs-on: [self-hosted, jest]
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
@@ -42,13 +42,13 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-      - run: npm install
-      - run: npm run test:unit:ci
+          cache: 'yarn'
+      - run: yarn install
+      - run: yarn test:unit:ci
 
   cypress-component:
     name: Cypress Component Testing
-    runs-on: [self-hosted, cypress]
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
@@ -62,6 +62,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-      - run: npm install
-      - run: npm run test:component:ci
+          cache: 'yarn'
+      - run: yarn install
+      - run: yarn test:component:ci
