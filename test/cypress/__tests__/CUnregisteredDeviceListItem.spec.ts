@@ -1,9 +1,9 @@
 import { mount } from '@cypress/vue'
-import CUnregisteredDeviceItem from 'components/unregistered-devices/CUnregisteredDeviceItem.vue'
+import CUnregisteredDeviceItem from 'components/unregistered-devices/CUnregisteredDeviceListItem.vue'
 import { DateTime } from 'luxon'
 import { UnregisteredDevice } from 'src/types/unregistered-device.interface'
 
-describe('CUnregisteredDeviceItem', () => {
+describe('CUnregisteredDeviceListItem', () => {
   const device: UnregisteredDevice = {
     deviceId: 'unreg-device-1',
     firmwareVersion: '1',
@@ -40,5 +40,10 @@ describe('CUnregisteredDeviceItem', () => {
     cy.dataCy('module-group')
       .get('[data-module-type="PH_SENSOR"]')
       .should('exist')
+  })
+
+  it('should render the register button', () => {
+    cy.dataCy('register-btn').should('exist')
+    Cypress.vueWrapper.emitted('register-btn-click')
   })
 })
