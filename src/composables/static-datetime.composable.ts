@@ -12,6 +12,5 @@ export const STATIC_DATE_TIME: InjectionKey<DateTime> =
  * @returns
  */
 export function useStaticDateTime() {
-  const now = DateTime.now()
-  return inject(STATIC_DATE_TIME, now)
+  return inject(STATIC_DATE_TIME, DateTime.now())
 }
