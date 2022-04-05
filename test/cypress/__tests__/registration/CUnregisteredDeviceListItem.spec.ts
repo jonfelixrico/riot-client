@@ -1,8 +1,8 @@
 import { mount } from '@cypress/vue'
-import CUnregisteredDeviceItem from 'components/unregistered-devices/CUnregisteredDeviceListItem.vue'
+import CUnregisteredDeviceItem from 'components/registration/CUnregisteredDeviceListItem.vue'
 import { DateTime } from 'luxon'
-import { i18n } from 'src/boot/i18n'
-import { UnregisteredDevice } from 'src/types/unregistered-device.interface'
+import { i18n } from 'boot/i18n'
+import { UnregisteredDevice } from 'types/unregistered-device.interface'
 
 describe('CUnregisteredDeviceListItem', () => {
   const device: UnregisteredDevice = {
