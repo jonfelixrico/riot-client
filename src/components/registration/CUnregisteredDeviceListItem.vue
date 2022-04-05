@@ -13,7 +13,11 @@
           <q-separator vertical />
 
           <span class="text-caption text-grey-7" data-cy="last-activity">
-            {{ t('registration.lastActivity', { date: 'PLACEHOLDER' }) }}
+            <i18n-t keypath="registration.lastActivity">
+              <template #date>
+                <CDateDisplay :date="device.lastQueueDt" />
+              </template>
+            </i18n-t>
           </span>
         </div>
       </div>
@@ -55,9 +59,12 @@ import { countBy, entries, orderBy } from 'lodash'
 import { UnregisteredDevice } from 'src/types/unregistered-device.interface'
 import { defineComponent, PropType } from 'vue'
 import { useI18n } from 'vue-i18n'
+import CDateDisplay from 'components/common/CDateDisplay.vue'
 
 export default defineComponent({
   emits: ['register-click'],
+
+  components: { CDateDisplay },
 
   props: {
     device: {
