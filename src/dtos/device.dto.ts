@@ -1,6 +1,6 @@
 import { Transform, Type } from 'class-transformer'
 import { DateTime } from 'luxon'
-import { Device } from 'src/types/device.interface'
+import { Device, DeviceModule } from 'src/types/device.interface'
 
 export interface IDeviceDto<T extends string | DateTime = string>
   extends Device {
@@ -13,7 +13,7 @@ export class DeviceDto implements IDeviceDto<DateTime> {
   lastHeartbeatDt!: DateTime
 
   deviceId!: string
-  modules!: { moduleId: string; type: string }[]
+  modules!: DeviceModule[]
   firmwareVersion!: string
   alias?: string | undefined
 }
