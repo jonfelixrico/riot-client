@@ -17,6 +17,7 @@
           </span>
         </div>
       </div>
+
       <q-btn
         data-cy="register-btn"
         no-caps
@@ -27,10 +28,30 @@
         {{ t('registration.register') }}
       </q-btn>
     </q-card-section>
+
+    <template v-if="device.modules.length">
+      <q-separator />
+
+      <q-card-section class="row q-gutter-x-sm q-py-xs">
+        <q-chip
+          square
+          dense
+          v-for="{ type, count } of groupedModules"
+          :key="type"
+          data-cy="module-group"
+          :data-type="type"
+        >
+          <q-avatar color="primary" text-color="white">{{ count }}</q-avatar>
+          <span>{{ type }}</span>
+        </q-chip>
+      </q-card-section>
+    </template>
   </q-card>
 </template>
 
 <script lang="ts">
+import { computed } from '@vue/reactivity'
+import { countBy, entries, orderBy } from 'lodash'
 import { UnregisteredDevice } from 'src/types/unregistered-device.interface'
 import { defineComponent, PropType } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -45,11 +66,22 @@ export default defineComponent({
     },
   },
 
-  setup() {
+  setup(props) {
     const { t } = useI18n()
+
+    const groupedModules = computed(() => {
+      const groups = countBy(props.device.modules, 'type')
+      const asArr = entries(groups).map(([type, count]) => ({
+        type,
+        count,
+      }))
+
+      return orderBy(asArr, ['count', 'type'], ['desc', 'asc'])
+    })
 
     return {
       t,
+      groupedModules,
     }
   },
 })
