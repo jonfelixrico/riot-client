@@ -40,7 +40,6 @@
 </template>
 
 <script lang="ts">
-import { DateTime } from 'luxon'
 import { UnregisteredDevice } from 'src/types/unregistered-device.interface'
 import { defineComponent, PropType } from 'vue'
 import { useI18n } from 'vue-i18n'
