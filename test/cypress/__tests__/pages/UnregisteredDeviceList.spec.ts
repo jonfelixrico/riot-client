@@ -25,21 +25,26 @@ const devices: UnregisteredDevice[] = [
 ]
 
 describe('UnregisteredDeviceList', () => {
-  it('should display all devices', () => {
+  it('should show empty indicator if there are no items', () => {
+    const mockApi: UnregisteredListApi = {
+      devices: ref([]),
+      fetch: cy.stub(),
+      isLoading: ref(false),
+    }
+
     mount(LayoutContainer, {
       props: {
         component: UnregisteredDeviceList,
       },
       global: {
         provide: {
-          [UNREGISTERED_LIST_API as symbol]: {
-            devices: ref(devices),
-          } as UnregisteredListApi,
+          [UNREGISTERED_LIST_API as symbol]: mockApi,
         },
         plugins: [i18n],
       },
     })
 
-    cy.dataCy('device').should('have.length', devices.length)
+    cy.dataCy('listing').should('not.exist')
+    cy.dataCy('empty-ind').should('exist')
   })
 })
