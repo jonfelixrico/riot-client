@@ -118,27 +118,15 @@ describe('UnregisteredDeviceList -- not empty', () => {
       })
   })
 
-  it('should show a prompt if the register button was clicked', () => {
-    cy.dataCy('device')
-      .get(`[data-device-id=${DEVICE_1}]`)
-      .dataCy('register-btn')
-      .click()
-
-    cy.dataCy('register-prompt').should('exist')
-  })
-
   it('should dismiss the prompt', () => {
     cy.dataCy('device')
       .get(`[data-device-id=${DEVICE_1}]`)
       .dataCy('register-btn')
       .click()
 
-    cy.dataCy('register-prompt')
-      .dataCy('cancel')
-      .click()
-      .should(() => {
-        cy.dataCy('register-prompt').should('not.exist')
-      })
+    cy.dataCy('register-confirm').should('exist').dataCy('cancel').click()
+
+    cy.dataCy('register-confirm').should('not.exist')
   })
 
   it('should trigger registration on confirm', () => {
@@ -147,11 +135,14 @@ describe('UnregisteredDeviceList -- not empty', () => {
       .dataCy('register-btn')
       .click()
 
-    cy.dataCy('register-prompt')
+    cy.dataCy('register-confirm')
+      .should('exist')
       .dataCy('ok')
       .click()
       .should(() => {
         expect(regApi.register).to.be.called
       })
+
+    cy.dataCy('register-confirm').should('not.exist') // OK dismisses the dialog
   })
 })
