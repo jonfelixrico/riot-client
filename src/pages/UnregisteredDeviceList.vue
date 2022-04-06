@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <q-page class="page-width q-mx-auto">
     <CUnregisteredDeviceListItem
       v-for="device of devices"
       :key="[device.deviceId, device.firmwareVersion].join('/')"
