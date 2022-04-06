@@ -6,12 +6,25 @@
       </q-card-section>
 
       <q-card-section class="q-pt-none">
-        <div v-text="message">
+        <div v-text="message" />
       </q-card-section>
 
       <q-card-actions align="right">
-        <q-btn color="primary" unelevated no-caps :label="t('common.ok')" @click="onOKClick" data-cy="ok" />
-        <q-btn flat no-caps :label="t('common.cancel')" @click="onCancelClick" data-cy="cancel" />
+        <q-btn
+          color="primary"
+          unelevated
+          no-caps
+          :label="t('common.ok')"
+          @click="onOKClick"
+          data-cy="ok"
+        />
+        <q-btn
+          flat
+          no-caps
+          :label="t('common.cancel')"
+          @click="onCancelClick"
+          data-cy="cancel"
+        />
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -20,12 +33,13 @@
 <script>
 import { useDialogPluginComponent } from 'quasar'
 import { defineComponent } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   props: {
     title: String,
     message: String,
-    dataCy: String
+    dataCy: String,
   },
 
   emits: [...useDialogPluginComponent.emits],
@@ -40,7 +54,7 @@ export default defineComponent({
       onDialogHide,
       onOKClick: onDialogOK,
       onCancelClick: onDialogCancel,
-      t
+      t,
     }
   },
 })
