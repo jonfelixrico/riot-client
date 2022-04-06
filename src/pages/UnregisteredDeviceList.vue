@@ -1,6 +1,6 @@
 <template>
   <q-page class="row justify-center">
-    <div class="page-width" v-if="devices.length">
+    <div class="page-width" v-if="devices.length" data-cy="listing">
       <div class="row justify-end">
         <q-btn
           dense
@@ -9,6 +9,7 @@
           icon="refresh"
           :loading="isLoading"
           @click="fetch"
+          data-cy="refresh-btn"
         />
       </div>
 
@@ -21,12 +22,17 @@
       />
     </div>
 
-    <q-card v-else class="page-width q-ma-md flex flex-center" flat>
+    <q-card
+      v-else
+      class="page-width q-ma-md flex flex-center"
+      flat
+      data-cy="empty-ind"
+    >
       <div class="column items-center q-gutter-y-sm">
         <div role="heading" aria-level="3" class="text-h5">
           {{ t('registration.list.empty') }}
         </div>
-        <q-btn color="primary" unelevated no-caps>
+        <q-btn color="primary" unelevated no-caps data-cy="refresh-btn">
           {{ t('common.refresh') }}
         </q-btn>
       </div>
