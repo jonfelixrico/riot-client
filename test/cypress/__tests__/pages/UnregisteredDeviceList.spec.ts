@@ -24,14 +24,18 @@ const devices: UnregisteredDevice[] = [
   },
 ]
 
-describe('UnregisteredDeviceList', () => {
-  it('should show empty indicator if there are no items', () => {
-    const mockApi: UnregisteredListApi = {
-      devices: ref([]),
-      fetch: cy.stub(),
-      isLoading: ref(false),
-    }
+/*
+ * We're separating these empty and non-empty scenarios to simplify the before hook.
+ */
 
+describe('UnregisteredDeviceList -- empty', () => {
+  const mockApi: UnregisteredListApi = {
+    devices: ref([]),
+    fetch: cy.stub(),
+    isLoading: ref(false),
+  }
+
+  before(() =>
     mount(LayoutContainer, {
       props: {
         component: UnregisteredDeviceList,
@@ -43,8 +47,52 @@ describe('UnregisteredDeviceList', () => {
         plugins: [i18n],
       },
     })
+  )
 
+  it('should show empty indicator if there are no items', () => {
     cy.dataCy('listing').should('not.exist')
     cy.dataCy('empty-ind').should('exist')
+  })
+
+  it('should have a refresh button accessible', () => {
+    cy.dataCy('refresh-btn')
+      .click()
+      .should(() => {
+        expect(mockApi.fetch).to.be.called
+      })
+  })
+})
+
+describe('UnregisteredDeviceList -- not empty', () => {
+  const mockApi: UnregisteredListApi = {
+    devices: ref([]),
+    fetch: cy.stub(),
+    isLoading: ref(false),
+  }
+
+  before(() => {
+    mount(LayoutContainer, {
+      props: {
+        component: UnregisteredDeviceList,
+      },
+      global: {
+        provide: {
+          [UNREGISTERED_LIST_API as symbol]: mockApi,
+        },
+        plugins: [i18n],
+      },
+    })
+  })
+
+  it('should should show the devices', () => {
+    cy.dataCy('device').should('have.length', devices.length)
+  })
+
+  it('should have a refresh button accessible', () => {
+    cy.dataCy('refresh-btn')
+      .click()
+      .should(() => {
+        expect(mockApi.fetch).to.be.called
+      })
   })
 })
