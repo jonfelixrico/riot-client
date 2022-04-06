@@ -21,16 +21,7 @@
       />
     </div>
 
-    <q-card v-else class="page-width q-ma-md flex flex-center" flat>
-      <div class="column items-center q-gutter-y-sm">
-        <div role="heading" aria-level="3" class="text-h5">
-          {{ t('registration.list.empty') }}
-        </div>
-        <q-btn color="primary" unelevated no-caps>
-          {{ t('common.refresh') }}
-        </q-btn>
-      </div>
-    </q-card>
+    <CEmptyUnregisteredDeviceListVue v-else class="page-width q-ma-md" />
   </q-page>
 </template>
 
@@ -38,16 +29,16 @@
 import { defineComponent, onBeforeMount } from 'vue'
 import CUnregisteredDeviceListItem from 'components/registration/CUnregisteredDeviceListItem.vue'
 import { useUnregisteredListApi } from 'composables/unregistered-api.composable'
-import { useI18n } from 'vue-i18n'
+import CEmptyUnregisteredDeviceListVue from 'components/registration/CEmptyUnregisteredDeviceList.vue'
 
 export default defineComponent({
   components: {
     CUnregisteredDeviceListItem,
+    CEmptyUnregisteredDeviceListVue,
   },
 
   setup() {
     const { devices, fetch, isLoading } = useUnregisteredListApi()
-    const { t } = useI18n()
 
     onBeforeMount(fetch)
 
@@ -55,7 +46,6 @@ export default defineComponent({
       devices,
       isLoading,
       fetch,
-      t,
     }
   },
 })
