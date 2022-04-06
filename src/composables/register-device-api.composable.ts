@@ -1,7 +1,7 @@
 import { inject, InjectionKey } from 'vue'
 
 export interface RegisterDeviceApi {
-  registerDevice(device: { deviceId: string; versionId: string }): Promise<void>
+  register(device: { deviceId: string; versionId: string }): Promise<void>
 }
 
 export const REGISTER_DEVICE_API: InjectionKey<RegisterDeviceApi> = Symbol(
