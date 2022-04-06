@@ -19,6 +19,7 @@
         :device="device"
         data-cy="device"
         :data-device-id="device.deviceId"
+        @register-click="registerDevice"
       />
     </div>
 
@@ -45,6 +46,8 @@ import { defineComponent, onBeforeMount } from 'vue'
 import CUnregisteredDeviceListItem from 'components/registration/CUnregisteredDeviceListItem.vue'
 import { useUnregisteredListApi } from 'composables/unregistered-list-api.composable'
 import { useI18n } from 'vue-i18n'
+import { useRegisterDeviceApi } from 'composables/register-device-api.composable'
+import { UnregisteredDevice } from 'src/types/unregistered-device.interface'
 
 export default defineComponent({
   components: {
@@ -53,15 +56,24 @@ export default defineComponent({
 
   setup() {
     const { devices, fetch, isLoading } = useUnregisteredListApi()
+    const { register } = useRegisterDeviceApi()
     const { t } = useI18n()
 
     onBeforeMount(fetch)
+
+    async function onRegisterClick({
+      deviceId,
+      firmwareVersion,
+    }: Pick<UnregisteredDevice, 'deviceId' | 'firmwareVersion'>) {
+      await register({ deviceId, firmwareVersion })
+    }
 
     return {
       devices,
       isLoading,
       fetch,
       t,
+      registerDevice: onRegisterClick,
     }
   },
 })
