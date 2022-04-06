@@ -29,13 +29,15 @@ const devices: UnregisteredDevice[] = [
  */
 
 describe('UnregisteredDeviceList -- empty', () => {
-  const mockApi: UnregisteredListApi = {
-    devices: ref([]),
-    fetch: cy.stub(),
-    isLoading: ref(false),
-  }
+  let mockApi: UnregisteredListApi
 
-  before(() =>
+  beforeEach(() => {
+    mockApi = {
+      devices: ref([]),
+      fetch: cy.stub(),
+      isLoading: ref(false),
+    }
+
     mount(LayoutContainer, {
       props: {
         component: UnregisteredDeviceList,
@@ -47,7 +49,7 @@ describe('UnregisteredDeviceList -- empty', () => {
         plugins: [i18n],
       },
     })
-  )
+  })
 
   it('should show empty indicator if there are no items', () => {
     cy.dataCy('listing').should('not.exist')
@@ -64,13 +66,15 @@ describe('UnregisteredDeviceList -- empty', () => {
 })
 
 describe('UnregisteredDeviceList -- not empty', () => {
-  const mockApi: UnregisteredListApi = {
-    devices: ref([]),
-    fetch: cy.stub(),
-    isLoading: ref(false),
-  }
+  let mockApi: UnregisteredListApi
 
-  before(() => {
+  beforeEach(() => {
+    mockApi = {
+      devices: ref(devices),
+      fetch: cy.stub(),
+      isLoading: ref(false),
+    }
+
     mount(LayoutContainer, {
       props: {
         component: UnregisteredDeviceList,
