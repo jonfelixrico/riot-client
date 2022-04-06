@@ -9,10 +9,16 @@ import { ref } from 'vue'
 import { UnregisteredDevice } from 'types/unregistered-device.interface'
 import { DateTime } from 'luxon'
 import { i18n } from 'boot/i18n'
+import {
+  RegisterDeviceApi,
+  REGISTER_DEVICE_API,
+} from 'src/composables/register-device-api.composable'
+
+const DEVICE_1 = 'device-1'
 
 const devices: UnregisteredDevice[] = [
   {
-    deviceId: 'device-1',
+    deviceId: DEVICE_1,
     firmwareVersion: '1',
     lastQueueDt: DateTime.fromISO('2022-01-01T00:00:00Z'),
     modules: [
@@ -29,13 +35,18 @@ const devices: UnregisteredDevice[] = [
  */
 
 describe('UnregisteredDeviceList -- empty', () => {
-  let mockApi: UnregisteredListApi
+  let listApi: UnregisteredListApi
+  let regApi: RegisterDeviceApi
 
   beforeEach(() => {
-    mockApi = {
+    listApi = {
       devices: ref([]),
       fetch: cy.stub(),
       isLoading: ref(false),
+    }
+
+    regApi = {
+      register: cy.stub(),
     }
 
     mount(LayoutContainer, {
@@ -44,7 +55,8 @@ describe('UnregisteredDeviceList -- empty', () => {
       },
       global: {
         provide: {
-          [UNREGISTERED_LIST_API as symbol]: mockApi,
+          [UNREGISTERED_LIST_API as symbol]: listApi,
+          [REGISTER_DEVICE_API as symbol]: regApi,
         },
         plugins: [i18n],
       },
@@ -60,19 +72,24 @@ describe('UnregisteredDeviceList -- empty', () => {
     cy.dataCy('refresh-btn')
       .click()
       .should(() => {
-        expect(mockApi.fetch).to.be.called
+        expect(listApi.fetch).to.be.called
       })
   })
 })
 
 describe('UnregisteredDeviceList -- not empty', () => {
   let mockApi: UnregisteredListApi
+  let regApi: RegisterDeviceApi
 
   beforeEach(() => {
     mockApi = {
       devices: ref(devices),
       fetch: cy.stub(),
       isLoading: ref(false),
+    }
+
+    regApi = {
+      register: cy.stub(),
     }
 
     mount(LayoutContainer, {
@@ -82,6 +99,7 @@ describe('UnregisteredDeviceList -- not empty', () => {
       global: {
         provide: {
           [UNREGISTERED_LIST_API as symbol]: mockApi,
+          [REGISTER_DEVICE_API as symbol]: regApi,
         },
         plugins: [i18n],
       },
@@ -97,6 +115,43 @@ describe('UnregisteredDeviceList -- not empty', () => {
       .click()
       .should(() => {
         expect(mockApi.fetch).to.be.called
+      })
+  })
+
+  it('should show a prompt if the register button was clicked', () => {
+    cy.dataCy('device')
+      .get(`[data-device-id=${DEVICE_1}]`)
+      .dataCy('register-btn')
+      .click()
+
+    cy.dataCy('register-prompt').should('exist')
+  })
+
+  it('should dismiss the prompt', () => {
+    cy.dataCy('device')
+      .get(`[data-device-id=${DEVICE_1}]`)
+      .dataCy('register-btn')
+      .click()
+
+    cy.dataCy('register-prompt')
+      .dataCy('cancel')
+      .click()
+      .should(() => {
+        cy.dataCy('register-prompt').should('not.exist')
+      })
+  })
+
+  it('should trigger registration on confirm', () => {
+    cy.dataCy('device')
+      .get(`[data-device-id=${DEVICE_1}]`)
+      .dataCy('register-btn')
+      .click()
+
+    cy.dataCy('register-prompt')
+      .dataCy('ok')
+      .click()
+      .should(() => {
+        expect(regApi.register).to.be.called
       })
   })
 })
