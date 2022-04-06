@@ -1,7 +1,7 @@
 import {
   UnregisteredListApi,
   UNREGISTERED_LIST_API,
-} from 'src/composables/unregistered-api.composable'
+} from 'src/composables/unregistered-list-api.composable'
 import { mount } from '@cypress/vue'
 import LayoutContainer from 'app/test/cypress/wrappers/LayoutContainer.vue'
 import UnregisteredDeviceList from 'pages/UnregisteredDeviceList.vue'

@@ -43,7 +43,7 @@
 <script lang="ts">
 import { defineComponent, onBeforeMount } from 'vue'
 import CUnregisteredDeviceListItem from 'components/registration/CUnregisteredDeviceListItem.vue'
-import { useUnregisteredListApi } from 'composables/unregistered-api.composable'
+import { useUnregisteredListApi } from 'composables/unregistered-list-api.composable'
 import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
