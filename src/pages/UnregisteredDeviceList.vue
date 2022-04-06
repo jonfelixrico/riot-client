@@ -19,7 +19,7 @@
         :device="device"
         data-cy="device"
         :data-device-id="device.deviceId"
-        @register-click="registerDevice"
+        @register-click="confirmRegister(device)"
       />
     </div>
 
@@ -47,7 +47,9 @@ import CUnregisteredDeviceListItem from 'components/registration/CUnregisteredDe
 import { useUnregisteredListApi } from 'composables/unregistered-list-api.composable'
 import { useI18n } from 'vue-i18n'
 import { useRegisterDeviceApi } from 'composables/register-device-api.composable'
-import { UnregisteredDevice } from 'src/types/unregistered-device.interface'
+import { UnregisteredDevice } from 'types/unregistered-device.interface'
+import { useQuasar } from 'quasar'
+import CConfirmationDialog from 'components/common/CConfirmationDialog.vue'
 
 export default defineComponent({
   components: {
@@ -61,11 +63,21 @@ export default defineComponent({
 
     onBeforeMount(fetch)
 
-    async function onRegisterClick({
+    const $q = useQuasar()
+    function confirmRegister({
       deviceId,
       firmwareVersion,
     }: Pick<UnregisteredDevice, 'deviceId' | 'firmwareVersion'>) {
-      await register({ deviceId, firmwareVersion })
+      $q.dialog({
+        component: CConfirmationDialog,
+        componentProps: {
+          title: t('registration.dialogs.confirm.title'),
+          message: t('registration.dialogs.confirm.message'),
+          dataCy: 'register-confirm',
+        },
+      }).onOk(() => {
+        void register({ deviceId, firmwareVersion })
+      })
     }
 
     return {
@@ -73,7 +85,7 @@ export default defineComponent({
       isLoading,
       fetch,
       t,
-      registerDevice: onRegisterClick,
+      confirmRegister,
     }
   },
 })
