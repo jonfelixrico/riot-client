@@ -2,7 +2,7 @@
   <q-dialog ref="dialogRef" @hide="onDialogHide">
     <q-card class="q-dialog-plugin" :data-cy="dataCy">
       <q-card-section>
-        <div role="heading" aria-level="1" v-text="title" />
+        <div role="heading" aria-level="1" v-text="title" class="text-h6" />
       </q-card-section>
 
       <q-card-section class="q-pt-none">
