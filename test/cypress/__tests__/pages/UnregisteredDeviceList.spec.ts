@@ -69,7 +69,8 @@ describe('UnregisteredDeviceList -- empty', () => {
   })
 
   it('should have a refresh button accessible', () => {
-    cy.dataCy('refresh-btn')
+    cy.dataCy('empty-ind')
+      .dataCy('refresh-btn')
       .click()
       .should(() => {
         expect(listApi.fetch).to.be.called
@@ -111,7 +112,8 @@ describe('UnregisteredDeviceList -- not empty', () => {
   })
 
   it('should have a refresh button accessible', () => {
-    cy.dataCy('refresh-btn')
+    cy.dataCy('listing')
+      .dataCy('refresh-btn')
       .click()
       .should(() => {
         expect(mockApi.fetch).to.be.called
