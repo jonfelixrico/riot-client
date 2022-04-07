@@ -19,7 +19,7 @@
         :device="device"
         data-cy="device"
         :data-device-id="device.deviceId"
-        @register-click="confirmRegister(device)"
+        @register-click="register(device)"
       />
     </div>
 
@@ -53,9 +53,34 @@ import CUnregisteredDeviceListItem from 'components/registration/CUnregisteredDe
 import { useUnregisteredListApi } from 'composables/unregistered-list-api.composable'
 import { useI18n } from 'vue-i18n'
 import { useRegisterDeviceApi } from 'composables/register-device-api.composable'
-import { UnregisteredDevice } from 'types/unregistered-device.interface'
 import { useQuasar } from 'quasar'
 import CConfirmationDialog from 'components/common/CConfirmationDialog.vue'
+import { DeviceIdentifier } from 'src/types/device.interface'
+
+function useRegisterDevice() {
+  const { register } = useRegisterDeviceApi()
+  const { t } = useI18n()
+  const $q = useQuasar()
+
+  function promptRegister({ deviceId, firmwareVersion }: DeviceIdentifier) {
+    $q.dialog({
+      component: CConfirmationDialog,
+      componentProps: {
+        title: t('registration.dialogs.confirm.title'),
+        message: t('registration.dialogs.confirm.message', { deviceId }),
+        dataCy: 'register-confirm',
+        ok: t('registration.dialogs.confirm.ok'),
+        cancel: t('registration.dialogs.confirm.cancel'),
+      },
+    }).onOk(() => {
+      void register({ deviceId, firmwareVersion })
+    })
+  }
+
+  return {
+    register: promptRegister,
+  }
+}
 
 export default defineComponent({
   components: {
@@ -64,36 +89,18 @@ export default defineComponent({
 
   setup() {
     const { devices, fetch, isLoading } = useUnregisteredListApi()
-    const { register } = useRegisterDeviceApi()
     const { t } = useI18n()
 
-    onBeforeMount(fetch)
+    const { register } = useRegisterDevice()
 
-    const $q = useQuasar()
-    function confirmRegister({
-      deviceId,
-      firmwareVersion,
-    }: Pick<UnregisteredDevice, 'deviceId' | 'firmwareVersion'>) {
-      $q.dialog({
-        component: CConfirmationDialog,
-        componentProps: {
-          title: t('registration.dialogs.confirm.title'),
-          message: t('registration.dialogs.confirm.message'),
-          dataCy: 'register-confirm',
-          ok: t('registration.dialogs.confirm.ok'),
-          cancel: t('registration.dialogs.confirm.cancel'),
-        },
-      }).onOk(() => {
-        void register({ deviceId, firmwareVersion })
-      })
-    }
+    onBeforeMount(fetch)
 
     return {
       devices,
       isLoading,
       fetch,
       t,
-      confirmRegister,
+      register,
     }
   },
 })
