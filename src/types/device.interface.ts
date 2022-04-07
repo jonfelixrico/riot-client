@@ -10,3 +10,8 @@ export interface Device {
   firmwareVersion: string
   alias?: string
 }
+
+export interface DeviceIdentifier {
+  deviceId: string
+  firmwareVersion: string
+}

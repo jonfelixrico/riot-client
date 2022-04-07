@@ -16,6 +16,11 @@ const routes: RouteRecordRaw[] = [
         name: 'device-details',
         component: () => import('src/pages/DeviceDetails.vue'),
       },
+      {
+        path: 'devices/unregistered',
+        name: 'unregistered-devices',
+        component: () => import('src/pages/UnregisteredDeviceList.vue'),
+      },
     ],
   },
 
