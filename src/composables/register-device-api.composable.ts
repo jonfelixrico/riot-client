@@ -18,10 +18,13 @@ function useRegisterDeviceBackend(): RegisterDeviceApi {
     deviceId,
     firmwareVersion,
   }) => {
-    await api.post(`device/${deviceId}/version/${firmwareVersion}`, {
-      deviceId,
-      firmwareVersion,
-    })
+    await api.post(
+      `device/unregistered/${deviceId}/version/${firmwareVersion}`,
+      {
+        deviceId,
+        firmwareVersion,
+      }
+    )
 
     unregDeviceStore.removeDevice({
       deviceId,
