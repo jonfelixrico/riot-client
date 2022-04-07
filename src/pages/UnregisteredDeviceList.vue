@@ -33,7 +33,13 @@
         <div role="heading" aria-level="3" class="text-h5">
           {{ t('registration.list.empty') }}
         </div>
-        <q-btn color="primary" unelevated no-caps data-cy="refresh-btn">
+        <q-btn
+          color="primary"
+          unelevated
+          no-caps
+          data-cy="refresh-btn"
+          @click="fetch"
+        >
           {{ t('common.refresh') }}
         </q-btn>
       </div>
@@ -74,6 +80,8 @@ export default defineComponent({
           title: t('registration.dialogs.confirm.title'),
           message: t('registration.dialogs.confirm.message'),
           dataCy: 'register-confirm',
+          ok: t('registration.dialogs.confirm.ok'),
+          cancel: t('registration.dialogs.confirm.cancel'),
         },
       }).onOk(() => {
         void register({ deviceId, firmwareVersion })
