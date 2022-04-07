@@ -6,7 +6,7 @@ interface UnregisteredDevicesState {
   devices: UnregisteredDevice[]
 }
 
-export const useCounterStore = defineStore('unregisteredDevices', {
+export const useUnregisteredDevicesStore = defineStore('unregisteredDevices', {
   state: (): UnregisteredDevicesState => ({
     devices: [],
   }),
