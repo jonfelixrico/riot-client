@@ -136,7 +136,7 @@ module.exports = configure(function (/* ctx */) {
       // components: [],
       // directives: [],
 
-      /**
+      /*
        * Quasar plugins
        *
        * IMPORTANT: whatever you add here, make sure you add to the Cypress support files
