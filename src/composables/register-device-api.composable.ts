@@ -1,4 +1,5 @@
 import { inject, InjectionKey } from 'vue'
+import { useApi } from './axios.composable'
 
 export interface RegisterDeviceApi {
   register(device: { deviceId: string; firmwareVersion: string }): Promise<void>
@@ -9,7 +10,21 @@ export const REGISTER_DEVICE_API: InjectionKey<RegisterDeviceApi> = Symbol(
 )
 
 function useRegisterDeviceBackend(): RegisterDeviceApi {
-  throw new Error('noop')
+  const api = useApi()
+
+  const register: RegisterDeviceApi['register'] = async ({
+    deviceId,
+    firmwareVersion,
+  }) => {
+    await api.post(`device/${deviceId}/version/${firmwareVersion}`, {
+      deviceId,
+      firmwareVersion,
+    })
+  }
+
+  return {
+    register,
+  }
 }
 
 export function useRegisterDeviceApi(): RegisterDeviceApi {
