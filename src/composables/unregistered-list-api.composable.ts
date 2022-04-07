@@ -1,15 +1,33 @@
+import { plainToInstance } from 'class-transformer'
+import { UnregisteredDeviceDto } from 'src/dtos/unregistered-device.dto'
 import { UnregisteredDevice } from 'src/types/unregistered-device.interface'
 import { computed, inject, InjectionKey, Ref, ref } from 'vue'
+import { useApi } from './axios.composable'
+
+interface UnregisteredDevicePlain
+  extends Omit<UnregisteredDevice, 'lastQueueDt'> {
+  lastQueueDt: string
+}
 
 function useUnregisteredListBackend(): UnregisteredListApi {
-  const store = ref<UnregisteredDevice[]>([])
+  const data = ref<UnregisteredDevice[]>([])
   const isLoading = ref(false)
 
+  const api = useApi()
+
   async function fetch() {
-    // noop
+    isLoading.value = true
+    try {
+      const response = await api.get<UnregisteredDevicePlain[]>(
+        'device/unregistered'
+      )
+      data.value = plainToInstance(UnregisteredDeviceDto, response.data)
+    } finally {
+      isLoading.value = false
+    }
   }
 
-  const devices = computed(() => store.value)
+  const devices = computed(() => data.value)
 
   return {
     devices,
