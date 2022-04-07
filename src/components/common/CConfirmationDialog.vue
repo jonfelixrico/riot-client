@@ -14,14 +14,14 @@
           color="primary"
           unelevated
           no-caps
-          :label="t('common.ok')"
+          :label="ok ?? t('common.ok')"
           @click="onOKClick"
           data-cy="ok"
         />
         <q-btn
           flat
           no-caps
-          :label="t('common.cancel')"
+          :label="cancel ?? t('common.cancel')"
           @click="onCancelClick"
           data-cy="cancel"
         />
@@ -40,6 +40,8 @@ export default defineComponent({
     title: String,
     message: String,
     dataCy: String,
+    ok: String,
+    cancel: String,
   },
 
   emits: [...useDialogPluginComponent.emits],
