@@ -75,7 +75,7 @@ function useRegisterDevice() {
     $q.dialog({
       component: CAlertDialog,
       componentProps: {
-        dataCy: 'success-alert',
+        dataCy: 'alert-success',
         title: t('registration.dialogs.registerSuccess.title'),
         message: t('registration.dialogs.registerSuccess.message'),
       },
@@ -86,7 +86,7 @@ function useRegisterDevice() {
     $q.dialog({
       component: CAlertDialog,
       componentProps: {
-        dataCy: 'error-alert',
+        dataCy: 'alert-error',
         title: t('registration.dialogs.registerError.title'),
         message: t('registration.dialogs.registerError.message'),
       },
