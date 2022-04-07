@@ -80,8 +80,13 @@ function useRegisterDevice() {
         ok: t('registration.dialogs.confirm.ok'),
         cancel: t('registration.dialogs.confirm.cancel'),
       },
-    }).onOk(() => {
-      void register({ deviceId, firmwareVersion })
+    }).onOk(async () => {
+      $q.loading.show()
+      try {
+        await register({ deviceId, firmwareVersion })
+      } finally {
+        $q.loading.hide()
+      }
     })
   }
 
