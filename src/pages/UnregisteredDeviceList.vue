@@ -1,26 +1,34 @@
 <template>
   <q-page class="row justify-center">
-    <div class="page-width" v-if="devices.length" data-cy="listing">
+    <div
+      class="page-width q-gutter-y-md q-pt-md"
+      v-if="devices.length"
+      data-cy="listing"
+    >
       <div class="row justify-end">
         <q-btn
-          dense
-          flat
-          round
-          icon="refresh"
+          unelevated
+          color="secondary"
           :loading="isLoading"
           @click="fetch"
+          :label="t('common.refresh')"
+          no-caps
           data-cy="refresh-btn"
         />
       </div>
 
-      <CUnregisteredDeviceListItem
-        v-for="device of devices"
-        :key="[device.deviceId, device.firmwareVersion].join('/')"
-        :device="device"
-        data-cy="device"
-        :data-device-id="device.deviceId"
-        @register-click="register(device)"
-      />
+      <q-separator />
+
+      <div class="q-gutter-y-md">
+        <CUnregisteredDeviceListItem
+          v-for="device of devices"
+          :key="[device.deviceId, device.firmwareVersion].join('/')"
+          :device="device"
+          data-cy="device"
+          :data-device-id="device.deviceId"
+          @register-click="register(device)"
+        />
+      </div>
     </div>
 
     <q-card
