@@ -79,13 +79,13 @@ describe('UnregisteredDeviceList -- empty', () => {
 })
 
 describe('UnregisteredDeviceList -- not empty', () => {
-  let mockApi: UnregisteredListApi
+  let listApi: UnregisteredListApi
   let regApi: RegisterDeviceApi
 
-  beforeEach(() => {
-    mockApi = {
+  function doMount(listApiOverrides?: Partial<UnregisteredListApi>) {
+    listApi = {
       devices: ref(devices),
-      fetch: cy.stub(),
+      fetch: listApiOverrides?.fetch ?? cy.stub(),
       isLoading: ref(false),
     }
 
@@ -99,28 +99,34 @@ describe('UnregisteredDeviceList -- not empty', () => {
       },
       global: {
         provide: {
-          [UNREGISTERED_LIST_API as symbol]: mockApi,
+          [UNREGISTERED_LIST_API as symbol]: listApi,
           [REGISTER_DEVICE_API as symbol]: regApi,
         },
         plugins: [i18n],
       },
     })
-  })
+  }
 
   it('should should show the devices', () => {
+    doMount()
+
     cy.dataCy('device').should('have.length', devices.length)
   })
 
   it('should have a refresh button accessible', () => {
+    doMount()
+
     cy.dataCy('listing')
       .dataCy('refresh-btn')
       .click()
       .should(() => {
-        expect(mockApi.fetch).to.be.called
+        expect(listApi.fetch).to.be.called
       })
   })
 
   it('should dismiss the prompt', () => {
+    doMount()
+
     cy.dataCy('device')
       .get(`[data-device-id=${DEVICE_1}]`)
       .dataCy('register-btn')
@@ -132,6 +138,8 @@ describe('UnregisteredDeviceList -- not empty', () => {
   })
 
   it('should trigger registration on confirm', () => {
+    doMount()
+
     cy.dataCy('device')
       .get(`[data-device-id=${DEVICE_1}]`)
       .dataCy('register-btn')
