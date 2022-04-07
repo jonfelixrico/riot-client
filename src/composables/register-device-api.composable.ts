@@ -1,3 +1,4 @@
+import { useUnregisteredDevicesStore } from 'src/stores/unregistered-devices-store'
 import { inject, InjectionKey } from 'vue'
 import { useApi } from './axios.composable'
 
@@ -11,12 +12,18 @@ export const REGISTER_DEVICE_API: InjectionKey<RegisterDeviceApi> = Symbol(
 
 function useRegisterDeviceBackend(): RegisterDeviceApi {
   const api = useApi()
+  const unregDeviceStore = useUnregisteredDevicesStore()
 
   const register: RegisterDeviceApi['register'] = async ({
     deviceId,
     firmwareVersion,
   }) => {
     await api.post(`device/${deviceId}/version/${firmwareVersion}`, {
+      deviceId,
+      firmwareVersion,
+    })
+
+    unregDeviceStore.removeDevice({
       deviceId,
       firmwareVersion,
     })
