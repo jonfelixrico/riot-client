@@ -136,8 +136,12 @@ module.exports = configure(function (/* ctx */) {
       // components: [],
       // directives: [],
 
-      // Quasar plugins
-      plugins: [],
+      /*
+       * Quasar plugins
+       *
+       * IMPORTANT: whatever you add here, make sure you add to the Cypress support files
+       */
+      plugins: ['Dialog', 'Loading'],
     },
 
     // animations: 'all', // --- includes all animations

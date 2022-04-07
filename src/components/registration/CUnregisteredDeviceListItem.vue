@@ -15,7 +15,7 @@
           <span class="text-caption text-grey-7" data-cy="last-activity">
             <i18n-t keypath="registration.lastActivity">
               <template #date>
-                <CDateDisplay :date="device.lastQueueDt" />
+                <CDateDisplay :date="device.lastQueueDt" :refDt="now" />
               </template>
             </i18n-t>
           </span>
@@ -60,6 +60,7 @@ import { UnregisteredDevice } from 'src/types/unregistered-device.interface'
 import { defineComponent, PropType } from 'vue'
 import { useI18n } from 'vue-i18n'
 import CDateDisplay from 'components/common/CDateDisplay.vue'
+import { useStaticDateTime } from 'src/composables/static-datetime.composable'
 
 export default defineComponent({
   emits: ['register-click'],
@@ -86,9 +87,12 @@ export default defineComponent({
       return orderBy(asArr, ['count', 'type'], ['desc', 'asc'])
     })
 
+    const now = useStaticDateTime()
+
     return {
       t,
       groupedModules,
+      now,
     }
   },
 })
