@@ -64,10 +64,34 @@ import { useRegisterDeviceApi } from 'composables/register-device-api.composable
 import { useQuasar } from 'quasar'
 import { DeviceIdentifier } from 'src/types/device.interface'
 import CRegistrationConfirmDialog from 'components/registration/CRegistrationConfirmDialog.vue'
+import CAlertDialog from 'components/common/CAlertDialog.vue'
 
 function useRegisterDevice() {
   const { register } = useRegisterDeviceApi()
   const $q = useQuasar()
+  const { t } = useI18n()
+
+  function showSuccessDialog() {
+    $q.dialog({
+      component: CAlertDialog,
+      componentProps: {
+        dataCy: 'success-alert',
+        title: t('registration.dialogs.registerSuccess.title'),
+        message: t('registration.dialogs.registerSuccess.message'),
+      },
+    })
+  }
+
+  function showErrorDialog() {
+    $q.dialog({
+      component: CAlertDialog,
+      componentProps: {
+        dataCy: 'error-alert',
+        title: t('registration.dialogs.registerError.title'),
+        message: t('registration.dialogs.registerError.message'),
+      },
+    })
+  }
 
   function promptRegister({ deviceId, firmwareVersion }: DeviceIdentifier) {
     $q.dialog({
@@ -79,8 +103,11 @@ function useRegisterDevice() {
       $q.loading.show()
       try {
         await register({ deviceId, firmwareVersion })
-      } finally {
         $q.loading.hide()
+        showSuccessDialog()
+      } catch (e) {
+        $q.loading.hide()
+        showErrorDialog()
       }
     })
   }
