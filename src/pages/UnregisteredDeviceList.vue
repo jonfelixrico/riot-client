@@ -62,23 +62,18 @@ import { useUnregisteredListApi } from 'composables/unregistered-list-api.compos
 import { useI18n } from 'vue-i18n'
 import { useRegisterDeviceApi } from 'composables/register-device-api.composable'
 import { useQuasar } from 'quasar'
-import CConfirmationDialog from 'components/common/CConfirmationDialog.vue'
 import { DeviceIdentifier } from 'src/types/device.interface'
+import CRegistrationConfirmDialog from 'components/registration/CRegistrationConfirmDialog.vue'
 
 function useRegisterDevice() {
   const { register } = useRegisterDeviceApi()
-  const { t } = useI18n()
   const $q = useQuasar()
 
   function promptRegister({ deviceId, firmwareVersion }: DeviceIdentifier) {
     $q.dialog({
-      component: CConfirmationDialog,
+      component: CRegistrationConfirmDialog,
       componentProps: {
-        title: t('registration.dialogs.confirm.title'),
-        message: t('registration.dialogs.confirm.message', { deviceId }),
-        dataCy: 'register-confirm',
-        ok: t('registration.dialogs.confirm.ok'),
-        cancel: t('registration.dialogs.confirm.cancel'),
+        deviceId,
       },
     }).onOk(async () => {
       $q.loading.show()
