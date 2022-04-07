@@ -13,5 +13,15 @@ export default {
       ok: 'Yes, register',
       cancel: 'No, cancel',
     },
+
+    registerSuccess: {
+      title: 'Register Device',
+      message: 'Successfully registered the device',
+    },
+
+    registerError: {
+      title: 'Register Device',
+      message: 'Something went wrong while registering the device',
+    },
   },
 }
