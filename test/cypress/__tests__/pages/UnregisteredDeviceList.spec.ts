@@ -82,15 +82,15 @@ describe('UnregisteredDeviceList -- not empty', () => {
   let listApi: UnregisteredListApi
   let regApi: RegisterDeviceApi
 
-  function doMount(listApiOverrides?: Partial<UnregisteredListApi>) {
+  function doMount(regApiOverrides?: Partial<RegisterDeviceApi>) {
     listApi = {
       devices: ref(devices),
-      fetch: listApiOverrides?.fetch ?? cy.stub(),
+      fetch: cy.stub(),
       isLoading: ref(false),
     }
 
     regApi = {
-      register: cy.stub(),
+      register: regApiOverrides?.register ?? cy.stub(),
     }
 
     mount(LayoutContainer, {
@@ -137,7 +137,7 @@ describe('UnregisteredDeviceList -- not empty', () => {
     cy.dataCy('register-confirm').should('not.exist')
   })
 
-  it('should trigger registration on confirm', () => {
+  it('should trigger registration on confirm, show success dialog', () => {
     doMount()
 
     cy.dataCy('device')
@@ -154,5 +154,30 @@ describe('UnregisteredDeviceList -- not empty', () => {
       })
 
     cy.dataCy('register-confirm').should('not.exist') // OK dismisses the dialog
+    cy.dataCy('alert-error').should('not.exist')
+    cy.dataCy('alert-success').should('exist').dataCy('ok').click()
+  })
+
+  it('should trigger registration on confirm, show success dialog', () => {
+    doMount({
+      register: cy.spy(() => Promise.reject()),
+    })
+
+    cy.dataCy('device')
+      .get(`[data-device-id=${DEVICE_1}]`)
+      .dataCy('register-btn')
+      .click()
+
+    cy.dataCy('register-confirm')
+      .should('exist')
+      .dataCy('ok')
+      .click()
+      .should(() => {
+        expect(regApi.register).to.be.called
+      })
+
+    cy.dataCy('register-confirm').should('not.exist') // OK dismisses the dialog
+    cy.dataCy('alert-success').should('not.exist')
+    cy.dataCy('alert-error').should('exist').dataCy('ok').click()
   })
 })
