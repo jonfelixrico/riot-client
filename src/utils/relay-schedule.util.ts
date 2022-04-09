@@ -54,7 +54,7 @@ function processTimeUnit(
  * @param targetZone
  * @returns The date portion of the DateTimes will use the current (localized) Date.
  */
-function processInterval(
+function processScheduleEntry(
   { start, end, state }: RawRelayScheduleEntry,
   utcOffset: string,
   targetZone: TargetZone = 'local'
@@ -69,11 +69,17 @@ function processInterval(
   if (!pStart.hasSame(now, 'day') || !pEnd.hasSame(now, 'day')) {
     return [
       {
-        interval: Interval.fromDateTimes(pStart, pStart.endOf('day')),
+        interval: Interval.fromDateTimes(
+          pStart.startOf('millisecond'),
+          pStart.endOf('day')
+        ),
         state,
       },
       {
-        interval: Interval.fromDateTimes(pEnd.startOf('day'), pEnd),
+        interval: Interval.fromDateTimes(
+          pEnd.startOf('day'),
+          pEnd.endOf('millisecond')
+        ),
         state,
       },
     ]
@@ -81,7 +87,10 @@ function processInterval(
 
   return [
     {
-      interval: Interval.fromDateTimes(pStart, pEnd),
+      interval: Interval.fromDateTimes(
+        pStart.startOf('millisecond'),
+        pEnd.endOf('millisecond')
+      ),
       state,
     },
   ]
