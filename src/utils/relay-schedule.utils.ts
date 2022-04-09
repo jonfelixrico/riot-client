@@ -167,3 +167,41 @@ export function mergeEligibleEntries(entries: ProcessedRelayScheduleEntry[]) {
 
   return processedArr
 }
+
+export interface NullableProcessedRelayScheduleEntry
+  extends Omit<ProcessedRelayScheduleEntry, 'state'> {
+  state: RelayState | null
+}
+
+export function insertStatelessEntries(
+  entries: ProcessedRelayScheduleEntry[]
+): NullableProcessedRelayScheduleEntry[] {
+  const processedArr: NullableProcessedRelayScheduleEntry[] = []
+
+  for (const entry of entries) {
+    const lastProcessed = processedArr[processedArr.length - 1]
+    if (
+      lastProcessed?.interval.end.diff(entry.interval.start, 'millisecond')
+        .milliseconds > 1
+    ) {
+      const blankEntry: NullableProcessedRelayScheduleEntry = {
+        state: null,
+        interval: {
+          start: lastProcessed.interval.end.plus({
+            millisecond: 1,
+          }),
+
+          end: entry.interval.end.plus({
+            millisecond: 1,
+          }),
+        },
+      }
+
+      processedArr.push(blankEntry)
+    }
+
+    processedArr.push(entry)
+  }
+
+  return processedArr
+}
