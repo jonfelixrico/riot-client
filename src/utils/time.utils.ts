@@ -9,7 +9,7 @@ interface TimeUnitWithOffset extends TimeUnit {
 }
 
 const DAY_MIN = 0
-const DAY_MAX = 60 * 60 * 24 - 1
+const DAY_MAX = 60 * 60 * 24
 
 function secondsToTimeUnit(seconds: number): TimeUnit {
   const localHours = Math.floor(seconds / 3600) // get whole hours
@@ -36,7 +36,7 @@ function applyOffset(
 
   if (offsetApplied < DAY_MIN) {
     return {
-      time: secondsToTimeUnit(DAY_MAX + offsetApplied),
+      time: secondsToTimeUnit(DAY_MAX - Math.abs(offsetApplied)),
       dayOffset: -1,
     }
   } else if (offsetApplied > DAY_MAX) {
