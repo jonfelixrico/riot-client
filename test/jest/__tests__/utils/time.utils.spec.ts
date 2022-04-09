@@ -3,7 +3,7 @@ import { convertOffset } from 'src/utils/time.utils'
 
 describe('convertOffset', () => {
   test('same-day result -- UTC to +7', () => {
-    const converted = convertOffset(
+    const { time, dayOffset } = convertOffset(
       {
         hour: 0,
         minute: 0,
@@ -13,15 +13,16 @@ describe('convertOffset', () => {
       7 * 60
     )
 
-    expect(converted.time).toEqual({
+    expect(time).toEqual({
       hour: 7,
       minute: 0,
       second: 0,
     })
+    expect(dayOffset).toBe(0)
   })
 
   it('same-day result -- +7 to UTC', () => {
-    const converted = convertOffset(
+    const { time, dayOffset } = convertOffset(
       {
         hour: 7,
         minute: 0,
@@ -31,10 +32,11 @@ describe('convertOffset', () => {
       0
     )
 
-    expect(converted.time).toEqual({
+    expect(time).toEqual({
       hour: 0,
       minute: 0,
       second: 0,
     })
+    expect(dayOffset).toBe(0)
   })
 })
