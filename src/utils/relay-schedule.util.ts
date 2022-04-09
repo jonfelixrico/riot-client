@@ -51,7 +51,7 @@ function processTimeUnit(
  *
  * @param param0
  * @param utcOffset
- * @param now
+ * @param targetZone
  * @returns The date portion of the DateTimes will use the current (localized) Date.
  */
 function processInterval(
