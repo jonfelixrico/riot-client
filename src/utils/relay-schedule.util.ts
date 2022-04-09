@@ -99,7 +99,7 @@ function processScheduleEntry(
   ]
 }
 
-function processScheduleEntryArray(
+export function processScheduleEntryArray(
   entries: RawRelayScheduleEntry[],
   utcOffset: string,
   targetZone: TargetZone = 'local'
