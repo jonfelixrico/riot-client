@@ -18,7 +18,7 @@ interface RawDailySchedule {
 /**
  * Adds a `millis` attribute to the {@link TimeUnit} interface.
  */
-export interface ExtendedTimeUnit extends TimeUnit {
+interface InternalTimeUnit extends TimeUnit {
   /**
    * It should be noted that this millis is different from DateTime's millis.
    * This is pretty much just hours in millis + minutes in millis + seconds in millis.
@@ -27,9 +27,14 @@ export interface ExtendedTimeUnit extends TimeUnit {
   millis: number
 }
 export interface DisplaySchedule {
-  start: ExtendedTimeUnit
-  end: ExtendedTimeUnit
+  start: TimeUnit
+  end: TimeUnit
   state: RelayState
+}
+
+interface InternalDisplaySchedule extends DisplaySchedule {
+  start: InternalTimeUnit
+  end: InternalTimeUnit
 }
 
 interface IDailyScheduleDisplayApi {
@@ -45,7 +50,7 @@ function dateTimeToTimeUnit({
   hour,
   minute,
   second,
-}: DateTime): ExtendedTimeUnit {
+}: DateTime): InternalTimeUnit {
   return {
     hour,
     minute,
@@ -63,7 +68,7 @@ function dateTimeToTimeUnit({
  */
 function dateTimeArrayToTimeUnitArray(
   entries: ProcessedRelayScheduleEntry[]
-): DisplaySchedule[] {
+): InternalDisplaySchedule[] {
   const mapped = entries.map(({ interval: { start, end }, state }) => {
     return {
       state,
@@ -72,7 +77,7 @@ function dateTimeArrayToTimeUnitArray(
     }
   })
 
-  return sortBy(mapped, 'start.$millis')
+  return sortBy(mapped, 'start.millis')
 }
 
 export class DailyScheduleDisplayApi implements IDailyScheduleDisplayApi {
@@ -88,7 +93,7 @@ export class DailyScheduleDisplayApi implements IDailyScheduleDisplayApi {
   /**
    * We have a version with the "_" prefix for encapsulation.
    */
-  private _schedule: DisplaySchedule[]
+  private _schedule: InternalDisplaySchedule[]
   private targetZone: TargetZone
 
   private constructor(
