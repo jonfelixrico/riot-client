@@ -22,7 +22,7 @@ export interface ProcessedRelayScheduleEntry {
   state: RelayState
 }
 
-type TargetZone = Parameters<DateTime['setZone']>[0]
+export type TargetZone = Parameters<DateTime['setZone']>[0]
 
 /**
  * Converts a time unit into a localized DateTime instance.
