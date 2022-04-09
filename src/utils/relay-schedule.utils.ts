@@ -99,6 +99,44 @@ function processScheduleEntry(
   ]
 }
 
+function isEligibleForMerge(
+  a: ProcessedRelayScheduleEntry,
+  b: ProcessedRelayScheduleEntry
+) {
+  return (
+    // only same states are eligible for merging
+    a.state !== b.state ||
+    /**
+     * We don't want to end up mering something like...
+     * 2022-01-01T20:00:00 - 2022-01-01T23:59:59
+     * with
+     * 2022-01-02T00:00:00 - 2022-01-02T02:00:00
+     *
+     * That just undoes our preprocessing in {@link processScheduleEntry}.
+     */
+    !a.interval.end.hasSame(b.interval.start, 'day') ||
+    /**
+     * Must be literally in sequence to be eligible for merging.
+     * This checking is also the reason why {@link processScheduleEntry} uses
+     * startOf/endOf at the milliseconds level -- to make this checking consistent.
+     */
+    a.interval.end.diff(b.interval.start, 'millisecond').milliseconds > 1
+  )
+}
+
+function mergeEntries(
+  a: ProcessedRelayScheduleEntry,
+  b: ProcessedRelayScheduleEntry
+): ProcessedRelayScheduleEntry {
+  return {
+    state: a.state,
+    interval: {
+      start: a.interval.start,
+      end: b.interval.end,
+    },
+  }
+}
+
 export function processScheduleEntryArray(
   entries: RawRelayScheduleEntry[],
   utcOffset: string,
@@ -120,37 +158,16 @@ export function processScheduleEntryArray(
      * that will be on a different date -- it automatically fails the second
      * condition below.
      */
-    const firstItem = processed[0]
+    const firstInterval = processed[0]
 
-    if (
-      // only same states are eligible for merging
-      lastProcessed.state !== firstItem.state ||
-      /**
-       * We don't want to end up mering something like...
-       * 2022-01-01T20:00:00 - 2022-01-01T23:59:59
-       * with
-       * 2022-01-02T00:00:00 - 2022-01-02T02:00:00
-       *
-       * That just undoes our preprocessing in {@link processScheduleEntry}.
-       */
-      !lastProcessed.interval.end.hasSame(firstItem.interval.start, 'day') ||
-      /**
-       * Must be literally in sequence to be eligible for merging.
-       * This checking is also the reason why {@link processScheduleEntry} uses
-       * startOf/endOf at the milliseconds level -- to make this checking consistent.
-       */
-      lastProcessed.interval.end.diff(firstItem.interval.start, 'millisecond')
-        .milliseconds > 1
-    ) {
-      const merged: ProcessedRelayScheduleEntry = {
-        state: lastProcessed.state,
-        interval: {
-          start: lastProcessed.interval.start,
-          end: firstItem.interval.end,
-        },
+    if (isEligibleForMerge(lastProcessed, firstInterval)) {
+      processedArr.push(mergeEntries(lastProcessed, firstInterval))
+
+      if (processed[1]) {
+        processedArr.push(processed[1])
       }
-
-      processedArr.push(merged)
+    } else {
+      processedArr.push(...processed)
     }
   }
 
