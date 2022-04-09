@@ -1,13 +1,24 @@
 <template>
-  <div :style="{ width: `${width}px`, height: `${height}px` }">
+  <div
+    :style="{ width: `${width}px`, height: `${height}px` }"
+    class="relative-position"
+  >
     <div
-      v-for="({ start, end, state }, index) of intervals"
+      v-for="({ end, heightPercent, offsetPercent, state }, index) of intervals"
       :key="index"
       data-cy="interval"
-      :data-state="state"
-      :data-start="start"
       :data-end="end"
-      :style="{ width: `${width}px`, height: `${height}px` }"
+      :style="{
+        width: `${width}px`,
+        height: `${heightPercent * height}px`,
+        top: `${offsetPercent * height}px`,
+      }"
+      class="absolute interval"
+      :class="{
+        on: state === 'ON',
+        off: state === 'OFF',
+      }"
+      :data-state="state ?? 'NULL'"
     />
   </div>
 </template>
@@ -20,11 +31,16 @@ import { computed, defineComponent, PropType } from 'vue'
 interface Interval extends DisplaySchedule {
   startSeconds: number
   endSeconds: number
+  heightPercent: number
+  offsetPercent: number
 }
 
 function convert({ hour, second, minute }: TimeUnit) {
   return hour * 3600 + minute * 60 + second
 }
+
+const MAX_SECONDS = 3600 * 24
+
 export default defineComponent({
   props: {
     schedule: {
@@ -36,7 +52,7 @@ export default defineComponent({
 
     width: {
       type: Number,
-      default: 200,
+      default: 50,
     },
 
     height: {
@@ -46,15 +62,25 @@ export default defineComponent({
   },
 
   setup(props) {
-    const intervals = computed<Interval[]>(() =>
-      props.schedule.map((sched) => {
+    const intervals = computed<Interval[]>(() => {
+      const { schedule } = props
+
+      return schedule.map((sched) => {
+        const startSeconds = convert(sched.start)
+        const endSeconds = convert(sched.end)
+
+        const heightPercent = (endSeconds - startSeconds) / MAX_SECONDS
+        const offsetPercent = startSeconds / MAX_SECONDS
+
         return {
           ...sched,
-          startSeconds: convert(sched.start),
-          endSeconds: convert(sched.end),
+          startSeconds,
+          endSeconds,
+          heightPercent,
+          offsetPercent,
         }
       })
-    )
+    })
 
     return {
       intervals,
@@ -62,3 +88,17 @@ export default defineComponent({
   },
 })
 </script>
+
+<style scope lang="scss">
+.interval {
+  &.on {
+    background: $green-5;
+  }
+
+  &.off {
+    background: $red-5;
+  }
+
+  background: $grey-5;
+}
+</style>
