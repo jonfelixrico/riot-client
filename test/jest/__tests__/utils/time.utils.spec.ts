@@ -77,4 +77,23 @@ describe('convertOffset', () => {
     })
     expect(dayOffset).toBe(-1)
   })
+
+  test('next-day result -- UTC to +8', () => {
+    const { time, dayOffset } = convertOffset(
+      {
+        hour: 16,
+        minute: 0,
+        second: 0,
+        offset: 0,
+      },
+      8 * 60
+    )
+
+    expect(time).toEqual({
+      hour: 0,
+      minute: 0,
+      second: 0,
+    })
+    expect(dayOffset).toBe(1)
+  })
 })
