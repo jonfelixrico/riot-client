@@ -18,7 +18,7 @@ interface RawDailySchedule {
 /**
  * Adds a `millis` attribute to the {@link TimeUnit} interface.
  */
-interface ExtendedTimeUnit extends TimeUnit {
+export interface ExtendedTimeUnit extends TimeUnit {
   /**
    * It should be noted that this millis is different from DateTime's millis.
    * This is pretty much just hours in millis + minutes in millis + seconds in millis.
