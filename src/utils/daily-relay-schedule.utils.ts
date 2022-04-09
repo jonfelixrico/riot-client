@@ -84,7 +84,11 @@ export class DailyScheduleDisplayApi implements IDailyScheduleDisplayApi {
   }
 
   private entries: ProcessedRelayScheduleEntry[]
-  private timeUnits: DisplaySchedule[]
+
+  /**
+   * We have a version with the "_" prefix for encapsulation.
+   */
+  private _schedule: DisplaySchedule[]
   private targetZone: TargetZone
 
   private constructor(
@@ -97,16 +101,11 @@ export class DailyScheduleDisplayApi implements IDailyScheduleDisplayApi {
       processScheduleEntryArray(dailySchedule, utcOffset, targetZone)
     )
 
-    this.timeUnits = dateTimeArrayToTimeUnitArray(this.entries)
+    this._schedule = dateTimeArrayToTimeUnitArray(this.entries)
   }
 
   get schedule(): DisplaySchedule[] {
-    return this.timeUnits
-  }
-
-  private get nowMillis() {
-    const now = DateTime.now().setZone(this.targetZone)
-    return dateTimeToTimeUnit(now).millis
+    return this._schedule
   }
 
   getState(referenceDt: DateTime) {
@@ -115,7 +114,7 @@ export class DailyScheduleDisplayApi implements IDailyScheduleDisplayApi {
     const converted = referenceDt.setZone(this.targetZone)
     const { millis } = dateTimeToTimeUnit(converted)
 
-    const currentInterval = this.timeUnits.find(
+    const currentInterval = this._schedule.find(
       ({ start, end }) => millis >= start.millis && millis <= end.millis
     )
 
