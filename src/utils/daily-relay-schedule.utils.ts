@@ -15,50 +15,42 @@ interface RawDailySchedule {
   dailySchedule: RawRelayScheduleEntry[]
 }
 
+/**
+ * Adds a `millis` attribute to the {@link TimeUnit} interface.
+ */
+interface ExtendedTimeUnit extends TimeUnit {
+  /**
+   * It should be noted that this millis is different from DateTime's millis.
+   * This is pretty much just hours in millis + minutes in millis + seconds in millis.
+   * This does not care about zones.
+   */
+  millis: number
+}
 interface DisplaySchedule {
-  start: TimeUnit
-  end: TimeUnit
+  start: ExtendedTimeUnit
+  end: ExtendedTimeUnit
   state: RelayState
 }
 
 interface IDailyScheduleDisplayApi {
   schedule: DisplaySchedule[]
-  state: RelayState | null
+  getState(referenceDt?: DateTime): RelayState | null
 }
 
 interface DailyScheduleDisplayApiOptions {
   targetZone?: TargetZone
 }
 
-/**
- * Internal representation of the TimeUnit interface.
- * We're slapping in some properties to help with operations.
- */
-interface InternalTimeUnit extends TimeUnit {
-  /**
-   * It should be noted that this millis is different from DateTime's millis.
-   * This is pretty much just hours in millis + minutes in millis + seconds in millis.
-   *
-   * TBH we could go for seconds, but eh. This feels "closer" to the DateTime API.
-   */
-  $millis: number
-}
-
-interface InternalDisplaySchedule extends DisplaySchedule {
-  start: InternalTimeUnit
-  end: InternalTimeUnit
-}
-
 function dateTimeToTimeUnit({
   hour,
   minute,
   second,
-}: DateTime): InternalTimeUnit {
+}: DateTime): ExtendedTimeUnit {
   return {
     hour,
     minute,
     second,
-    $millis: (hour * 3600 + minute * 60 + second) * 1000,
+    millis: (hour * 3600 + minute * 60 + second) * 1000,
   }
 }
 
@@ -71,7 +63,7 @@ function dateTimeToTimeUnit({
  */
 function dateTimeArrayToTimeUnitArray(
   entries: ProcessedRelayScheduleEntry[]
-): InternalDisplaySchedule[] {
+): DisplaySchedule[] {
   const mapped = entries.map(({ interval: { start, end }, state }) => {
     return {
       state,
@@ -92,7 +84,7 @@ export class DailyScheduleDisplayApi implements IDailyScheduleDisplayApi {
   }
 
   private entries: ProcessedRelayScheduleEntry[]
-  private timeUnits: InternalDisplaySchedule[]
+  private timeUnits: DisplaySchedule[]
   private targetZone: TargetZone
 
   private constructor(
@@ -114,13 +106,17 @@ export class DailyScheduleDisplayApi implements IDailyScheduleDisplayApi {
 
   private get nowMillis() {
     const now = DateTime.now().setZone(this.targetZone)
-    return dateTimeToTimeUnit(now).$millis
+    return dateTimeToTimeUnit(now).millis
   }
 
-  get state(): RelayState | null {
-    const { nowMillis } = this
+  getState(referenceDt: DateTime) {
+    referenceDt ?? DateTime.now()
+
+    const converted = referenceDt.setZone(this.targetZone)
+    const { millis } = dateTimeToTimeUnit(converted)
+
     const currentInterval = this.timeUnits.find(
-      ({ start, end }) => nowMillis >= start.$millis && nowMillis <= end.$millis
+      ({ start, end }) => millis >= start.millis && millis <= end.millis
     )
 
     return currentInterval?.state ?? null
