@@ -39,4 +39,42 @@ describe('convertOffset', () => {
     })
     expect(dayOffset).toBe(0)
   })
+
+  test('previous-day result -- +8 to UTC', () => {
+    const { time, dayOffset } = convertOffset(
+      {
+        hour: 0,
+        minute: 0,
+        second: 0,
+        offset: 8 * 60,
+      },
+      0
+    )
+
+    expect(time).toEqual({
+      hour: 16,
+      minute: 0,
+      second: 0,
+    })
+    expect(dayOffset).toBe(-1)
+  })
+
+  test('previous-day result -- UTC to +8:30', () => {
+    const { time, dayOffset } = convertOffset(
+      {
+        hour: 0,
+        minute: 0,
+        second: 5,
+        offset: 8 * 60 + 30,
+      },
+      0
+    )
+
+    expect(time).toEqual({
+      hour: 15,
+      minute: 30,
+      second: 5,
+    })
+    expect(dayOffset).toBe(-1)
+  })
 })
