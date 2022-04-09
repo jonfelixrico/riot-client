@@ -1,4 +1,4 @@
-import { DateTime, Interval } from 'luxon'
+import { DateTime } from 'luxon'
 
 interface TimeUnit {
   hour: number
@@ -15,7 +15,10 @@ interface RawRelayScheduleEntry {
 }
 
 interface ProcessedRelayScheduleEntry {
-  interval: Interval
+  interval: {
+    start: DateTime
+    end: DateTime
+  }
   state: RelayState
 }
 
@@ -69,17 +72,17 @@ function processScheduleEntry(
   if (!pStart.hasSame(now, 'day') || !pEnd.hasSame(now, 'day')) {
     return [
       {
-        interval: Interval.fromDateTimes(
-          pStart.startOf('millisecond'),
-          pStart.endOf('day')
-        ),
+        interval: {
+          start: pStart.startOf('millisecond'),
+          end: pStart.endOf('day'),
+        },
         state,
       },
       {
-        interval: Interval.fromDateTimes(
-          pEnd.startOf('day'),
-          pEnd.endOf('millisecond')
-        ),
+        interval: {
+          start: pEnd.startOf('day'),
+          end: pEnd.endOf('millisecond'),
+        },
         state,
       },
     ]
@@ -87,10 +90,10 @@ function processScheduleEntry(
 
   return [
     {
-      interval: Interval.fromDateTimes(
-        pStart.startOf('millisecond'),
-        pEnd.endOf('millisecond')
-      ),
+      interval: {
+        start: pStart.startOf('millisecond'),
+        end: pEnd.endOf('millisecond'),
+      },
       state,
     },
   ]
@@ -141,10 +144,10 @@ function processScheduleEntryArray(
     ) {
       const merged: ProcessedRelayScheduleEntry = {
         state: lastProcessed.state,
-        interval: Interval.fromDateTimes(
-          lastProcessed.interval.start,
-          firstItem.interval.end
-        ),
+        interval: {
+          start: lastProcessed.interval.start,
+          end: firstItem.interval.end,
+        },
       }
 
       processedArr.push(merged)
