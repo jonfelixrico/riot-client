@@ -84,11 +84,18 @@ function dateTimeArrayToTimeUnitArray(
 }
 
 export class DailyScheduleDisplayApi implements IDailyScheduleDisplayApi {
+  static fromDailySchedule(
+    raw: RawDailySchedule,
+    options?: DailyScheduleDisplayApiOptions
+  ) {
+    return new DailyScheduleDisplayApi(raw, options)
+  }
+
   private entries: ProcessedRelayScheduleEntry[]
   private timeUnits: InternalDisplaySchedule[]
   private targetZone: TargetZone
 
-  constructor(
+  private constructor(
     { dailySchedule, utcOffset }: RawDailySchedule,
     options?: DailyScheduleDisplayApiOptions
   ) {
