@@ -21,7 +21,7 @@ describe('convertOffset', () => {
     expect(dayOffset).toBe(0)
   })
 
-  it('same-day result -- +7 to UTC', () => {
+  test('same-day result -- +7 to UTC', () => {
     const { time, dayOffset } = convertOffset(
       {
         hour: 7,
