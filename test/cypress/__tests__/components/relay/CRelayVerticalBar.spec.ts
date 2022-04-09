@@ -36,7 +36,6 @@ describe('CRelayVerticalBar', () => {
       props: { schedule, currentTime: timeUnitHelper('13:00:00') },
     })
 
-    cy.dataCy('interval-bar').should('contain', 2)
-    cy.dataCy('interval-bar').get('[data-current-interval]').should('exist')
+    cy.dataCy('interval').should('have.length', 2)
   })
 })
