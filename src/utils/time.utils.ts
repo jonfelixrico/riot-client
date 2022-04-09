@@ -39,7 +39,7 @@ function applyOffset(
       time: secondsToTimeUnit(DAY_MAX - Math.abs(offsetApplied)),
       dayOffset: -1,
     }
-  } else if (offsetApplied > DAY_MAX) {
+  } else if (offsetApplied >= DAY_MAX) {
     return {
       time: secondsToTimeUnit(DAY_MIN + (offsetApplied - DAY_MAX)),
       dayOffset: 1,
