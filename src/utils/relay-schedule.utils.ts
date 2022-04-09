@@ -99,6 +99,20 @@ function processScheduleEntry(
   ]
 }
 
+export function processScheduleEntryArray(
+  entries: RawRelayScheduleEntry[],
+  utcOffset: string,
+  targetZone: TargetZone = 'local'
+): ProcessedRelayScheduleEntry[] {
+  const processedArr: ProcessedRelayScheduleEntry[] = []
+
+  for (const entry of entries) {
+    processedArr.push(...processScheduleEntry(entry, utcOffset, targetZone))
+  }
+
+  return processedArr
+}
+
 function isEligibleForMerge(
   a: ProcessedRelayScheduleEntry,
   b: ProcessedRelayScheduleEntry
@@ -135,20 +149,6 @@ function mergeEntries(
       end: b.interval.end,
     },
   }
-}
-
-export function processScheduleEntryArray(
-  entries: RawRelayScheduleEntry[],
-  utcOffset: string,
-  targetZone: TargetZone = 'local'
-): ProcessedRelayScheduleEntry[] {
-  const processedArr: ProcessedRelayScheduleEntry[] = []
-
-  for (const entry of entries) {
-    processedArr.push(...processScheduleEntry(entry, utcOffset, targetZone))
-  }
-
-  return processedArr
 }
 
 export function mergeEligibleEntries(entries: ProcessedRelayScheduleEntry[]) {
