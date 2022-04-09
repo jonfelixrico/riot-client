@@ -28,8 +28,8 @@ function scheduleHelper(
 describe('CRelayVerticalBar', () => {
   it('should display interval details', () => {
     const schedule: DisplaySchedule[] = [
-      scheduleHelper('00:00:00', '12:00:00', 'ON'),
-      scheduleHelper('00:00:00', '12:00:01', 'OFF'),
+      scheduleHelper('00:00:00', '11:00:00', 'ON'),
+      scheduleHelper('13:00:00', '23:59:59', 'OFF'),
     ]
 
     mount(CRelayVerticalBar, {
