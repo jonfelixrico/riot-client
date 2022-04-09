@@ -95,3 +95,61 @@ function processScheduleEntry(
     },
   ]
 }
+
+function processScheduleEntryArray(
+  entries: RawRelayScheduleEntry[],
+  utcOffset: string,
+  targetZone: TargetZone = 'local'
+) {
+  const processedArr: ProcessedRelayScheduleEntry[] = []
+
+  for (const entry of entries) {
+    const processed = processScheduleEntry(entry, utcOffset, targetZone)
+    const lastProcessed = processedArr[processedArr.length - 1]
+
+    if (!lastProcessed) {
+      processedArr.push(...processed)
+      continue
+    }
+
+    /*
+     * We don't care about the possible 2nd item since
+     * that will be on a different date -- it automatically fails the second
+     * condition below.
+     */
+    const firstItem = processed[0]
+
+    if (
+      // only same states are eligible for merging
+      lastProcessed.state !== firstItem.state ||
+      /**
+       * We don't want to end up mering something like...
+       * 2022-01-01T20:00:00 - 2022-01-01T23:59:59
+       * with
+       * 2022-01-02T00:00:00 - 2022-01-02T02:00:00
+       *
+       * That just undoes our preprocessing in {@link processScheduleEntry}.
+       */
+      !lastProcessed.interval.end.hasSame(firstItem.interval.start, 'day') ||
+      /**
+       * Must be literally in sequence to be eligible for merging.
+       * This checking is also the reason why {@link processScheduleEntry} uses
+       * startOf/endOf at the milliseconds level -- to make this checking consistent.
+       */
+      lastProcessed.interval.end.diff(firstItem.interval.start, 'millisecond')
+        .milliseconds > 1
+    ) {
+      const merged: ProcessedRelayScheduleEntry = {
+        state: lastProcessed.state,
+        interval: Interval.fromDateTimes(
+          lastProcessed.interval.start,
+          firstItem.interval.end
+        ),
+      }
+
+      processedArr.push(merged)
+    }
+  }
+
+  return processedArr
+}
