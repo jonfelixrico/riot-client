@@ -26,7 +26,7 @@ interface ExtendedTimeUnit extends TimeUnit {
    */
   millis: number
 }
-interface DisplaySchedule {
+export interface DisplaySchedule {
   start: ExtendedTimeUnit
   end: ExtendedTimeUnit
   state: RelayState
