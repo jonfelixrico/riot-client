@@ -120,7 +120,7 @@ function isEligibleForMerge(
      * This checking is also the reason why {@link processScheduleEntry} uses
      * startOf/endOf at the milliseconds level -- to make this checking consistent.
      */
-    a.interval.end.diff(b.interval.start, 'millisecond').milliseconds > 1
+    a.interval.end.diff(b.interval.start, 'millisecond').milliseconds <= 1
   )
 }
 
@@ -141,34 +141,28 @@ export function processScheduleEntryArray(
   entries: RawRelayScheduleEntry[],
   utcOffset: string,
   targetZone: TargetZone = 'local'
-) {
+): ProcessedRelayScheduleEntry[] {
   const processedArr: ProcessedRelayScheduleEntry[] = []
 
   for (const entry of entries) {
-    const processed = processScheduleEntry(entry, utcOffset, targetZone)
+    processedArr.push(...processScheduleEntry(entry, utcOffset, targetZone))
+  }
+
+  return processedArr
+}
+
+export function mergeEligibleEntries(entries: ProcessedRelayScheduleEntry[]) {
+  const processedArr: ProcessedRelayScheduleEntry[] = []
+
+  for (const entry of entries) {
     const lastProcessed = processedArr[processedArr.length - 1]
 
-    if (!lastProcessed) {
-      processedArr.push(...processed)
+    if (!lastProcessed || !isEligibleForMerge(lastProcessed, entry)) {
+      processedArr.push(entry)
       continue
     }
 
-    /*
-     * We don't care about the possible 2nd item since
-     * that will be on a different date -- it automatically fails the second
-     * condition below.
-     */
-    const firstInterval = processed[0]
-
-    if (isEligibleForMerge(lastProcessed, firstInterval)) {
-      processedArr.push(mergeEntries(lastProcessed, firstInterval))
-
-      if (processed[1]) {
-        processedArr.push(processed[1])
-      }
-    } else {
-      processedArr.push(...processed)
-    }
+    processedArr.push(mergeEntries(lastProcessed, entry))
   }
 
   return processedArr
