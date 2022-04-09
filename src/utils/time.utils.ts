@@ -65,6 +65,15 @@ export function convertOffset(
 ): ConversionResults {
   const { offset: inputOffset, ...timeData } = input
 
+  if (inputOffset === minuteOffset) {
+    return {
+      time: timeData,
+      oldOffset: inputOffset,
+      offset: minuteOffset,
+      dayOffset: 0,
+    }
+  }
+
   const { time, dayOffset } = applyOffset(
     timeData,
     // negate the input offset to represent setting the offset back to 0, then add our actual offset
