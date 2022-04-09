@@ -1,20 +1,20 @@
 import { DateTime } from 'luxon'
 
-interface TimeUnit {
+export interface TimeUnit {
   hour: number
   minute: number
   second: number
 }
 
-type RelayState = 'ON' | 'OFF'
+export type RelayState = 'ON' | 'OFF'
 
-interface RawRelayScheduleEntry {
+export interface RawRelayScheduleEntry {
   start: TimeUnit
   end: TimeUnit
   state: RelayState
 }
 
-interface ProcessedRelayScheduleEntry {
+export interface ProcessedRelayScheduleEntry {
   interval: {
     start: DateTime
     end: DateTime
