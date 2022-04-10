@@ -30,7 +30,7 @@ describe('CRelayVerticalBar', () => {
     scheduleHelper(3, '13:00:00', '23:59:59', 'OFF'),
   ]
 
-  it('should display interval details', () => {
+  it('should display all items', () => {
     mount(CRelayScheduleBar, {
       props: { items },
     })
@@ -38,7 +38,7 @@ describe('CRelayVerticalBar', () => {
     cy.dataCy('item').should('have.length', items.length)
   })
 
-  it('should handle active items', () => {
+  it('should be able to handle the activeId prop', () => {
     mount(CRelayScheduleBar, {
       props: { items, activeId: '1' },
     })
@@ -46,5 +46,43 @@ describe('CRelayVerticalBar', () => {
     cy.dataCy('item')
       .get('[data-item-id="1"]')
       .should('have.attr', 'data-active', 'true')
+  })
+
+  it('should render items horizontally if orientation is horizontal', () => {
+    mount(CRelayScheduleBar, {
+      props: { items, orientation: 'horizontal' },
+    })
+
+    cy.dataCy('item').should(($p) => {
+      const yVals = $p
+        .map((_, el) => {
+          const bcr = el.getBoundingClientRect()
+          return bcr.y
+        })
+        .toArray()
+
+      const firstVal = yVals[0]
+
+      expect(yVals.every((val) => val === firstVal)).to.be.true
+    })
+  })
+
+  it('should render items vertically if orientation is vertical', () => {
+    mount(CRelayScheduleBar, {
+      props: { items, orientation: 'vertical' },
+    })
+
+    cy.dataCy('item').should(($p) => {
+      const yVals = $p
+        .map((_, el) => {
+          const bcr = el.getBoundingClientRect()
+          return bcr.x
+        })
+        .toArray()
+
+      const firstVal = yVals[0]
+
+      expect(yVals.every((val) => val === firstVal)).to.be.true
+    })
   })
 })
