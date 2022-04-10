@@ -14,12 +14,14 @@
       v-for="{ id, state, ...interval } of items"
       :key="id"
       :data-item-id="id"
+      :data-active="activeId === id"
       data-cy="item"
       :style="[containerDependentStyles, getSizingStyles(interval)]"
       class="item"
       :class="{
         on: state === 'ON',
         off: state === 'OFF',
+        active: activeId === id,
       }"
       :data-state="state ?? 'UNOCCUPIED'"
     />
@@ -56,6 +58,8 @@ export default defineComponent({
       type: String as PropType<RelayScheduleBarOrientation>,
       default: 'vertical',
     },
+
+    activeId: String,
   },
 
   setup(props) {
@@ -117,5 +121,9 @@ export default defineComponent({
   }
 
   background: $grey-4;
+
+  &.active {
+    border: 5px black solid;
+  }
 }
 </style>
