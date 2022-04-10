@@ -123,7 +123,7 @@ export default defineComponent({
   background: $grey-4;
 
   &.active {
-    border: 5px black solid;
+    border: 2px black solid;
   }
 }
 </style>
