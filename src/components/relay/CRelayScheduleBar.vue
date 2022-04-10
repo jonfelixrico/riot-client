@@ -7,7 +7,7 @@
     class="relative-position"
   >
     <div
-      v-for="{ id, state, ...interval } of schedule"
+      v-for="{ id, state, ...interval } of items"
       :key="id"
       data-cy="interval"
       :style="[
@@ -35,7 +35,7 @@ type RelayScheduleBarOrientation = 'horizontal' | 'vertical'
 
 export default defineComponent({
   props: {
-    schedule: {
+    items: {
       type: Array as PropType<ScheduleBarItem[]>,
       required: true,
     },
