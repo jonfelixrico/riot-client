@@ -24,6 +24,7 @@
         active: active === id,
       }"
       :data-state="state ?? 'UNOCCUPIED'"
+      @dblclick="$emit('update:active', id)"
     />
   </div>
 </template>
@@ -64,6 +65,8 @@ export default defineComponent({
      */
     active: String,
   },
+
+  emits: ['update:active'],
 
   setup(props) {
     /**
