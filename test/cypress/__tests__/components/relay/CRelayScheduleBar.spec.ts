@@ -32,9 +32,25 @@ describe('CRelayVerticalBar', () => {
     ]
 
     mount(CRelayScheduleBar, {
-      props: { items, currentTime: timeStringToSeconds('13:00:00') },
+      props: { items },
     })
 
     cy.dataCy('item').should('have.length', items.length)
+  })
+
+  it('should handle active items', () => {
+    const items: ScheduleBarItem[] = [
+      scheduleHelper(1, '00:00:00', '11:00:00', 'ON'),
+      scheduleHelper(2, '11:00:01', '12:59:59'),
+      scheduleHelper(3, '13:00:00', '23:59:59', 'OFF'),
+    ]
+
+    mount(CRelayScheduleBar, {
+      props: { items, activeId: '1' },
+    })
+
+    cy.dataCy('item')
+      .get('[data-item-id="1"]')
+      .should('have.attr', 'data-active', 'true')
   })
 })
