@@ -40,7 +40,7 @@ describe('CRelayVerticalBar', () => {
 
   it('should be able to handle the activeId prop', () => {
     mount(CRelayScheduleBar, {
-      props: { items, activeId: '1' },
+      props: { items, active: '1' },
     })
 
     cy.dataCy('item')

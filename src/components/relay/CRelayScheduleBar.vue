@@ -14,14 +14,14 @@
       v-for="{ id, state, ...interval } of items"
       :key="id"
       :data-item-id="id"
-      :data-active="activeId === id"
+      :data-active="active === id"
       data-cy="item"
       :style="[containerDependentStyles, getSizingStyles(interval)]"
       class="item"
       :class="{
         on: state === 'ON',
         off: state === 'OFF',
-        active: activeId === id,
+        active: active === id,
       }"
       :data-state="state ?? 'UNOCCUPIED'"
     />
@@ -59,7 +59,10 @@ export default defineComponent({
       default: 'vertical',
     },
 
-    activeId: String,
+    /**
+     * The id of the active item.
+     */
+    active: String,
   },
 
   setup(props) {
