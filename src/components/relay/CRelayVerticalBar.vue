@@ -4,21 +4,21 @@
     class="relative-position"
   >
     <div
-      v-for="({ end, heightPercent, offsetPercent, state }, index) of intervals"
+      v-for="(entry, index) of schedule"
       :key="index"
       data-cy="interval"
-      :data-end="end"
-      :style="{
-        width: `${width}px`,
-        height: `${heightPercent * height}px`,
-        top: `${offsetPercent * height}px`,
-      }"
+      :style="[
+        {
+          width: `${width}px`,
+        },
+        getBarStyle(entry, height),
+      ]"
       class="absolute interval"
       :class="{
-        on: state === 'ON',
-        off: state === 'OFF',
+        on: entry.state === 'ON',
+        off: entry.state === 'OFF',
       }"
-      :data-state="state ?? 'NULL'"
+      :data-state="entry.state ?? 'NULL'"
     />
   </div>
 </template>
@@ -26,20 +26,26 @@
 <script lang="ts">
 import { DisplaySchedule } from 'src/utils/daily-relay-schedule.utils'
 import { TimeUnit } from 'src/utils/relay-schedule.utils'
-import { computed, defineComponent, PropType } from 'vue'
-
-interface Interval extends DisplaySchedule {
-  startSeconds: number
-  endSeconds: number
-  heightPercent: number
-  offsetPercent: number
-}
+import { defineComponent, PropType } from 'vue'
 
 function convert({ hour, second, minute }: TimeUnit) {
   return hour * 3600 + minute * 60 + second
 }
 
-const MAX_SECONDS = 3600 * 24
+const MAX_SECONDS = 3600 * 24 - 1
+
+function getBarStyle({ start, end }: DisplaySchedule, height: number) {
+  const startSeconds = convert(start)
+  const endSeconds = convert(end)
+
+  const heightPercent = (endSeconds - startSeconds) / MAX_SECONDS
+  const offsetPercent = startSeconds / MAX_SECONDS
+
+  return {
+    height: `${height * heightPercent}px`,
+    top: `${height * offsetPercent}px`,
+  }
+}
 
 export default defineComponent({
   props: {
@@ -61,29 +67,9 @@ export default defineComponent({
     },
   },
 
-  setup(props) {
-    const intervals = computed<Interval[]>(() => {
-      const { schedule } = props
-
-      return schedule.map((sched) => {
-        const startSeconds = convert(sched.start)
-        const endSeconds = convert(sched.end)
-
-        const heightPercent = (endSeconds - startSeconds) / MAX_SECONDS
-        const offsetPercent = startSeconds / MAX_SECONDS
-
-        return {
-          ...sched,
-          startSeconds,
-          endSeconds,
-          heightPercent,
-          offsetPercent,
-        }
-      })
-    })
-
+  setup() {
     return {
-      intervals,
+      getBarStyle,
     }
   },
 })
