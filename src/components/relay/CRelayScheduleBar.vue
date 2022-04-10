@@ -9,6 +9,7 @@
     <div
       v-for="{ id, state, ...interval } of items"
       :key="id"
+      :data-item-id="id"
       data-cy="interval"
       :style="[
         containerDependentStyles,
