@@ -25,15 +25,16 @@ function scheduleHelper(
 
 describe('CRelayVerticalBar', () => {
   it('should display interval details', () => {
-    const schedule: ScheduleBarItem[] = [
+    const items: ScheduleBarItem[] = [
       scheduleHelper(1, '00:00:00', '11:00:00', 'ON'),
-      scheduleHelper(2, '13:00:00', '23:59:59', 'OFF'),
+      scheduleHelper(2, '11:00:01', '12:59:59'),
+      scheduleHelper(3, '13:00:00', '23:59:59', 'OFF'),
     ]
 
     mount(CRelayScheduleBar, {
-      props: { schedule, currentTime: timeStringToSeconds('13:00:00') },
+      props: { items, currentTime: timeStringToSeconds('13:00:00') },
     })
 
-    cy.dataCy('interval').should('have.length', 2)
+    cy.dataCy('item').should('have.length', items.length)
   })
 })

@@ -10,7 +10,7 @@
       v-for="{ id, state, ...interval } of items"
       :key="id"
       :data-item-id="id"
-      data-cy="interval"
+      data-cy="item"
       :style="[
         containerDependentStyles,
         getSizingAndPositioningStyles(interval),
@@ -90,13 +90,13 @@ export default defineComponent({
       if (orientation === 'horizontal') {
         return {
           left: `${width * offsetPercent}px`,
-          width: `${width * sizePercent}`,
+          width: `${width * sizePercent}px`,
         }
       }
 
       return {
-        top: `${height * offsetPercent}`,
-        height: `${height * sizePercent}`,
+        top: `${height * offsetPercent}px`,
+        height: `${height * sizePercent}px`,
       }
     }
 
