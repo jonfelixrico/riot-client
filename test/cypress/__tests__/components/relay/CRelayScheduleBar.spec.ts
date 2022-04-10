@@ -85,4 +85,19 @@ describe('CRelayVerticalBar', () => {
       expect(yVals.every((val) => val === firstVal)).to.be.true
     })
   })
+
+  it('should emit the active update', () => {
+    mount(CRelayScheduleBar, {
+      props: { items },
+    })
+
+    cy.dataCy('item')
+      .get('[data-item-id="1"]')
+      .dblclick()
+      .should(() => {
+        const value =
+          Cypress.vueWrapper.emitted<[string]>('update:active')?.[0]?.[0]
+        expect(value).equals('1')
+      })
+  })
 })
