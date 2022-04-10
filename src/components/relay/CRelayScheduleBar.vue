@@ -116,6 +116,6 @@ export default defineComponent({
     background: $red-5;
   }
 
-  background: $grey-5;
+  background: $grey-4;
 }
 </style>
