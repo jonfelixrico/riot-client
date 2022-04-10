@@ -24,13 +24,13 @@ function scheduleHelper(
 }
 
 describe('CRelayVerticalBar', () => {
-  it('should display interval details', () => {
-    const items: ScheduleBarItem[] = [
-      scheduleHelper(1, '00:00:00', '11:00:00', 'ON'),
-      scheduleHelper(2, '11:00:01', '12:59:59'),
-      scheduleHelper(3, '13:00:00', '23:59:59', 'OFF'),
-    ]
+  const items: ScheduleBarItem[] = [
+    scheduleHelper(1, '00:00:00', '11:00:00', 'ON'),
+    scheduleHelper(2, '11:00:01', '12:59:59'),
+    scheduleHelper(3, '13:00:00', '23:59:59', 'OFF'),
+  ]
 
+  it('should display interval details', () => {
     mount(CRelayScheduleBar, {
       props: { items },
     })
@@ -39,12 +39,6 @@ describe('CRelayVerticalBar', () => {
   })
 
   it('should handle active items', () => {
-    const items: ScheduleBarItem[] = [
-      scheduleHelper(1, '00:00:00', '11:00:00', 'ON'),
-      scheduleHelper(2, '11:00:01', '12:59:59'),
-      scheduleHelper(3, '13:00:00', '23:59:59', 'OFF'),
-    ]
-
     mount(CRelayScheduleBar, {
       props: { items, activeId: '1' },
     })
