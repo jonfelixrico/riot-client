@@ -1,62 +1,46 @@
 <template>
   <div
-    :style="{ width: `${width}px`, height: `${height}px` }"
+    :style="{
+      width: `${width}px`,
+      height: `${height}px`,
+    }"
     class="relative-position"
   >
     <div
-      v-for="(entry, index) of schedule"
-      :key="index"
+      v-for="{ id, state, ...interval } of schedule"
+      :key="id"
       data-cy="interval"
       :style="[
-        {
-          width: `${width}px`,
-        },
-        getBarStyle(entry, height),
+        containerDependentStyles,
+        getSizingAndPositioningStyles(interval),
       ]"
       class="absolute interval"
       :class="{
-        on: entry.state === 'ON',
-        off: entry.state === 'OFF',
+        on: state === 'ON',
+        off: state === 'OFF',
       }"
-      :data-state="entry.state ?? 'NULL'"
+      :data-state="state ?? 'UNOCCUPIED'"
     />
   </div>
 </template>
 
 <script lang="ts">
-import { DisplaySchedule } from 'src/utils/daily-relay-schedule.utils'
-import { TimeUnit } from 'src/utils/relay-schedule.utils'
+import { computed } from '@vue/reactivity'
 import { defineComponent, PropType } from 'vue'
+import { ScheduleBarItem } from './schedule-bar.types'
 
-function convert({ hour, second, minute }: TimeUnit) {
-  return hour * 3600 + minute * 60 + second
-}
-
-const MAX_SECONDS = 3600 * 24 - 1
-
-function getBarStyle({ start, end }: DisplaySchedule, height: number) {
-  const startSeconds = convert(start)
-  const endSeconds = convert(end)
-
-  const heightPercent = (endSeconds - startSeconds) / MAX_SECONDS
-  const offsetPercent = startSeconds / MAX_SECONDS
-
-  return {
-    height: `${height * heightPercent}px`,
-    top: `${height * offsetPercent}px`,
-  }
-}
+export const MAX_SECONDS = 3600 * 24 - 1
 
 type RelayScheduleBarOrientation = 'horizontal' | 'vertical'
 
 export default defineComponent({
   props: {
     schedule: {
-      type: Array as PropType<DisplaySchedule[]>,
+      type: Array as PropType<ScheduleBarItem[]>,
       required: true,
     },
 
-    currentTime: Object as PropType<TimeUnit>,
+    currentTime: Number,
 
     width: {
       type: Number,
@@ -74,9 +58,52 @@ export default defineComponent({
     },
   },
 
-  setup() {
+  setup(props) {
+    /**
+     * These styles will make each item take the entire height of the
+     * container if orientation is horizontal. If set to vertical, then
+     * the width is taken instead. You can treat this as the align-item
+     * flexbox property.
+     */
+    const containerDependentStyles = computed(() => {
+      const { orientation, height, width } = props
+
+      if (orientation === 'horizontal') {
+        return {
+          height: `${height}px`,
+        }
+      }
+
+      return {
+        width: `${width}px`,
+      }
+    })
+
+    function getSizingAndPositioningStyles({
+      start,
+      end,
+    }: Pick<ScheduleBarItem, 'start' | 'end'>) {
+      const { orientation, height, width } = props
+
+      const offsetPercent = start / MAX_SECONDS
+      const sizePercent = (end - start) / MAX_SECONDS
+
+      if (orientation === 'horizontal') {
+        return {
+          left: `${width * offsetPercent}px`,
+          width: `${width * sizePercent}`,
+        }
+      }
+
+      return {
+        top: `${height * offsetPercent}`,
+        height: `${height * sizePercent}`,
+      }
+    }
+
     return {
-      getBarStyle,
+      containerDependentStyles,
+      getSizingAndPositioningStyles,
     }
   },
 })
