@@ -5,17 +5,18 @@
       height: `${height}px`,
     }"
     class="relative-position"
+    :class="{
+      row: orientation === 'horizontal',
+      column: orientation === 'vertical',
+    }"
   >
     <div
       v-for="{ id, state, ...interval } of items"
       :key="id"
       :data-item-id="id"
       data-cy="item"
-      :style="[
-        containerDependentStyles,
-        getSizingAndPositioningStyles(interval),
-      ]"
-      class="absolute interval"
+      :style="[containerDependentStyles, getSizingStyles(interval)]"
+      class="item"
       :class="{
         on: state === 'ON',
         off: state === 'OFF',
@@ -78,38 +79,35 @@ export default defineComponent({
       }
     })
 
-    function getSizingAndPositioningStyles({
+    function getSizingStyles({
       start,
       end,
     }: Pick<ScheduleBarItem, 'start' | 'end'>) {
       const { orientation, height, width } = props
 
-      const offsetPercent = start / MAX_SECONDS
       const sizePercent = (end - start) / MAX_SECONDS
 
       if (orientation === 'horizontal') {
         return {
-          left: `${width * offsetPercent}px`,
           width: `${width * sizePercent}px`,
         }
       }
 
       return {
-        top: `${height * offsetPercent}px`,
         height: `${height * sizePercent}px`,
       }
     }
 
     return {
       containerDependentStyles,
-      getSizingAndPositioningStyles,
+      getSizingStyles,
     }
   },
 })
 </script>
 
 <style scope lang="scss">
-.interval {
+.item {
   &.on {
     background: $green-5;
   }
