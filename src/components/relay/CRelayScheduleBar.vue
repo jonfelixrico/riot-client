@@ -40,8 +40,6 @@ export default defineComponent({
       required: true,
     },
 
-    currentTime: Number,
-
     width: {
       type: Number,
       default: 50,
