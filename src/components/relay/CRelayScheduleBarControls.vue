@@ -66,11 +66,13 @@ export default defineComponent({
       if (orientation === 'horizontal') {
         return {
           width: `${percentage * width}px`,
+          height: `${height}px`,
         }
       }
 
       return {
         height: `${percentage * height}px`,
+        width: `${width}px`,
       }
     })
 
