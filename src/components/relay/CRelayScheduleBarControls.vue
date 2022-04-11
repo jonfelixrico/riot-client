@@ -7,7 +7,7 @@
     class="relative-position"
   >
     <div
-      class="absolute space-between"
+      class="absolute justify-between"
       :class="{
         row: orientation === 'horizontal',
         column: orientation === 'vertical',
