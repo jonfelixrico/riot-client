@@ -25,7 +25,7 @@ function getRelayConfigBackend({
       return
     }
 
-    const url = `device/${deviceId}/version/${firmwareVersion}/switch/${moduleId}`
+    const url = `device/${deviceId}/version/${firmwareVersion}/relay/${moduleId}`
 
     loading.value = true
     try {
