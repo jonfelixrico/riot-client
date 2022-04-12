@@ -8,8 +8,12 @@ import { computed } from 'vue'
 import { MAX_SECONDS } from './relay.constants'
 
 interface AugmentedDisplaySchedule {
+  /** Seconds representation of {@link TimeUnit} */
   start: number
+
+  /** Seconds representation of {@link TimeUnit} */
   end: number
+
   state: RelayState | null
 }
 
