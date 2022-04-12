@@ -15,3 +15,7 @@ export interface DeviceIdentifier {
   deviceId: string
   firmwareVersion: string
 }
+
+export interface ModuleIdentifier extends DeviceIdentifier {
+  moduleId: string
+}
