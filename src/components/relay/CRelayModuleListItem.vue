@@ -25,7 +25,7 @@ import { DeviceIdentifier, DeviceModule } from 'src/types/device.interface'
 import { defineComponent, onBeforeMount, PropType } from 'vue'
 import { useGetRelayConfigApi } from 'composables/get-relay-config-api.composable'
 import CDailySchedulePreview from './CDailySchedulePreview.vue'
-import CWeeklySchedulePreview from './CWeekySchedulePreview.vue'
+import CWeeklySchedulePreview from './CWeeklySchedulePreview.vue'
 
 export default defineComponent({
   components: {
