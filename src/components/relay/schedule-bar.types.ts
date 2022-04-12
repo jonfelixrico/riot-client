@@ -1,7 +1,5 @@
 import { RelayState } from 'src/utils/relay-schedule.utils'
 
-export type Orientation = 'horizontal' | 'vertical'
-
 export interface ScheduleBarItem {
   /**
    * Time unit represented as seconds.
