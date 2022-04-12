@@ -1,13 +1,15 @@
+import { DateTime } from 'luxon'
+import {
+  ApiResponse,
+  BaseApiFetchComposable,
+} from 'src/types/base-api-fetch-composable.interface'
 import { DeviceModuleIdentifier } from 'src/types/device.interface'
 import { RelayConfig } from 'src/types/relay-config.interface'
+import { useLoadingComputed } from 'src/utils/fetch-api-composable.utils'
 import { inject, InjectionKey, ref, Ref } from 'vue'
 import { useApi } from './axios.composable'
 
-interface GetRelayConfigApi {
-  relayConfig: Ref<RelayConfig | null>
-  fetch: () => Promise<void>
-  loading: Ref<boolean>
-}
+type GetRelayConfigApi = BaseApiFetchComposable<RelayConfig>
 
 function getRelayConfigBackend({
   deviceId,
@@ -16,8 +18,10 @@ function getRelayConfigBackend({
 }: DeviceModuleIdentifier): GetRelayConfigApi {
   const api = useApi()
 
-  const relayConfig: Ref<RelayConfig | null> = ref(null)
-  const loading = ref(false)
+  const response: Ref<ApiResponse<RelayConfig> | undefined> = ref()
+  const requestTime: Ref<DateTime | undefined> = ref()
+
+  const loading = useLoadingComputed({ response, requestTime })
 
   async function fetch(): Promise<void> {
     if (loading.value) {
@@ -27,7 +31,7 @@ function getRelayConfigBackend({
 
     const url = `device/${deviceId}/version/${firmwareVersion}/relay/${moduleId}`
 
-    loading.value = true
+    requestTime.value = DateTime.now()
     try {
       console.debug(
         'getRelayConfigBackend: fetching config from endpoint %s',
@@ -35,22 +39,32 @@ function getRelayConfigBackend({
       )
       const { data } = await api.get<RelayConfig>(url)
 
-      relayConfig.value = data
       console.debug('getRelayConfigBackend: fetch successful')
-    } finally {
-      loading.value = false
+      response.value = {
+        type: 'success',
+        data,
+        responseTime: DateTime.now(),
+      }
+    } catch (error) {
+      console.warn('getRelayConfigBackend: encountered an error', error)
+      response.value = {
+        type: 'error',
+        error: error as Error,
+        responseTime: DateTime.now(),
+      }
     }
   }
 
   return {
-    relayConfig,
-    loading,
+    response,
+    requestTime,
     fetch,
+    loading,
   }
 }
 
 const GET_RELAY_CONFIG_API: InjectionKey<GetRelayConfigApi> = Symbol(
-  'get relay config API'
+  'get relay config api'
 )
 
 export function useGetRelayConfigApi(query: DeviceModuleIdentifier) {
