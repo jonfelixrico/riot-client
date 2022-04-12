@@ -17,21 +17,22 @@
         </div>
       </div>
 
-      <q-card flat>
-        <q-card-section>
-          <CDeviceHeader
-            v-if="device"
-            :device="device"
-            :lastHeartbeatDt="lastHeartbeatDt ?? undefined"
-          />
-        </q-card-section>
-      </q-card>
+      <template v-if="device">
+        <q-card flat>
+          <q-card-section>
+            <CDeviceHeader
+              :device="device"
+              :lastHeartbeatDt="lastHeartbeatDt ?? undefined"
+            />
+          </q-card-section>
+        </q-card>
 
-      <q-card flat>
-        <q-card-section>
-          <CDeviceModuleList v-if="device" :deviceModules="device.modules" />
-        </q-card-section>
-      </q-card>
+        <q-card flat>
+          <q-card-section>
+            <CDeviceModuleList :device="device" />
+          </q-card-section>
+        </q-card>
+      </template>
     </div>
   </q-page>
 </template>
