@@ -9,7 +9,7 @@ interface GetRelayConfigApi {
   loading: Ref<boolean>
 }
 
-function useBackend({
+function getRelayConfigBackend({
   deviceId,
   firmwareVersion,
   moduleId,
@@ -21,16 +21,22 @@ function useBackend({
 
   async function fetch(): Promise<void> {
     if (loading.value) {
+      console.warn('getRelayConfigBackend: prevented duplicate HTTP call')
       return
     }
 
+    const url = `device/${deviceId}/version/${firmwareVersion}/switch/${moduleId}`
+
     loading.value = true
     try {
-      const { data } = await api.get<RelayConfig>(
-        `device/${deviceId}/version/${firmwareVersion}/switch/${moduleId}`
+      console.debug(
+        'getRelayConfigBackend: fetching config from endpoint %s',
+        url
       )
+      const { data } = await api.get<RelayConfig>(url)
 
       relayConfig.value = data
+      console.debug('getRelayConfigBackend: fetch successful')
     } finally {
       loading.value = false
     }
@@ -48,5 +54,5 @@ const GET_RELAY_CONFIG_API: InjectionKey<GetRelayConfigApi> = Symbol(
 )
 
 export function useGetRelayConfigApi(query: DeviceModuleIdentifier) {
-  return inject(GET_RELAY_CONFIG_API, () => useBackend(query), true)
+  return inject(GET_RELAY_CONFIG_API, () => getRelayConfigBackend(query), true)
 }
