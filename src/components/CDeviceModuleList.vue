@@ -1,13 +1,25 @@
 <template>
   <q-item
-    v-for="deviceModule of deviceModules"
-    :key="deviceModule.moduleId"
+    v-for="dModule of device.modules"
+    :key="dModule.moduleId"
     data-cy="device-module"
-    :data-module-id="deviceModule.moduleId"
+    :data-module-id="dModule.moduleId"
     clickable
   >
     <q-item-section>
-      <CDeviceModuleHeader :deviceModule="deviceModule" headingLevel="6" />
+      <CDeviceModuleHeader
+        v-if="!COMPONENT_MAP[dModule.type]"
+        :deviceModule="dModule"
+      />
+      <component
+        v-else
+        :is="COMPONENT_MAP[dModule.type]"
+        :deviceModule="dModule"
+        :device="{
+          deviceId: device.deviceId,
+          firmwareVersion: device.firmwareVersion,
+        }"
+      />
     </q-item-section>
   </q-item>
 </template>
@@ -16,6 +28,12 @@
 import { defineComponent, PropType } from 'vue'
 import { Device } from 'types/device.interface'
 import CDeviceModuleHeader from './CDeviceModuleHeader.vue'
+import CRelayModuleListItem from 'components/relay/CRelayModuleListItem.vue'
+
+// TODO try to make this load lazily; right now this is eagerly loaded
+const COMPONENT_MAP = {
+  RELAY: CRelayModuleListItem,
+}
 
 export default defineComponent({
   components: {
@@ -23,9 +41,16 @@ export default defineComponent({
   },
 
   props: {
-    deviceModules: {
-      type: Array as PropType<Device['modules']>,
+    device: {
+      type: Object as PropType<Device>,
+      required: true,
     },
+  },
+
+  setup() {
+    return {
+      COMPONENT_MAP,
+    }
   },
 })
 </script>
