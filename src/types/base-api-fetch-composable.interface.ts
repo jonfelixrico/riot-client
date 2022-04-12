@@ -14,8 +14,8 @@ interface SuccessResponse<T> {
 }
 
 export interface BaseApiFetchComposable<T = unknown> {
-  response: Ref<ErrorResponse | SuccessResponse<T>>
+  response: Ref<ErrorResponse | SuccessResponse<T> | undefined>
   fetch: () => Promise<ErrorResponse | SuccessResponse<T>>
-  requestTime: Ref<DateTime>
+  requestTime: Ref<DateTime | undefined>
   loading: Ref<boolean>
 }
