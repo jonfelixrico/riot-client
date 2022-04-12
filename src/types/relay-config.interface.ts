@@ -43,7 +43,7 @@ export interface Override {
   overrideUntil?: Date
 }
 
-type Schedule = DailySchedule | WeeklySchedule
+export type Schedule = DailySchedule | WeeklySchedule
 
 export interface RelayConfig {
   schedule: Schedule
