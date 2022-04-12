@@ -1,5 +1,5 @@
 <template>
-  <div class="relative">this is a stub</div>
+  <div class="relative">this is a stub for daily</div>
 </template>
 
 <script lang="ts">
