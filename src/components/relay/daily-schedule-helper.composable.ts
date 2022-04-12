@@ -5,8 +5,7 @@ import {
   DisplaySchedule,
 } from 'utils/daily-relay-schedule.utils'
 import { computed } from 'vue'
-
-export const MAX_SECONDS = 3600 * 24 - 1
+import { MAX_SECONDS } from './relay.constants'
 
 interface AugmentedDisplaySchedule {
   start: number

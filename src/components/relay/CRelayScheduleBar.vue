@@ -33,8 +33,7 @@
 import { computed } from '@vue/reactivity'
 import { defineComponent, PropType } from 'vue'
 import { ScheduleBarItem } from './schedule-bar.types'
-
-export const MAX_SECONDS = 3600 * 24 - 1
+import { MAX_SECONDS } from './relay.constants'
 
 type RelayScheduleBarOrientation = 'horizontal' | 'vertical'
 
