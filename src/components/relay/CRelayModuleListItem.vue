@@ -26,6 +26,7 @@ import { defineComponent, onBeforeMount, PropType } from 'vue'
 import { useGetRelayConfigApi } from 'composables/get-relay-config-api.composable'
 import CDailySchedulePreview from './CDailySchedulePreview.vue'
 import CWeeklySchedulePreview from './CWeeklySchedulePreview.vue'
+import { computed } from '@vue/reactivity'
 
 export default defineComponent({
   components: {
@@ -47,9 +48,17 @@ export default defineComponent({
   },
 
   setup(props) {
-    const { relayConfig, fetch } = useGetRelayConfigApi({
+    const { response, fetch } = useGetRelayConfigApi({
       ...props.deviceModule,
       ...props.device,
+    })
+
+    const relayConfig = computed(() => {
+      if (!response.value || response.value.type === 'error') {
+        return null
+      }
+
+      return response.value.data
     })
 
     onBeforeMount(fetch)
