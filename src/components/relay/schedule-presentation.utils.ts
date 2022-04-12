@@ -1,6 +1,5 @@
 import { DisplaySchedule } from 'src/utils/daily-relay-schedule.utils'
-import { TimeUnit } from 'src/utils/relay-schedule.utils'
-import { RelayState } from 'types/relay-config.interface'
+import { RelayState, TimeUnit } from 'types/relay-config.interface'
 import { MAX_SECONDS } from './relay.constants'
 
 /**

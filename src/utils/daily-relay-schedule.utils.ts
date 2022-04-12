@@ -1,19 +1,18 @@
 import { sortBy } from 'lodash'
 import { DateTime } from 'luxon'
 import {
+  DailySchedule,
+  RelayState,
+  TimeUnit,
+} from 'src/types/relay-config.interface'
+import {
   mergeEligibleEntries,
   ProcessedRelayScheduleEntry,
   processScheduleEntryArray,
-  RawRelayScheduleEntry,
-  RelayState,
   TargetZone,
-  TimeUnit,
 } from './relay-schedule.utils'
 
-export interface RawDailySchedule {
-  utcOffset: string
-  dailySchedule: RawRelayScheduleEntry[]
-}
+export type RawDailySchedule = Omit<DailySchedule, 'type'>
 
 /**
  * Adds a `millis` attribute to the {@link TimeUnit} interface.

@@ -1,4 +1,4 @@
-import { RelayState } from 'src/utils/relay-schedule.utils'
+import { RelayState } from 'src/types/relay-config.interface'
 
 export interface ScheduleBarItem {
   /**

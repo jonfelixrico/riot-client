@@ -1,18 +1,9 @@
 import { DateTime } from 'luxon'
-
-export interface TimeUnit {
-  hour: number
-  minute: number
-  second: number
-}
-
-export type RelayState = 'ON' | 'OFF'
-
-export interface RawRelayScheduleEntry {
-  start: TimeUnit
-  end: TimeUnit
-  state: RelayState
-}
+import {
+  TimeUnit,
+  RelayState,
+  ScheduleEntry,
+} from 'types/relay-config.interface'
 
 export interface ProcessedRelayScheduleEntry {
   interval: {
@@ -58,7 +49,7 @@ function processTimeUnit(
  * @returns The date portion of the DateTimes will use the current (localized) Date.
  */
 function processScheduleEntry(
-  { start, end, state }: RawRelayScheduleEntry,
+  { start, end, state }: ScheduleEntry,
   utcOffset: string,
   targetZone: TargetZone = 'local'
 ):
@@ -100,7 +91,7 @@ function processScheduleEntry(
 }
 
 export function processScheduleEntryArray(
-  entries: RawRelayScheduleEntry[],
+  entries: ScheduleEntry[],
   utcOffset: string,
   targetZone: TargetZone = 'local'
 ): ProcessedRelayScheduleEntry[] {

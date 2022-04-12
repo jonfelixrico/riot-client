@@ -1,4 +1,8 @@
-import { TimeUnit } from 'src/utils/relay-schedule.utils'
+export interface TimeUnit {
+  hour: number
+  minute: number
+  second: number
+}
 
 export type RelayState = 'ON' | 'OFF'
 
