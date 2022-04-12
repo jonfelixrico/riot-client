@@ -17,7 +17,7 @@ export type ApiResponse<T> = ErrorResponse | SuccessResponse<T>
 
 export interface BaseApiFetchComposable<T = unknown> {
   response: Ref<ApiResponse<T> | undefined>
-  fetch: () => Promise<ApiResponse<T> | undefined>
+  fetch: () => Promise<void>
   requestTime: Ref<DateTime | undefined>
   loading: Ref<boolean>
 }
