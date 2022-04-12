@@ -7,6 +7,10 @@ import {
 import { computed } from 'vue'
 import { MAX_SECONDS } from './relay.constants'
 
+/**
+ * Basically the same as {@link DisplaySchedule}, but the state is nullable and
+ * the `start` and `end` props are represented as seconds instead of {@link TimeUnit}s.
+ */
 interface AugmentedDisplaySchedule {
   /** Seconds representation of {@link TimeUnit} */
   start: number
@@ -17,10 +21,21 @@ interface AugmentedDisplaySchedule {
   state: RelayState | null
 }
 
+/**
+ * Converts {@link TimeUnit}s to seconds.
+ * @param param0
+ * @returns
+ */
 function timeUnitToSeconds({ hour, minute, second }: TimeUnit) {
   return hour * 3600 + minute * 60 + second
 }
 
+/**
+ * Converts an array of {@link DisplaySchedule} into an array of {@link AugmentedDisplaySchedule}.
+ *
+ * @param param0
+ * @returns
+ */
 function convertDisplaySchedule({
   start,
   end,
@@ -33,6 +48,12 @@ function convertDisplaySchedule({
   }
 }
 
+/**
+ * Fills in the gaps between {@link AugmentedDisplaySchedule}s with null-state {@link AugmentedDisplaySchedule}s.
+ *
+ * @param items
+ * @returns
+ */
 function fillEmptySections(
   items: AugmentedDisplaySchedule[]
 ): AugmentedDisplaySchedule[] {
