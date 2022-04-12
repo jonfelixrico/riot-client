@@ -10,7 +10,7 @@ import {
   TimeUnit,
 } from './relay-schedule.utils'
 
-interface RawDailySchedule {
+export interface RawDailySchedule {
   utcOffset: string
   dailySchedule: RawRelayScheduleEntry[]
 }
