@@ -1,6 +1,13 @@
 import { computed } from 'vue'
 import { BaseApiFetchComposable } from 'types/base-api-fetch-composable.interface'
 
+/**
+ * Convenience function for creating the computed `loading` ref for
+ * {@link BaseApiFetchComposable} implementations.
+ *
+ * @param param0
+ * @returns
+ */
 export function useLoadingComputed({
   requestTime,
   response,
