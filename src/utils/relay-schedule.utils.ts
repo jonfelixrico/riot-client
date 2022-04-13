@@ -90,6 +90,15 @@ function processScheduleEntry(
   ]
 }
 
+/**
+ * Transform an array of {@link ScheduleEntry} objects into
+ * {@link ProcessedRelayScheduleEntry} objects.
+ *
+ * @param entries
+ * @param utcOffset
+ * @param targetZone
+ * @returns
+ */
 export function processScheduleEntryArray(
   entries: ScheduleEntry[],
   utcOffset: string,
