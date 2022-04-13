@@ -63,9 +63,7 @@ import CDateDisplay from 'components/common/CDateDisplay.vue'
 import { useStaticDateTime } from 'src/composables/static-datetime.composable'
 
 export default defineComponent({
-
   components: { CDateDisplay },
-  emits: ['register-click'],
 
   props: {
     device: {
@@ -73,6 +71,8 @@ export default defineComponent({
       type: Object as PropType<UnregisteredDevice>,
     },
   },
+
+  emits: ['register-click'],
 
   setup(props) {
     const { t } = useI18n()

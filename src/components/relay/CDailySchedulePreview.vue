@@ -16,6 +16,8 @@ import {
 import { sortBy } from 'lodash'
 
 export default defineComponent({
+  components: { CHorizontalSchedulePreview },
+
   props: {
     utcOffset: {
       type: String as PropType<DailySchedule['utcOffset']>,
@@ -26,7 +28,6 @@ export default defineComponent({
       required: true,
     },
   },
-  components: { CHorizontalSchedulePreview },
 
   setup(props) {
     const { now } = useTickingDateTime()
