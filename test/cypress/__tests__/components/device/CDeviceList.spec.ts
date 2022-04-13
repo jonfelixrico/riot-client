@@ -1,6 +1,6 @@
 import { Device } from 'types/device.interface'
 import { mount } from '@cypress/vue'
-import CDeviceList from 'components/CDeviceList.vue'
+import CDeviceList from 'components/device/CDeviceList.vue'
 import { DateTime } from 'luxon'
 
 describe('CDeviceList', () => {
