@@ -172,3 +172,17 @@ export function mergeEligibleEntries(entries: ProcessedRelayScheduleEntry[]) {
 
   return processedArr
 }
+
+export function processScheduleEntries(
+  entries: ScheduleEntry[],
+  utcOffset: string,
+  targetZone: TargetZone = 'local'
+): ProcessedRelayScheduleEntry[] {
+  const transformedAndLocalized = transformAndLocalizeScheduleEntries(
+    entries,
+    utcOffset,
+    targetZone
+  )
+
+  return mergeEligibleEntries(transformedAndLocalized)
+}
