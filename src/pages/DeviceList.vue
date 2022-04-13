@@ -4,9 +4,9 @@
       <q-card flat>
         <q-card-section>
           <CDeviceList
-            :refDt="now"
+            :ref-dt="now"
             :devices="devices"
-            :lastHeartbeats="heartbeats"
+            :last-heartbeats="heartbeats"
             @click="onDeviceClick"
           />
         </q-card-section>

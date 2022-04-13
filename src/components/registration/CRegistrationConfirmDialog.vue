@@ -21,15 +21,15 @@
           unelevated
           no-caps
           :label="ok ?? t('registration.dialogs.confirm.ok')"
-          @click="onOKClick"
           data-cy="ok"
+          @click="onOKClick"
         />
         <q-btn
           flat
           no-caps
           :label="cancel ?? t('registration.dialogs.confirm.cancel')"
-          @click="onCancelClick"
           data-cy="cancel"
+          @click="onCancelClick"
         />
       </q-card-actions>
     </q-card>

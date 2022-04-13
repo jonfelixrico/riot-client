@@ -2,7 +2,7 @@
   <q-dialog ref="dialogRef" @hide="onDialogHide">
     <q-card class="q-dialog-plugin" :data-cy="dataCy">
       <q-card-section>
-        <div role="heading" aria-level="1" v-text="title" class="text-h6" />
+        <div role="heading" aria-level="1" class="text-h6" v-text="title" />
       </q-card-section>
 
       <q-card-section class="q-pt-none">
@@ -15,15 +15,15 @@
           unelevated
           no-caps
           :label="ok ?? t('common.ok')"
-          @click="onOKClick"
           data-cy="ok"
+          @click="onOKClick"
         />
         <q-btn
           flat
           no-caps
           :label="cancel ?? t('common.cancel')"
-          @click="onCancelClick"
           data-cy="cancel"
+          @click="onCancelClick"
         />
       </q-card-actions>
     </q-card>

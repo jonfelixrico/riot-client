@@ -8,7 +8,7 @@
           their widths can affect QResizeObserver, which can lead to a self-sustaining
           loop of resizes.
         -->
-        <CHorizontalTimeIndicator :now="now" :width="width" :iconSize="30" />
+        <CHorizontalTimeIndicator :now="now" :width="width" :icon-size="30" />
         <CScheduleDisplay
           orientation="horizontal"
           :items="entries"

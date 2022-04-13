@@ -1,8 +1,8 @@
 <template>
   <q-page class="row justify-center">
     <div
-      class="page-width q-gutter-y-md q-pt-md"
       v-if="devices.length"
+      class="page-width q-gutter-y-md q-pt-md"
       data-cy="listing"
     >
       <div class="row justify-end">
@@ -10,10 +10,10 @@
           unelevated
           color="secondary"
           :loading="isLoading"
-          @click="fetch"
           :label="t('common.refresh')"
           no-caps
           data-cy="refresh-btn"
+          @click="fetch"
         />
       </div>
 

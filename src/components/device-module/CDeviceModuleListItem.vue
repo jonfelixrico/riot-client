@@ -2,13 +2,13 @@
   <!-- For unknown types -->
   <CDeviceModuleHeader
     v-if="!COMPONENT_MAP[deviceModule.type]"
-    :deviceModule="deviceModule"
+    :device-module="deviceModule"
   />
 
   <component
-    v-else
     :is="COMPONENT_MAP[deviceModule.type]"
-    :deviceModule="deviceModule"
+    v-else
+    :device-module="deviceModule"
     :device="device"
   />
 </template>

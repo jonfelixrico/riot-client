@@ -18,12 +18,13 @@ import { Device } from 'types/device.interface'
 import CDeviceModuleListItem from './CDeviceModuleListItem.vue'
 
 export default defineComponent({
+  components: { CDeviceModuleListItem },
+
   props: {
     device: {
       type: Object as PropType<Device>,
       required: true,
     },
   },
-  components: { CDeviceModuleListItem },
 })
 </script>

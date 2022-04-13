@@ -2,15 +2,15 @@
   <q-list separator>
     <CDeviceListItem
       v-for="device of devices"
-      :refDt="refDt"
-      :heartbeatLapseThreshold="heartbeatLapseThreshold"
-      :device="device"
       :key="device.deviceId"
-      :lastHeartbeatDt="lastHeartbeats[device.deviceId] ?? EPOCH"
+      :ref-dt="refDt"
+      :heartbeat-lapse-threshold="heartbeatLapseThreshold"
+      :device="device"
+      :last-heartbeat-dt="lastHeartbeats[device.deviceId] ?? EPOCH"
       clickable
-      @click="$emit('click', device)"
       data-cy="list-item"
       :data-device-id="device.deviceId"
+      @click="$emit('click', device)"
     />
   </q-list>
 </template>
@@ -42,12 +42,12 @@ export default defineComponent({
     },
   },
 
+  emits: ['click'],
+
   setup() {
     return {
       EPOCH,
     }
   },
-
-  emits: ['click'],
 })
 </script>
