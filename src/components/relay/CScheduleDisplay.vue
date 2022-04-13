@@ -32,8 +32,8 @@
 <script lang="ts">
 import { computed } from '@vue/reactivity'
 import { defineComponent, PropType } from 'vue'
-import { ScheduleBarItem } from './relay.types'
 import { MAX_SECONDS } from './relay.constants'
+import { PresentationScheduleEntry } from './relay-schedule-presentation.utils'
 
 type RelayScheduleBarOrientation = 'horizontal' | 'vertical'
 
@@ -44,7 +44,7 @@ export default defineComponent({
      * Do NOT leave any gaps or there will be a UI issue.
      */
     items: {
-      type: Array as PropType<ScheduleBarItem[]>,
+      type: Array as PropType<PresentationScheduleEntry[]>,
       required: true,
     },
 
@@ -92,7 +92,7 @@ export default defineComponent({
     function getSizingStyles({
       start,
       end,
-    }: Pick<ScheduleBarItem, 'start' | 'end'>) {
+    }: Pick<PresentationScheduleEntry, 'start' | 'end'>) {
       const { orientation, height, width } = props
 
       const sizePercent = (end - start) / MAX_SECONDS

@@ -1,7 +1,7 @@
 import { mount } from '@cypress/vue'
 import CScheduleDisplay from 'components/relay/CScheduleDisplay.vue'
-import { ScheduleBarItem } from 'src/components/relay/relay.types'
-import { RelayState } from 'src/types/relay-config.interface'
+import { PresentationScheduleEntry } from 'components/relay/relay-schedule-presentation.utils'
+import { RelayState } from 'types/relay-config.interface'
 
 function timeStringToSeconds(timeStr: string): number {
   const [hour, minute, second] = timeStr.split(':').map(Number)
@@ -13,7 +13,7 @@ function scheduleHelper(
   startStr: string,
   endStr: string,
   state?: RelayState
-): ScheduleBarItem {
+): PresentationScheduleEntry {
   return {
     start: timeStringToSeconds(startStr),
     end: timeStringToSeconds(endStr),
@@ -22,7 +22,7 @@ function scheduleHelper(
 }
 
 describe('CScheduleDisplay', () => {
-  const items: ScheduleBarItem[] = [
+  const items: PresentationScheduleEntry[] = [
     scheduleHelper('00:00:00', '11:00:00', 'ON'),
     scheduleHelper('11:00:01', '12:59:59'),
     scheduleHelper('13:00:00', '23:59:59', 'OFF'),
