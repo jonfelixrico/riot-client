@@ -1,5 +1,5 @@
 <template>
-  <div :style="{ height: `${height}px` }" class="absolute">
+  <div :style="{ height: `${height}px` }" class="relative-position">
     <q-resize-observer @resize="onResize" />
     <div class="absolute" v-if="width">
       <CScheduleDisplay
