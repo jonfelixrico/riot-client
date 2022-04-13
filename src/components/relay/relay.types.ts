@@ -11,8 +11,6 @@ export interface ScheduleBarItem {
    */
   end: number
 
-  id: string
-
   /**
    * A state of null means that the scheduel item is unoccupied.
    */

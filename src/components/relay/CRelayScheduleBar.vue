@@ -11,20 +11,20 @@
     }"
   >
     <div
-      v-for="{ id, state, ...interval } of items"
-      :key="id"
-      :data-item-id="id"
-      :data-active="active === id"
+      v-for="({ state, ...interval }, index) of items"
+      :key="index"
+      :data-index="index"
+      :data-active="activeIndex === index"
       data-cy="item"
       :style="[containerDependentStyles, getSizingStyles(interval)]"
       class="item"
       :class="{
         on: state === 'ON',
         off: state === 'OFF',
-        active: active === id,
+        active: activeIndex === index,
       }"
       :data-state="state ?? 'UNOCCUPIED'"
-      @dblclick="$emit('update:active', id)"
+      @dblclick="$emit('update:activeIndex', index)"
     />
   </div>
 </template>
@@ -63,13 +63,10 @@ export default defineComponent({
       default: 'vertical',
     },
 
-    /**
-     * The id of the active item.
-     */
-    active: String,
+    activeIndex: Number,
   },
 
-  emits: ['update:active'],
+  emits: ['update:activeIndex'],
 
   setup(props) {
     /**
