@@ -1,5 +1,5 @@
 <template>
-  <div class="relative">this is a stub for weekly</div>
+  <CHorizontalSchedulePreview :now="now" :entries="forPresentation" />
 </template>
 
 <script lang="ts">
@@ -16,6 +16,7 @@ import {
   fillGapsInSchedule,
   transformForPresentation,
 } from './relay-schedule-presentation.utils'
+import CHorizontalSchedulePreview from './CHorizontalSchedulePreview.vue'
 
 type WeeklyScheduleObj = WeeklySchedule['weeklySchedule']
 
@@ -106,5 +107,7 @@ export default defineComponent({
       now,
     }
   },
+
+  components: { CHorizontalSchedulePreview },
 })
 </script>
