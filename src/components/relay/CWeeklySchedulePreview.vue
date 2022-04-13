@@ -87,9 +87,19 @@ export default defineComponent({
 
     const processedWeeklySchedule = computed(() => {
       const { utcOffset, weeklySchedule } = props
+
+      /*
+       * We could process the weekly schedules separately per DOW, but in the end
+       * we'll end up flattening them still. It's simpler to just flatten them now and
+       * just chuck them as a single array.
+       */
       const flattened = Object.values(weeklySchedule).flat()
       const processed = processScheduleEntries(flattened, utcOffset)
 
+      /*
+       * Here, we're regenerating the lost DOW grouping. The DOW grouping here respects
+       * the DOW of the localized intervals.
+       */
       return generateWeeklySchedule(processed)
     })
 
