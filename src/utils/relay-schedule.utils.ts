@@ -111,7 +111,7 @@ function isEligibleForMerge(
 ) {
   return (
     // only same states are eligible for merging
-    a.state !== b.state ||
+    a.state === b.state &&
     /**
      * We don't want to end up mering something like...
      * 2022-01-01T20:00:00 - 2022-01-01T23:59:59
@@ -120,7 +120,7 @@ function isEligibleForMerge(
      *
      * That just undoes our preprocessing in {@link processScheduleEntry}.
      */
-    !a.end.hasSame(b.start, 'day') ||
+    a.end.hasSame(b.start, 'day') &&
     /**
      * Must be literally in sequence to be eligible for merging.
      * This checking is also the reason why {@link processScheduleEntry} uses
