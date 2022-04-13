@@ -69,6 +69,8 @@ function generateWeeklySchedule(
 }
 
 export default defineComponent({
+  components: { CHorizontalSchedulePreview },
+
   props: {
     utcOffset: {
       type: String as PropType<WeeklySchedule['utcOffset']>,
@@ -120,7 +122,5 @@ export default defineComponent({
       forPresentation,
     }
   },
-
-  components: { CHorizontalSchedulePreview },
 })
 </script>
