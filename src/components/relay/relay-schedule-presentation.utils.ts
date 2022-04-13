@@ -19,7 +19,7 @@ export interface PresentationScheduleEntry {
   end: number
 }
 
-function transformToScheduleEntryWithSeconds(
+function transformToUseSeconds(
   entries: ScheduleEntryWithDateTime[]
 ): PresentationScheduleEntry[] {
   return entries.map(({ start, end, state }) => {
@@ -37,7 +37,7 @@ function transformToScheduleEntryWithSeconds(
  * @param items
  * @returns
  */
-export function fillGapsInSchedule(
+function fillGapsInSchedule(
   items: PresentationScheduleEntry[]
 ): PresentationScheduleEntry[] {
   const filled: PresentationScheduleEntry[] = []
@@ -72,4 +72,11 @@ export function fillGapsInSchedule(
   }
 
   return filled
+}
+
+export function prepareScheduleEntryWithDateTimeForPresentation(
+  entries: ScheduleEntryWithDateTime[]
+): PresentationScheduleEntry[] {
+  const transformed = transformToUseSeconds(entries)
+  return fillGapsInSchedule(transformed)
 }
