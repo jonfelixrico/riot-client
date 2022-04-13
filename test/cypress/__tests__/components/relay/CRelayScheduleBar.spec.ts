@@ -1,7 +1,7 @@
 import { RelayState } from 'src/utils/relay-schedule.utils'
 import { mount } from '@cypress/vue'
 import CRelayScheduleBar from 'components/relay/CRelayScheduleBar.vue'
-import { ScheduleBarItem } from 'src/components/relay/schedule-bar.types'
+import { ScheduleBarItem } from 'src/components/relay/relay.types'
 
 function timeStringToSeconds(timeStr: string): number {
   const [hour, minute, second] = timeStr.split(':').map(Number)
