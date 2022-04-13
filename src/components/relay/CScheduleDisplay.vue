@@ -11,20 +11,28 @@
     }"
   >
     <div
-      v-for="{ id, state, ...interval } of items"
-      :key="id"
-      :data-item-id="id"
-      :data-active="active === id"
+      v-for="({ state, start, end }, index) of items"
+      :key="index"
+      :data-index="index"
+      :data-active="activeIndex === index"
+      :data-start="start"
+      :data-end="end"
       data-cy="item"
-      :style="[containerDependentStyles, getSizingStyles(interval)]"
+      :style="[
+        containerDependentStyles,
+        getSizingStyles({
+          start,
+          end,
+        }),
+      ]"
       class="item"
       :class="{
         on: state === 'ON',
         off: state === 'OFF',
-        active: active === id,
+        active: activeIndex === index,
       }"
       :data-state="state ?? 'UNOCCUPIED'"
-      @dblclick="$emit('update:active', id)"
+      @dblclick="$emit('update:activeIndex', index)"
     />
   </div>
 </template>
@@ -32,16 +40,19 @@
 <script lang="ts">
 import { computed } from '@vue/reactivity'
 import { defineComponent, PropType } from 'vue'
-import { ScheduleBarItem } from './schedule-bar.types'
-
-export const MAX_SECONDS = 3600 * 24 - 1
+import { MAX_SECONDS } from './relay.constants'
+import { PresentationScheduleEntry } from './relay-schedule-presentation.utils'
 
 type RelayScheduleBarOrientation = 'horizontal' | 'vertical'
 
 export default defineComponent({
   props: {
+    /**
+     * Asumes that all seconds in the day has been occupied by one of the items here.
+     * Do NOT leave any gaps or there will be a UI issue.
+     */
     items: {
-      type: Array as PropType<ScheduleBarItem[]>,
+      type: Array as PropType<PresentationScheduleEntry[]>,
       required: true,
     },
 
@@ -60,13 +71,10 @@ export default defineComponent({
       default: 'vertical',
     },
 
-    /**
-     * The id of the active item.
-     */
-    active: String,
+    activeIndex: Number,
   },
 
-  emits: ['update:active'],
+  emits: ['update:activeIndex'],
 
   setup(props) {
     /**
@@ -92,7 +100,7 @@ export default defineComponent({
     function getSizingStyles({
       start,
       end,
-    }: Pick<ScheduleBarItem, 'start' | 'end'>) {
+    }: Pick<PresentationScheduleEntry, 'start' | 'end'>) {
       const { orientation, height, width } = props
 
       const sizePercent = (end - start) / MAX_SECONDS

@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { defineComponent, onBeforeUnmount, ref } from 'vue'
-import CDeviceList from 'components/CDeviceList.vue'
+import CDeviceList from 'components/device/CDeviceList.vue'
 import { useTickingDateTime } from 'src/composables/ticking-datetime.composable'
 import { DateTime } from 'luxon'
 import { useApi } from 'composables/axios.composable'

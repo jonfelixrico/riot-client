@@ -1,7 +1,7 @@
-import { RelayState } from 'src/utils/relay-schedule.utils'
 import { mount } from '@cypress/vue'
-import CRelayScheduleBar from 'components/relay/CRelayScheduleBar.vue'
-import { ScheduleBarItem } from 'src/components/relay/schedule-bar.types'
+import CScheduleDisplay from 'components/relay/CScheduleDisplay.vue'
+import { PresentationScheduleEntry } from 'components/relay/relay-schedule-presentation.utils'
+import { RelayState } from 'types/relay-config.interface'
 
 function timeStringToSeconds(timeStr: string): number {
   const [hour, minute, second] = timeStr.split(':').map(Number)
@@ -10,46 +10,44 @@ function timeStringToSeconds(timeStr: string): number {
 }
 
 function scheduleHelper(
-  id: string | number,
   startStr: string,
   endStr: string,
   state?: RelayState
-): ScheduleBarItem {
+): PresentationScheduleEntry {
   return {
     start: timeStringToSeconds(startStr),
     end: timeStringToSeconds(endStr),
     state: state ?? null,
-    id: String(id),
   }
 }
 
-describe('CRelayVerticalBar', () => {
-  const items: ScheduleBarItem[] = [
-    scheduleHelper(1, '00:00:00', '11:00:00', 'ON'),
-    scheduleHelper(2, '11:00:01', '12:59:59'),
-    scheduleHelper(3, '13:00:00', '23:59:59', 'OFF'),
+describe('CScheduleDisplay', () => {
+  const items: PresentationScheduleEntry[] = [
+    scheduleHelper('00:00:00', '11:00:00', 'ON'),
+    scheduleHelper('11:00:01', '12:59:59'),
+    scheduleHelper('13:00:00', '23:59:59', 'OFF'),
   ]
 
   it('should display all items', () => {
-    mount(CRelayScheduleBar, {
+    mount(CScheduleDisplay, {
       props: { items },
     })
 
     cy.dataCy('item').should('have.length', items.length)
   })
 
-  it('should be able to handle the activeId prop', () => {
-    mount(CRelayScheduleBar, {
-      props: { items, active: '1' },
+  it('should be able to indicate the active item', () => {
+    mount(CScheduleDisplay, {
+      props: { items, activeIndex: 1 },
     })
 
     cy.dataCy('item')
-      .get('[data-item-id="1"]')
+      .get('[data-index="1"]')
       .should('have.attr', 'data-active', 'true')
   })
 
   it('should render items horizontally if orientation is horizontal', () => {
-    mount(CRelayScheduleBar, {
+    mount(CScheduleDisplay, {
       props: { items, orientation: 'horizontal' },
     })
 
@@ -68,7 +66,7 @@ describe('CRelayVerticalBar', () => {
   })
 
   it('should render items vertically if orientation is vertical', () => {
-    mount(CRelayScheduleBar, {
+    mount(CScheduleDisplay, {
       props: { items, orientation: 'vertical' },
     })
 
@@ -87,17 +85,17 @@ describe('CRelayVerticalBar', () => {
   })
 
   it('should emit the active update', () => {
-    mount(CRelayScheduleBar, {
+    mount(CScheduleDisplay, {
       props: { items },
     })
 
     cy.dataCy('item')
-      .get('[data-item-id="1"]')
+      .get('[data-index="1"]')
       .dblclick()
       .should(() => {
         const value =
-          Cypress.vueWrapper.emitted<[string]>('update:active')?.[0]?.[0]
-        expect(value).equals('1')
+          Cypress.vueWrapper.emitted<[string]>('update:activeIndex')?.[0]?.[0]
+        expect(value).equals(1)
       })
   })
 })

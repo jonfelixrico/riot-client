@@ -1,6 +1,6 @@
 import { DeviceModule } from 'src/types/device.interface'
 import { mount } from '@cypress/vue'
-import CDeviceModuleHeader from 'components/CDeviceModuleHeader.vue'
+import CDeviceModuleHeader from 'components/device-module/CDeviceModuleHeader.vue'
 
 describe('CDeviceModuleHeader', () => {
   const deviceModule: DeviceModule = {
