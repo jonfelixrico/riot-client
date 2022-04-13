@@ -5,11 +5,9 @@ import {
   ScheduleEntry,
 } from 'types/relay-config.interface'
 
-export interface ProcessedRelayScheduleEntry {
-  interval: {
-    start: DateTime
-    end: DateTime
-  }
+export interface ScheduleEntryWithDateTime {
+  start: DateTime
+  end: DateTime
   state: RelayState
 }
 
@@ -53,8 +51,8 @@ function transformScheduleEntry(
   utcOffset: string,
   targetZone: TargetZone = 'local'
 ):
-  | [ProcessedRelayScheduleEntry, ProcessedRelayScheduleEntry]
-  | [ProcessedRelayScheduleEntry] {
+  | [ScheduleEntryWithDateTime, ScheduleEntryWithDateTime]
+  | [ScheduleEntryWithDateTime] {
   const now = DateTime.now().setZone(targetZone)
 
   const pStart = timeUnitToDateTime(start, utcOffset, targetZone)
@@ -63,17 +61,13 @@ function transformScheduleEntry(
   if (!pStart.hasSame(now, 'day') || !pEnd.hasSame(now, 'day')) {
     return [
       {
-        interval: {
-          start: pStart.startOf('millisecond'),
-          end: pStart.endOf('day'),
-        },
+        start: pStart.startOf('millisecond'),
+        end: pStart.endOf('day'),
         state,
       },
       {
-        interval: {
-          start: pEnd.startOf('day'),
-          end: pEnd.endOf('millisecond'),
-        },
+        start: pEnd.startOf('day'),
+        end: pEnd.endOf('millisecond'),
         state,
       },
     ]
@@ -81,10 +75,8 @@ function transformScheduleEntry(
 
   return [
     {
-      interval: {
-        start: pStart.startOf('millisecond'),
-        end: pEnd.endOf('millisecond'),
-      },
+      start: pStart.startOf('millisecond'),
+      end: pEnd.endOf('millisecond'),
       state,
     },
   ]
@@ -92,7 +84,7 @@ function transformScheduleEntry(
 
 /**
  * Transform an array of {@link ScheduleEntry} objects into
- * {@link ProcessedRelayScheduleEntry} objects.
+ * {@link ScheduleEntryWithDateTime} objects.
  *
  * @param entries
  * @param utcOffset
@@ -103,8 +95,8 @@ export function transformAndLocalizeScheduleEntries(
   entries: ScheduleEntry[],
   utcOffset: string,
   targetZone: TargetZone = 'local'
-): ProcessedRelayScheduleEntry[] {
-  const processedArr: ProcessedRelayScheduleEntry[] = []
+): ScheduleEntryWithDateTime[] {
+  const processedArr: ScheduleEntryWithDateTime[] = []
 
   for (const entry of entries) {
     processedArr.push(...transformScheduleEntry(entry, utcOffset, targetZone))
@@ -114,8 +106,8 @@ export function transformAndLocalizeScheduleEntries(
 }
 
 function isEligibleForMerge(
-  a: ProcessedRelayScheduleEntry,
-  b: ProcessedRelayScheduleEntry
+  a: ScheduleEntryWithDateTime,
+  b: ScheduleEntryWithDateTime
 ) {
   return (
     // only same states are eligible for merging
@@ -128,26 +120,24 @@ function isEligibleForMerge(
      *
      * That just undoes our preprocessing in {@link processScheduleEntry}.
      */
-    !a.interval.end.hasSame(b.interval.start, 'day') ||
+    !a.end.hasSame(b.start, 'day') ||
     /**
      * Must be literally in sequence to be eligible for merging.
      * This checking is also the reason why {@link processScheduleEntry} uses
      * startOf/endOf at the milliseconds level -- to make this checking consistent.
      */
-    a.interval.end.diff(b.interval.start, 'millisecond').milliseconds <= 1
+    a.end.diff(b.start, 'millisecond').milliseconds <= 1
   )
 }
 
 function mergeEntries(
-  a: ProcessedRelayScheduleEntry,
-  b: ProcessedRelayScheduleEntry
-): ProcessedRelayScheduleEntry {
+  a: ScheduleEntryWithDateTime,
+  b: ScheduleEntryWithDateTime
+): ScheduleEntryWithDateTime {
   return {
     state: a.state,
-    interval: {
-      start: a.interval.start,
-      end: b.interval.end,
-    },
+    start: a.start,
+    end: b.end,
   }
 }
 
@@ -156,8 +146,8 @@ function mergeEntries(
  * @param entries
  * @returns
  */
-export function mergeEligibleEntries(entries: ProcessedRelayScheduleEntry[]) {
-  const processedArr: ProcessedRelayScheduleEntry[] = []
+export function mergeEligibleEntries(entries: ScheduleEntryWithDateTime[]) {
+  const processedArr: ScheduleEntryWithDateTime[] = []
 
   for (const entry of entries) {
     const lastProcessed = processedArr[processedArr.length - 1]
@@ -177,7 +167,7 @@ export function processScheduleEntries(
   entries: ScheduleEntry[],
   utcOffset: string,
   targetZone: TargetZone = 'local'
-): ProcessedRelayScheduleEntry[] {
+): ScheduleEntryWithDateTime[] {
   const transformedAndLocalized = transformAndLocalizeScheduleEntries(
     entries,
     utcOffset,
