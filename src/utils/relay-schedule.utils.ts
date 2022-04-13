@@ -23,7 +23,7 @@ export type TargetZone = Parameters<DateTime['setZone']>[0]
  * you to manually configure which timezone will the time unit get localized.
  * @returns The date portion of the DateTime returned will be the current date.
  */
-function processTimeUnit(
+function timeUnitToDateTime(
   time: TimeUnit,
   utcOffset: string,
   targetZone: TargetZone
@@ -57,8 +57,8 @@ function transformScheduleEntry(
   | [ProcessedRelayScheduleEntry] {
   const now = DateTime.now().setZone(targetZone)
 
-  const pStart = processTimeUnit(start, utcOffset, targetZone)
-  const pEnd = processTimeUnit(end, utcOffset, targetZone)
+  const pStart = timeUnitToDateTime(start, utcOffset, targetZone)
+  const pEnd = timeUnitToDateTime(end, utcOffset, targetZone)
 
   if (!pStart.hasSame(now, 'day') || !pEnd.hasSame(now, 'day')) {
     return [
