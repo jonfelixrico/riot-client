@@ -11,12 +11,20 @@
     }"
   >
     <div
-      v-for="({ state, ...interval }, index) of items"
+      v-for="({ state, start, end }, index) of items"
       :key="index"
       :data-index="index"
       :data-active="activeIndex === index"
+      :data-start="start"
+      :data-end="end"
       data-cy="item"
-      :style="[containerDependentStyles, getSizingStyles(interval)]"
+      :style="[
+        containerDependentStyles,
+        getSizingStyles({
+          start,
+          end,
+        }),
+      ]"
       class="item"
       :class="{
         on: state === 'ON',
