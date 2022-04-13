@@ -99,7 +99,7 @@ function processScheduleEntry(
  * @param targetZone
  * @returns
  */
-export function processScheduleEntryArray(
+export function processAndLocalizeScheduleEntryArray(
   entries: ScheduleEntry[],
   utcOffset: string,
   targetZone: TargetZone = 'local'
