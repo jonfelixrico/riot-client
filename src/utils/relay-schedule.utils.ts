@@ -151,6 +151,11 @@ function mergeEntries(
   }
 }
 
+/**
+ * Merges successive schedules.
+ * @param entries
+ * @returns
+ */
 export function mergeEligibleEntries(entries: ProcessedRelayScheduleEntry[]) {
   const processedArr: ProcessedRelayScheduleEntry[] = []
 
