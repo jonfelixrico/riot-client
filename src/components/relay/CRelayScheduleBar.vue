@@ -32,13 +32,17 @@
 <script lang="ts">
 import { computed } from '@vue/reactivity'
 import { defineComponent, PropType } from 'vue'
-import { ScheduleBarItem } from './schedule-bar.types'
+import { ScheduleBarItem } from './relay.types'
 import { MAX_SECONDS } from './relay.constants'
 
 type RelayScheduleBarOrientation = 'horizontal' | 'vertical'
 
 export default defineComponent({
   props: {
+    /**
+     * Asumes that all seconds in the day has been occupied by one of the items here.
+     * Do NOT leave any gaps or there will be a UI issue.
+     */
     items: {
       type: Array as PropType<ScheduleBarItem[]>,
       required: true,
