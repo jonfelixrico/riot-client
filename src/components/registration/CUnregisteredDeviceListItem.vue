@@ -15,7 +15,7 @@
           <span class="text-caption text-grey-7" data-cy="last-activity">
             <i18n-t keypath="registration.lastActivity">
               <template #date>
-                <CDateDisplay :date="device.lastQueueDt" :refDt="now" />
+                <CDateDisplay :date="device.lastQueueDt" :ref-dt="now" />
               </template>
             </i18n-t>
           </span>
@@ -25,9 +25,9 @@
       <q-btn
         data-cy="register-btn"
         no-caps
-        @click="$emit('register-click')"
         color="primary"
         unelevated
+        @click="$emit('register-click')"
       >
         {{ t('registration.register') }}
       </q-btn>
@@ -38,10 +38,10 @@
 
       <q-card-section class="row q-gutter-x-sm q-py-xs">
         <q-chip
-          square
-          dense
           v-for="{ type, count } of groupedModules"
           :key="type"
+          square
+          dense
           data-cy="module-group"
           :data-type="type"
         >
@@ -63,9 +63,9 @@ import CDateDisplay from 'components/common/CDateDisplay.vue'
 import { useStaticDateTime } from 'src/composables/static-datetime.composable'
 
 export default defineComponent({
-  emits: ['register-click'],
 
   components: { CDateDisplay },
+  emits: ['register-click'],
 
   props: {
     device: {

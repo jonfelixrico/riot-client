@@ -1,20 +1,20 @@
 <template>
   <div>
-    <CDeviceModuleHeader :deviceModule="deviceModule" />
+    <CDeviceModuleHeader :device-module="deviceModule" />
     <q-separator />
     <!-- TODO do not hardcode the height value -->
     <q-skeleton v-if="!relayConfig" height="200px" />
 
     <CDailySchedulePreview
       v-else-if="relayConfig.schedule.type === 'DAILY'"
-      :utcOffset="relayConfig.schedule.utcOffset"
-      :dailySchedule="relayConfig.schedule.dailySchedule"
+      :utc-offset="relayConfig.schedule.utcOffset"
+      :daily-schedule="relayConfig.schedule.dailySchedule"
     />
 
     <CWeeklySchedulePreview
       v-else-if="relayConfig.schedule.type === 'WEEKLY'"
-      :utcOffset="relayConfig.schedule.utcOffset"
-      :weeklySchedule="relayConfig.schedule.weeklySchedule"
+      :utc-offset="relayConfig.schedule.utcOffset"
+      :weekly-schedule="relayConfig.schedule.weeklySchedule"
     />
   </div>
 </template>

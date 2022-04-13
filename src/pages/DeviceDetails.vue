@@ -22,7 +22,7 @@
           <q-card-section>
             <CDeviceHeader
               :device="device"
-              :lastHeartbeatDt="lastHeartbeatDt ?? undefined"
+              :last-heartbeat-dt="lastHeartbeatDt ?? undefined"
             />
           </q-card-section>
         </q-card>
