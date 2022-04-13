@@ -10,13 +10,13 @@ import {
   ScheduleEntryWithDateTime,
 } from 'src/utils/relay-schedule.utils'
 import { reduce, sortBy } from 'lodash'
-import { useTickingDateTime } from 'src/composables/ticking-datetime.composable'
 import { computed } from '@vue/reactivity'
 import {
   fillGapsInSchedule,
   transformForPresentation,
 } from './relay-schedule-presentation.utils'
 import CHorizontalSchedulePreview from './CHorizontalSchedulePreview.vue'
+import { DateTime } from 'luxon'
 
 type WeeklyScheduleObj = WeeklySchedule['weeklySchedule']
 
@@ -79,11 +79,15 @@ export default defineComponent({
       type: Object as PropType<WeeklySchedule['weeklySchedule']>,
       required: true,
     },
+
+    now: {
+      type: DateTime,
+      required: true,
+    },
   },
 
   setup(props) {
-    const { now } = useTickingDateTime()
-    const dowNow = computed(() => DOW_INDEX_TO_DOW_STR[now.value.weekday])
+    const dowNow = computed(() => DOW_INDEX_TO_DOW_STR[props.now.weekday])
 
     const processedWeeklySchedule = computed(() => {
       const { utcOffset, weeklySchedule } = props
@@ -114,7 +118,6 @@ export default defineComponent({
 
     return {
       forPresentation,
-      now,
     }
   },
 

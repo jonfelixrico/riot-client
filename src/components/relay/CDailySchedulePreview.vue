@@ -6,7 +6,6 @@
 import { defineComponent, PropType, computed } from 'vue'
 import { DailySchedule } from 'src/types/relay-config.interface'
 import CHorizontalSchedulePreview from './CHorizontalSchedulePreview.vue'
-import { useTickingDateTime } from 'src/composables/ticking-datetime.composable'
 import { processScheduleEntries } from 'src/utils/relay-schedule.utils'
 import {
   transformForPresentation,
@@ -14,6 +13,7 @@ import {
   PresentationScheduleEntry,
 } from './relay-schedule-presentation.utils'
 import { sortBy } from 'lodash'
+import { DateTime } from 'luxon'
 
 export default defineComponent({
   components: { CHorizontalSchedulePreview },
@@ -23,15 +23,19 @@ export default defineComponent({
       type: String as PropType<DailySchedule['utcOffset']>,
       required: true,
     },
+
     dailySchedule: {
       type: Array as PropType<DailySchedule['dailySchedule']>,
+      required: true,
+    },
+
+    now: {
+      type: DateTime,
       required: true,
     },
   },
 
   setup(props) {
-    const { now } = useTickingDateTime()
-
     const transformed = computed(() => {
       const { dailySchedule, utcOffset } = props
 
@@ -97,7 +101,6 @@ export default defineComponent({
     })
 
     return {
-      now,
       transformed,
     }
   },
