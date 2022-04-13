@@ -8,7 +8,7 @@ import {
 import {
   mergeEligibleEntries,
   ProcessedRelayScheduleEntry,
-  processAndLocalizeScheduleEntryArray,
+  transformAndLocalizeScheduleEntries,
   TargetZone,
 } from './relay-schedule.utils'
 
@@ -102,7 +102,7 @@ export class DailyScheduleDisplayApi implements IDailyScheduleDisplayApi {
     const targetZone = (this.targetZone = options?.targetZone ?? 'local')
 
     this.entries = mergeEligibleEntries(
-      processAndLocalizeScheduleEntryArray(dailySchedule, utcOffset, targetZone)
+      transformAndLocalizeScheduleEntries(dailySchedule, utcOffset, targetZone)
     )
 
     this._schedule = dateTimeArrayToTimeUnitArray(this.entries)

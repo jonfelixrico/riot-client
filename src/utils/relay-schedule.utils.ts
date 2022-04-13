@@ -48,7 +48,7 @@ function processTimeUnit(
  * @param targetZone
  * @returns The date portion of the DateTimes will use the current (localized) Date.
  */
-function processScheduleEntry(
+function transformScheduleEntry(
   { start, end, state }: ScheduleEntry,
   utcOffset: string,
   targetZone: TargetZone = 'local'
@@ -99,7 +99,7 @@ function processScheduleEntry(
  * @param targetZone
  * @returns
  */
-export function processAndLocalizeScheduleEntryArray(
+export function transformAndLocalizeScheduleEntries(
   entries: ScheduleEntry[],
   utcOffset: string,
   targetZone: TargetZone = 'local'
@@ -107,7 +107,7 @@ export function processAndLocalizeScheduleEntryArray(
   const processedArr: ProcessedRelayScheduleEntry[] = []
 
   for (const entry of entries) {
-    processedArr.push(...processScheduleEntry(entry, utcOffset, targetZone))
+    processedArr.push(...transformScheduleEntry(entry, utcOffset, targetZone))
   }
 
   return processedArr
