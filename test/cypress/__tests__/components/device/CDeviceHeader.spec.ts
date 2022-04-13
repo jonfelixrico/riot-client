@@ -1,5 +1,5 @@
 import { mount } from '@cypress/vue'
-import CDeviceHeader from 'components/CDeviceHeader.vue'
+import CDeviceHeader from 'components/device/CDeviceHeader.vue'
 import { DateTime } from 'luxon'
 import { Device } from 'src/types/device.interface'
 
