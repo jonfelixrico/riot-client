@@ -9,7 +9,11 @@ import { MAX_SECONDS } from './relay.constants'
  * @param param0
  * @returns
  */
-function convertDateTimeToSeconds({ hour, minute, second }: DateTime): number {
+export function convertDateTimeToSeconds({
+  hour,
+  minute,
+  second,
+}: DateTime): number {
   return hour * 3600 + minute * 60 + second
 }
 
