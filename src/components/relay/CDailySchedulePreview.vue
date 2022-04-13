@@ -34,7 +34,36 @@ export default defineComponent({
 
     const transformed = computed(() => {
       const { dailySchedule, utcOffset } = props
+
+      // Can have multi-day items due to timezone conversion
       const processed = processScheduleEntries(dailySchedule, utcOffset)
+
+      /**
+       * Will end up ignoring the date part and will keep only the
+       * time part of the processed data. Time data may not be unsorted tho.
+       *
+       * The case where the data is unsorted can be caused by this scenario:
+       *
+       * Processed has two items:
+       * start: 2022-01-01T12:00:00Z
+       * end: 2022-01-01T23:59:59Z
+       *
+       * start: 2022-01-2T00:00:00Z
+       * end: 2022-01-02T12:00:00Z
+       *
+       * Once {@link transformForPresentation} is executed, the data when represented
+       * as time, will end up like this:
+       *
+       * start: 12:00:00
+       * end: 23:59:59
+       *
+       * start: 00:00:00
+       * end: 12:00:00
+       *
+       * This is expected due to the original data above. To fix this quirk, we just
+       * have to sort them by start times to make the data adhere to the business logic
+       * again.
+       */
       const transformed = transformForPresentation(processed)
       const sorted = sortBy(transformed, 'start')
 
