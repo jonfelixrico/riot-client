@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import CDeviceModuleHeader from 'components/CDeviceModuleHeader.vue'
+import CDeviceModuleHeader from 'components/device-module/CDeviceModuleHeader.vue'
 import { DeviceIdentifier, DeviceModule } from 'src/types/device.interface'
 import { defineComponent, onBeforeMount, PropType } from 'vue'
 import { useGetRelayConfigApi } from 'composables/get-relay-config-api.composable'

@@ -48,7 +48,7 @@ import { defineComponent, onBeforeMount, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getRelativeFormattingToken } from 'utils/date.utils'
 import CDeviceHeader from 'components/CDeviceHeader.vue'
-import CDeviceModuleList from 'components/CDeviceModuleList.vue'
+import CDeviceModuleList from 'components/device-module/CDeviceModuleList.vue'
 
 interface DeviceQuery {
   deviceId: string
