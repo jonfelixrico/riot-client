@@ -1,5 +1,5 @@
 import { mount } from '@cypress/vue'
-import CRelayScheduleBar from 'components/relay/CRelayScheduleBar.vue'
+import CScheduleDisplay from 'components/relay/CScheduleDisplay.vue'
 import { ScheduleBarItem } from 'src/components/relay/relay.types'
 import { RelayState } from 'src/types/relay-config.interface'
 
@@ -21,7 +21,7 @@ function scheduleHelper(
   }
 }
 
-describe('CRelayVerticalBar', () => {
+describe('CScheduleDisplay', () => {
   const items: ScheduleBarItem[] = [
     scheduleHelper('00:00:00', '11:00:00', 'ON'),
     scheduleHelper('11:00:01', '12:59:59'),
@@ -29,7 +29,7 @@ describe('CRelayVerticalBar', () => {
   ]
 
   it('should display all items', () => {
-    mount(CRelayScheduleBar, {
+    mount(CScheduleDisplay, {
       props: { items },
     })
 
@@ -37,7 +37,7 @@ describe('CRelayVerticalBar', () => {
   })
 
   it('should be able to indicate the active item', () => {
-    mount(CRelayScheduleBar, {
+    mount(CScheduleDisplay, {
       props: { items, activeIndex: 1 },
     })
 
@@ -47,7 +47,7 @@ describe('CRelayVerticalBar', () => {
   })
 
   it('should render items horizontally if orientation is horizontal', () => {
-    mount(CRelayScheduleBar, {
+    mount(CScheduleDisplay, {
       props: { items, orientation: 'horizontal' },
     })
 
@@ -66,7 +66,7 @@ describe('CRelayVerticalBar', () => {
   })
 
   it('should render items vertically if orientation is vertical', () => {
-    mount(CRelayScheduleBar, {
+    mount(CScheduleDisplay, {
       props: { items, orientation: 'vertical' },
     })
 
@@ -85,7 +85,7 @@ describe('CRelayVerticalBar', () => {
   })
 
   it('should emit the active update', () => {
-    mount(CRelayScheduleBar, {
+    mount(CScheduleDisplay, {
       props: { items },
     })
 
