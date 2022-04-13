@@ -23,7 +23,7 @@ export interface PresentationScheduleEntry {
   end: number
 }
 
-function transformToUseSeconds(
+export function transformForPresentation(
   entries: ScheduleEntryWithDateTime[]
 ): PresentationScheduleEntry[] {
   return entries.map(({ start, end, state }) => {
@@ -41,7 +41,7 @@ function transformToUseSeconds(
  * @param items
  * @returns
  */
-function fillGapsInSchedule(
+export function fillGapsInSchedule(
   items: PresentationScheduleEntry[]
 ): PresentationScheduleEntry[] {
   const filled: PresentationScheduleEntry[] = []
@@ -50,25 +50,29 @@ function fillGapsInSchedule(
   for (let i = 0; i < items.length; i++) {
     const item = items[i]
     if (i === 0 && item.start !== 0) {
+      // first sched doesnt start at schedule-0
       filled.push({
         start: 0,
         end: item.start - 1,
         state: null,
       })
       filled.push(item)
-    } else if (i === items.length - 1 && item.end !== MAX_SECONDS) {
+    } else if (i === items.length - 1 && item.end < MAX_SECONDS) {
+      // last sched doesn't end at the final second
       filled.push(item)
       filled.push({
         start: item.end + 1,
         end: MAX_SECONDS,
         state: null,
       })
-    } else if (item.start !== lastSeconds + 1) {
+    } else if (lastSeconds !== 0 && item.start < lastSeconds + 1) {
       filled.push({
-        start: lastSeconds,
+        start: lastSeconds + 1,
         end: item.start - 1,
         state: null,
       })
+      filled.push(item)
+    } else {
       filled.push(item)
     }
 
@@ -76,11 +80,4 @@ function fillGapsInSchedule(
   }
 
   return filled
-}
-
-export function prepareScheduleEntryWithDateTimeForPresentation(
-  entries: ScheduleEntryWithDateTime[]
-): PresentationScheduleEntry[] {
-  const transformed = transformToUseSeconds(entries)
-  return fillGapsInSchedule(transformed)
 }
