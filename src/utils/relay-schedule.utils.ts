@@ -186,3 +186,17 @@ export function processScheduleEntries(
 
   return mergeEligibleEntries(transformedAndLocalized)
 }
+
+/**
+ * Converts a {@link DateTime} object into a number representing
+ * its hours + minutes + seconds as seconds.
+ * @param param0
+ * @returns
+ */
+export function convertDateTimeToSeconds({
+  hour,
+  minute,
+  second,
+}: DateTime): number {
+  return hour * 3600 + minute * 60 + second
+}
