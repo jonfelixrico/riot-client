@@ -31,4 +31,14 @@ describe('CHorizontalSchedulePreview', () => {
 
     cy.dataCy('time-indicator').should('not.exist')
   })
+
+  it('should display the schedule', () => {
+    mount(CHorizontalSchedulePreview, {
+      props: {
+        entries,
+      },
+    })
+
+    cy.dataCy('schedule-display').should('exist')
+  })
 })
