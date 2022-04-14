@@ -1,3 +1,4 @@
+import { clamp } from 'lodash'
 import { DateTime } from 'luxon'
 import {
   TimeUnit,
@@ -185,4 +186,50 @@ export function processScheduleEntries(
   )
 
   return mergeEligibleEntries(transformedAndLocalized)
+}
+
+type DayOffset = -1 | 0 | 1
+
+export interface LocalizedScheduleEntry extends ScheduleEntry {
+  dayOffset: DayOffset
+}
+
+function dateTimeToTimeUnit({ hour, minute, second }: DateTime): TimeUnit {
+  return {
+    hour,
+    minute,
+    second,
+  }
+}
+
+function transformScheduleEntryWithDateTime(
+  { start, end, state }: ScheduleEntryWithDateTime,
+  referenceDay: DateTime['day']
+): LocalizedScheduleEntry {
+  return {
+    dayOffset: clamp(start.day - referenceDay, -1, 1) as DayOffset,
+    start: dateTimeToTimeUnit(start),
+    end: dateTimeToTimeUnit(end),
+    state,
+  }
+}
+
+export function processScheduleEntriesV2(
+  entries: ScheduleEntry[],
+  utcOffset: string,
+  targetZone: TargetZone = 'local'
+): LocalizedScheduleEntry[] {
+  const transformedAndLocalized = transformAndLocalizeScheduleEntries(
+    entries,
+    utcOffset,
+    targetZone
+  )
+
+  const merged = mergeEligibleEntries(transformedAndLocalized)
+
+  const localizedNow = DateTime.now().setZone(targetZone)
+
+  return merged.map((entry) =>
+    transformScheduleEntryWithDateTime(entry, localizedNow.day)
+  )
 }
