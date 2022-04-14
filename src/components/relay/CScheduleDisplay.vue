@@ -30,7 +30,6 @@
         on: state === 'ON',
         off: state === 'OFF',
         active: activeIndex === index,
-        'no-pointer-events': noPointerEvents,
       }"
       :data-state="state ?? 'UNOCCUPIED'"
       @dblclick="onDblClick"
