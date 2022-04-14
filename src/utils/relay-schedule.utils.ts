@@ -1,3 +1,4 @@
+import { clamp } from 'lodash'
 import { DateTime } from 'luxon'
 import {
   TimeUnit,
@@ -5,7 +6,7 @@ import {
   ScheduleEntry,
 } from 'types/relay-config.interface'
 
-export interface ScheduleEntryWithDateTime extends ScheduleEntry {
+interface ScheduleEntryWithDateTime extends ScheduleEntry {
   start: DateTime
   end: DateTime
   state: RelayState
@@ -49,7 +50,7 @@ function timeUnitToDateTime(
 function transformScheduleEntry(
   { start, end, state }: ScheduleEntry,
   utcOffset: string,
-  targetZone: TargetZone = 'local'
+  targetZone: TargetZone
 ):
   | [ScheduleEntryWithDateTime, ScheduleEntryWithDateTime]
   | [ScheduleEntryWithDateTime] {
@@ -146,7 +147,7 @@ function mergeEntries(
  * @param entries
  * @returns
  */
-export function mergeEligibleEntries(entries: ScheduleEntryWithDateTime[]) {
+function mergeEligibleEntries(entries: ScheduleEntryWithDateTime[]) {
   const processedArr: ScheduleEntryWithDateTime[] = []
 
   for (const entry of entries) {
@@ -163,16 +164,48 @@ export function mergeEligibleEntries(entries: ScheduleEntryWithDateTime[]) {
   return processedArr
 }
 
-export function processScheduleEntries(
+type DayOffset = -1 | 0 | 1
+
+export interface LocalizedScheduleEntry extends ScheduleEntry {
+  dayOffset: DayOffset
+}
+
+function dateTimeToTimeUnit({ hour, minute, second }: DateTime): TimeUnit {
+  return {
+    hour,
+    minute,
+    second,
+  }
+}
+
+function transformScheduleEntryWithDateTime(
+  { start, end, state }: ScheduleEntryWithDateTime,
+  referenceDay: DateTime['day']
+): LocalizedScheduleEntry {
+  return {
+    dayOffset: clamp(start.day - referenceDay, -1, 1) as DayOffset,
+    start: dateTimeToTimeUnit(start),
+    end: dateTimeToTimeUnit(end),
+    state,
+  }
+}
+
+export function localizeScheduleEntries(
   entries: ScheduleEntry[],
   utcOffset: string,
   targetZone: TargetZone = 'local'
-): ScheduleEntryWithDateTime[] {
+): LocalizedScheduleEntry[] {
   const transformedAndLocalized = transformAndLocalizeScheduleEntries(
     entries,
     utcOffset,
     targetZone
   )
 
-  return mergeEligibleEntries(transformedAndLocalized)
+  const merged = mergeEligibleEntries(transformedAndLocalized)
+
+  const localizedNow = DateTime.now().setZone(targetZone)
+
+  return merged.map((entry) =>
+    transformScheduleEntryWithDateTime(entry, localizedNow.day)
+  )
 }

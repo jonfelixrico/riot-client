@@ -1,14 +1,9 @@
 import { mount } from '@cypress/vue'
 import CScheduleDisplay from 'components/relay/CScheduleDisplay.vue'
-import { PresentationScheduleEntry } from 'components/relay/relay-schedule-presentation.utils'
-import { scheduleFromTimeString } from './relay-schedule.test-utils'
+import { SINGLE_DAY_SCHEDULE } from './relay-schedule.test-data'
 
 describe('CScheduleDisplay', () => {
-  const items: PresentationScheduleEntry[] = [
-    scheduleFromTimeString('00:00:00', '11:00:00', 'ON'),
-    scheduleFromTimeString('11:00:01', '12:59:59'),
-    scheduleFromTimeString('13:00:00', '23:59:59', 'OFF'),
-  ]
+  const items = SINGLE_DAY_SCHEDULE
 
   it('should display all items', () => {
     mount(CScheduleDisplay, {
