@@ -24,7 +24,7 @@ import { computed } from '@vue/reactivity'
 import { round } from 'lodash'
 import { DateTime } from 'luxon'
 import { defineComponent } from 'vue'
-import { convertDateTimeToSeconds } from './relay-schedule-presentation.utils'
+import { representTimeUnitAsSeconds } from './relay-schedule-presentation.utils'
 import { MAX_SECONDS } from './relay.constants'
 
 export default defineComponent({
@@ -49,7 +49,7 @@ export default defineComponent({
     const positionStyle = computed(() => {
       const leftOffset = props.iconSize / 2
       const left =
-        (convertDateTimeToSeconds(props.now) / MAX_SECONDS) * props.width
+        (representTimeUnitAsSeconds(props.now) / MAX_SECONDS) * props.width
       return {
         left: `${round(left) - leftOffset}px`,
       }
