@@ -53,7 +53,7 @@ function timeUnitToDateTime(
 function transformScheduleEntry(
   { start, end, state }: ScheduleEntry,
   utcOffset: string,
-  targetZone: TargetZone = 'local'
+  targetZone: TargetZone
 ):
   | [ScheduleEntryWithDateTime, ScheduleEntryWithDateTime]
   | [ScheduleEntryWithDateTime] {
