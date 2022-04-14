@@ -1,10 +1,10 @@
 import { mount } from '@cypress/vue'
 import CHorizontalSchedulePreview from 'components/relay/CHorizontalSchedulePreview.vue'
 import { DateTime } from 'luxon'
-import { PRESENTATION_SCHEDULE_ENTRY_ARR } from './relay-schedule.test-data'
+import { SINGLE_DAY_SCHEDULE } from './relay-schedule.test-data'
 
 describe('CHorizontalSchedulePreview', () => {
-  const entries = PRESENTATION_SCHEDULE_ENTRY_ARR
+  const entries = SINGLE_DAY_SCHEDULE
 
   it('should show a time indicator if the current time was provided', () => {
     mount(CHorizontalSchedulePreview, {
