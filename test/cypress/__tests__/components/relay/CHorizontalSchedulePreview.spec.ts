@@ -15,7 +15,8 @@ describe('CHorizontalSchedulePreview', () => {
     mount(CHorizontalSchedulePreview, {
       props: {
         entries,
-        now: DateTime.fromISO('2022-01-01T12:00:00Z'),
+        // Yes, machine local time. This will cause the indicator to appear in the middle
+        now: DateTime.fromISO('2022-01-01T12:00:00'),
       },
     })
 
@@ -41,4 +42,6 @@ describe('CHorizontalSchedulePreview', () => {
 
     cy.dataCy('schedule-display').should('exist')
   })
+
+  // TODO maybe test if the width behavior is working properly?
 })
