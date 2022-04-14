@@ -1,5 +1,5 @@
 <template>
-  <CHorizontalSchedulePreview :now="now" :entries="forPresentation" />
+  <CHorizontalSchedulePreview :now="now" :entries="scheduleToday" />
 </template>
 
 <script lang="ts">
@@ -9,7 +9,7 @@ import {
   processScheduleEntries,
   ScheduleEntryWithDateTime,
 } from 'src/utils/relay-schedule.utils'
-import { reduce, sortBy } from 'lodash'
+import { mapValues, reduce, sortBy } from 'lodash'
 import { computed } from '@vue/reactivity'
 import {
   fillGapsInSchedule,
@@ -40,7 +40,17 @@ const DOW_INDEX_TO_DOW_STR: Record<number, keyof ExtendedWeeklySchedule> = {
   7: 'sun',
 }
 
-function generateWeeklySchedule(
+const DISPLAY_SEQUENCE: Array<keyof ExtendedWeeklySchedule> = [
+  'mon',
+  'tues',
+  'wed',
+  'thurs',
+  'fri',
+  'sat',
+  'sun',
+]
+
+function groupScheduleByDow(
   sched: ScheduleEntryWithDateTime[]
 ): ExtendedWeeklySchedule {
   const sorted = sortBy(sched, ({ start }) => start.toMillis())
@@ -97,9 +107,10 @@ export default defineComponent({
 
   setup(props) {
     const dowNow = computed(() => DOW_INDEX_TO_DOW_STR[props.now.weekday])
+    const zoneName = computed(() => props.now.zoneName)
 
-    const processedWeeklySchedule = computed(() => {
-      const { utcOffset, weeklySchedule, now } = props
+    const presentationWeeklySchedule = computed(() => {
+      const { utcOffset, weeklySchedule } = props
 
       /*
        * We could process the weekly schedules separately per DOW, but in the end
@@ -110,27 +121,36 @@ export default defineComponent({
       const processed = processScheduleEntries(
         flattened,
         utcOffset,
-        now.zoneName
+        /*
+         * Do NOT use props.now.zoneName directly here because it will
+         * cause this computed to keep on re-computing each update of now.
+         *
+         * We created the `targetZone` computed ref because even if the value
+         * of now changes, it will not cause unnecessary recomputes in this computed
+         * ref as long as the zone of the new value of `now` is the same as the old one.
+         */
+        zoneName.value
       )
 
       /*
        * Here, we're regenerating the lost DOW grouping. The DOW grouping here respects
        * the DOW of the localized intervals.
        */
-      return generateWeeklySchedule(processed)
+      const regrouped = groupScheduleByDow(processed)
+
+      return mapValues(regrouped, (scheduleArr) => {
+        const transformed = transformForPresentation(scheduleArr)
+        return fillGapsInSchedule(transformed)
+      })
     })
 
-    const todaySchedule = computed(
-      () => processedWeeklySchedule.value[dowNow.value]
+    const scheduleToday = computed(
+      () => presentationWeeklySchedule.value[dowNow.value]
     )
 
-    const forPresentation = computed(() => {
-      const transformed = transformForPresentation(todaySchedule.value)
-      return fillGapsInSchedule(transformed)
-    })
-
     return {
-      forPresentation,
+      scheduleToday,
+      DISPLAY_SEQUENCE,
     }
   },
 })
