@@ -33,7 +33,7 @@
         'no-pointer-events': noPointerEvents,
       }"
       :data-state="state ?? 'UNOCCUPIED'"
-      @dblclick="$emit('update:activeIndex', index)"
+      @dblclick="onDblClick"
     />
   </div>
 </template>
@@ -77,12 +77,12 @@ export default defineComponent({
       default: null,
     },
 
-    noPointerEvents: Boolean,
+    clickable: Boolean,
   },
 
   emits: ['update:activeIndex'],
 
-  setup(props) {
+  setup(props, emit) {
     /**
      * These styles will make each item take the entire height of the
      * container if orientation is horizontal. If set to vertical, then
@@ -122,9 +122,16 @@ export default defineComponent({
       }
     }
 
+    function onDblClick(index: number) {
+      if (props.clickable) {
+        emit('update:activeIndex', index)
+      }
+    }
+
     return {
       containerDependentStyles,
       getSizingStyles,
+      onDblClick,
     }
   },
 })
