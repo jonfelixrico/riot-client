@@ -146,7 +146,7 @@ function mergeEntries(
  * @param entries
  * @returns
  */
-export function mergeEligibleEntries(entries: ScheduleEntryWithDateTime[]) {
+function mergeEligibleEntries(entries: ScheduleEntryWithDateTime[]) {
   const processedArr: ScheduleEntryWithDateTime[] = []
 
   for (const entry of entries) {
