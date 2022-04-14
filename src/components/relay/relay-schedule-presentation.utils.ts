@@ -1,5 +1,9 @@
 import { DateTime } from 'luxon'
-import { RelayState, TimeUnit } from 'src/types/relay-config.interface'
+import {
+  RelayState,
+  ScheduleEntry,
+  TimeUnit,
+} from 'src/types/relay-config.interface'
 import { ScheduleEntryWithDateTime } from 'src/utils/relay-schedule.utils'
 import { MAX_SECONDS } from './relay.constants'
 
@@ -84,4 +88,16 @@ export function fillGapsInSchedule(
 
 export function representTimeUnitAsSeconds({ hour, minute, second }: TimeUnit) {
   return hour * 3600 + minute * 60 + second
+}
+
+export function transformScheduleEntryForPresentation({
+  start,
+  end,
+  state,
+}: ScheduleEntry): PresentationScheduleEntry {
+  return {
+    state,
+    start: representTimeUnitAsSeconds(start),
+    end: representTimeUnitAsSeconds(end),
+  }
 }
