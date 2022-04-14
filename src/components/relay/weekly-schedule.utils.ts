@@ -6,7 +6,7 @@ import {
 } from 'src/utils/relay-schedule.utils'
 import { representTimeUnitAsSeconds } from './relay-schedule-presentation.utils'
 
-type DayOfWeekString = keyof WeeklySchedule['weeklySchedule']
+export type DayOfWeekString = keyof WeeklySchedule['weeklySchedule']
 
 const DOW_SEQUENCE: DayOfWeekString[] = [
   'mon',
