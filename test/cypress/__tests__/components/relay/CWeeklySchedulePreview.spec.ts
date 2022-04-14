@@ -61,6 +61,11 @@ describe('CWeeklySchedulePreview', () => {
   })
 
   it('each schedule should display the correct number of sub-bars', () => {
+    /*
+     * NOTE: schedule-display and item are from a sub-component of CWeeklySchedulePreview
+     * Maybe I shouldn't include these kind of tests...?
+     */
+
     cy.dataCy('dow-item')
       .get('[data-day="mon"]')
       .dataCy('schedule-display')
