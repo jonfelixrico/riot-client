@@ -1,15 +1,10 @@
-import { PresentationScheduleEntry } from 'src/components/relay/relay-schedule-presentation.utils'
-import { scheduleFromTimeString } from './relay-schedule.test-utils'
 import { mount } from '@cypress/vue'
 import CHorizontalSchedulePreview from 'components/relay/CHorizontalSchedulePreview.vue'
 import { DateTime } from 'luxon'
+import { SINGLE_DAY_SCHEDULE } from './relay-schedule.test-data'
 
 describe('CHorizontalSchedulePreview', () => {
-  const entries: PresentationScheduleEntry[] = [
-    scheduleFromTimeString('00:00:00', '11:00:00', 'ON'),
-    scheduleFromTimeString('11:00:01', '12:59:59'),
-    scheduleFromTimeString('13:00:00', '23:59:59', 'OFF'),
-  ]
+  const entries = SINGLE_DAY_SCHEDULE
 
   it('should show a time indicator if the current time was provided', () => {
     mount(CHorizontalSchedulePreview, {
