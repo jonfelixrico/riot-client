@@ -1,11 +1,20 @@
 <template>
   <div class="q-gutter-y-sm">
-    <CHorizontalSchedulePreview
+    <div
       v-for="day of DISPLAY_SEQUENCE"
       :key="day"
-      :now="dowNow === day ? now : undefined"
-      :entries="schedules[day]"
-    />
+      class="row items-center q-col-gutter-x-sm"
+    >
+      <div class="col-2">
+        {{ t(`relay.daysOfWeek.${day}`) }}
+      </div>
+      <div class="col">
+        <CHorizontalSchedulePreview
+          :now="dowNow === day ? now : undefined"
+          :entries="schedules[day]"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -24,6 +33,7 @@ import {
 } from './relay-schedule-presentation.utils'
 import CHorizontalSchedulePreview from './CHorizontalSchedulePreview.vue'
 import { DateTime } from 'luxon'
+import { useI18n } from 'vue-i18n'
 
 type WeeklyScheduleObj = WeeklySchedule['weeklySchedule']
 
@@ -151,10 +161,13 @@ export default defineComponent({
       })
     })
 
+    const { t } = useI18n()
+
     return {
       DISPLAY_SEQUENCE,
       dowNow,
       schedules,
+      t,
     }
   },
 })
