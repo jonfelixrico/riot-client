@@ -7,7 +7,7 @@ import { i18n } from 'src/boot/i18n'
 
 const scheduleArr = [
   timeStringToScheduleEntry('00:00:00', '12:00:00', 'ON'),
-  timeStringToScheduleEntry('12:00:01', '23:59:59', 'ON'),
+  timeStringToScheduleEntry('12:00:01', '23:59:59', 'OFF'),
 ]
 
 const weeklySchedule: WeeklySchedule['weeklySchedule'] = {
