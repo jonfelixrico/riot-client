@@ -31,7 +31,7 @@ export default defineComponent({
   props: {
     width: {
       type: Number,
-      required: true,
+      default: 300,
     },
 
     now: {
