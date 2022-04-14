@@ -1,5 +1,12 @@
 <template>
-  <CHorizontalSchedulePreview :now="now" :entries="scheduleToday" />
+  <div class="q-gutter-y-sm">
+    <CHorizontalSchedulePreview
+      v-for="day of DISPLAY_SEQUENCE"
+      :key="day"
+      :now="dowNow === day ? now : undefined"
+      :entries="schedules[day]"
+    />
+  </div>
 </template>
 
 <script lang="ts">
@@ -109,7 +116,7 @@ export default defineComponent({
     const dowNow = computed(() => DOW_INDEX_TO_DOW_STR[props.now.weekday])
     const zoneName = computed(() => props.now.zoneName)
 
-    const presentationWeeklySchedule = computed(() => {
+    const schedules = computed(() => {
       const { utcOffset, weeklySchedule } = props
 
       /*
@@ -144,13 +151,10 @@ export default defineComponent({
       })
     })
 
-    const scheduleToday = computed(
-      () => presentationWeeklySchedule.value[dowNow.value]
-    )
-
     return {
-      scheduleToday,
       DISPLAY_SEQUENCE,
+      dowNow,
+      schedules,
     }
   },
 })
