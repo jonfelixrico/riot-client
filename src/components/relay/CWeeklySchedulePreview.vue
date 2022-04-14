@@ -72,6 +72,9 @@ export default defineComponent({
   components: { CHorizontalSchedulePreview },
 
   props: {
+    /**
+     * The UTC offset of each of the entries in the weekly schedule.
+     */
     utcOffset: {
       type: String as PropType<WeeklySchedule['utcOffset']>,
       required: true,
@@ -82,6 +85,10 @@ export default defineComponent({
       required: true,
     },
 
+    /**
+     * Represents the current time. The `weeklySchedule` prop will have its time
+     * converted to the timezone of the current time.
+     */
     now: {
       type: DateTime,
       required: true,

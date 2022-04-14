@@ -19,6 +19,9 @@ export default defineComponent({
   components: { CHorizontalSchedulePreview },
 
   props: {
+    /**
+     * The UTC offset of each of the schedule entries.
+     */
     utcOffset: {
       type: String as PropType<DailySchedule['utcOffset']>,
       required: true,
@@ -29,6 +32,10 @@ export default defineComponent({
       required: true,
     },
 
+    /**
+     * Represents the current time. The `dailySchedule` prop will have its time
+     * converted to the timezone of the current time.
+     */
     now: {
       type: DateTime,
       required: true,
