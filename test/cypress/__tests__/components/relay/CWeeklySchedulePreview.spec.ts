@@ -40,22 +40,22 @@ describe('CWeeklySchedulePreview', () => {
   })
 
   it('should have a visual representation for each day', () => {
-    cy.dataCy('schedule-preview').should('have.length', 7)
-    cy.dataCy('schedule-preview').get('[data-day="mon"]').should('exist')
-    cy.dataCy('schedule-preview').get('[data-day="tues"]').should('exist')
-    cy.dataCy('schedule-preview').get('[data-day="wed"]').should('exist')
-    cy.dataCy('schedule-preview').get('[data-day="thurs"]').should('exist')
-    cy.dataCy('schedule-preview').get('[data-day="fri"]').should('exist')
-    cy.dataCy('schedule-preview').get('[data-day="sat"]').should('exist')
-    cy.dataCy('schedule-preview').get('[data-day="sun"]').should('exist')
+    cy.dataCy('dow-item').should('have.length', 7)
+    cy.dataCy('dow-item').get('[data-day="mon"]').should('exist')
+    cy.dataCy('dow-item').get('[data-day="tues"]').should('exist')
+    cy.dataCy('dow-item').get('[data-day="wed"]').should('exist')
+    cy.dataCy('dow-item').get('[data-day="thurs"]').should('exist')
+    cy.dataCy('dow-item').get('[data-day="fri"]').should('exist')
+    cy.dataCy('dow-item').get('[data-day="sat"]').should('exist')
+    cy.dataCy('dow-item').get('[data-day="sun"]').should('exist')
   })
 
   it('should indicate the current day', () => {
-    cy.dataCy('schedule-preview')
+    cy.dataCy('dow-item')
       .get('[data-day="wed"]')
       .should('have.attr', 'data-current-day', 'true')
 
-    cy.dataCy('schedule-preview')
+    cy.dataCy('dow-item')
       .get('[data-current-day="true"]')
       .should('have.length', 1)
   })

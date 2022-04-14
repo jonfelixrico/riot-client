@@ -5,7 +5,7 @@
       :key="day"
       class="row items-center q-col-gutter-x-sm"
       :data-day="day"
-      data-cy="schedule-preview"
+      data-cy="dow-item"
       :data-current-day="dowNow === day"
     >
       <div class="col-2">
