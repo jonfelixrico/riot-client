@@ -4,6 +4,9 @@
       v-for="day of DISPLAY_SEQUENCE"
       :key="day"
       class="row items-center q-col-gutter-x-sm"
+      :data-day="day"
+      data-cy="schedule-preview"
+      :data-current-day="dowNow === day"
     >
       <div class="col-2">
         {{ t(`relay.daysOfWeek.${day}`) }}
