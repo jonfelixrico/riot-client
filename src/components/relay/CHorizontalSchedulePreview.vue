@@ -43,6 +43,10 @@ export default defineComponent({
   },
 
   props: {
+    /**
+     * Take note that the entries' timezone is advised to be aligned with
+     * the value of `now`.
+     */
     entries: {
       type: Array as PropType<PresentationScheduleEntry[]>,
       required: true,
