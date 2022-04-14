@@ -34,18 +34,7 @@ import {
 import CHorizontalSchedulePreview from './CHorizontalSchedulePreview.vue'
 import { DateTime } from 'luxon'
 import { useI18n } from 'vue-i18n'
-
-type WeeklyScheduleObj = WeeklySchedule['weeklySchedule']
-
-interface ExtendedWeeklySchedule extends WeeklyScheduleObj {
-  sun: ScheduleEntryWithDateTime[]
-  mon: ScheduleEntryWithDateTime[]
-  tues: ScheduleEntryWithDateTime[]
-  wed: ScheduleEntryWithDateTime[]
-  thurs: ScheduleEntryWithDateTime[]
-  fri: ScheduleEntryWithDateTime[]
-  sat: ScheduleEntryWithDateTime[]
-}
+import { ExtendedWeeklySchedule } from './relay.types'
 
 const DOW_INDEX_TO_DOW_STR: Record<number, keyof ExtendedWeeklySchedule> = {
   1: 'mon',
