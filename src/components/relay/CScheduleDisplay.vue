@@ -30,6 +30,7 @@
         on: state === 'ON',
         off: state === 'OFF',
         active: activeIndex === index,
+        'no-pointer-events': noPointerEvents,
       }"
       :data-state="state ?? 'UNOCCUPIED'"
       @dblclick="$emit('update:activeIndex', index)"
@@ -75,6 +76,8 @@ export default defineComponent({
       type: Number,
       default: null,
     },
+
+    noPointerEvents: Boolean,
   },
 
   emits: ['update:activeIndex'],
