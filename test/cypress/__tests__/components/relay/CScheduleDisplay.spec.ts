@@ -1,9 +1,9 @@
 import { mount } from '@cypress/vue'
 import CScheduleDisplay from 'components/relay/CScheduleDisplay.vue'
-import { SINGLE_DAY_SCHEDULE } from './relay-schedule.test-data'
+import { PRESENTATION_SCHEDULE_ENTRY_ARR } from './relay-schedule.test-data'
 
 describe('CScheduleDisplay', () => {
-  const items = SINGLE_DAY_SCHEDULE
+  const items = PRESENTATION_SCHEDULE_ENTRY_ARR
 
   it('should display all items', () => {
     mount(CScheduleDisplay, {
