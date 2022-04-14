@@ -71,7 +71,10 @@ export default defineComponent({
       default: 'vertical',
     },
 
-    activeIndex: Number,
+    activeIndex: {
+      type: Number,
+      default: null,
+    },
   },
 
   emits: ['update:activeIndex'],
