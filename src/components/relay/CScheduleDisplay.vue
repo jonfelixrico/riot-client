@@ -32,7 +32,7 @@
         active: activeIndex === index,
       }"
       :data-state="state ?? 'UNOCCUPIED'"
-      @dblclick="onDblClick"
+      @dblclick="onDblClick(index)"
     />
   </div>
 </template>
@@ -81,7 +81,7 @@ export default defineComponent({
 
   emits: ['update:activeIndex'],
 
-  setup(props, emit) {
+  setup(props, { emit }) {
     /**
      * These styles will make each item take the entire height of the
      * container if orientation is horizontal. If set to vertical, then
