@@ -8,6 +8,7 @@ import { ScheduleEntryWithDateTime } from 'src/utils/relay-schedule.utils'
 import { MAX_SECONDS } from './relay.constants'
 
 /**
+ * @deprecated
  * Converts a {@link DateTime} object into a number representing
  * its hours + minutes + seconds as seconds.
  * @param param0
@@ -27,6 +28,11 @@ export interface PresentationScheduleEntry {
   end: number
 }
 
+/**
+ * @deprecated
+ * @param entries
+ * @returns
+ */
 export function transformForPresentation(
   entries: ScheduleEntryWithDateTime[]
 ): PresentationScheduleEntry[] {
@@ -42,6 +48,7 @@ export function transformForPresentation(
 /**
  * Fills in the gaps between {@link PresentationScheduleEntry}s with null-state {@link PresentationScheduleEntry}s.
  *
+ * @deprecated Gaps in the schedules are considered as data errors.
  * @param items
  * @returns
  */
