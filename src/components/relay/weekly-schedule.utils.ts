@@ -2,7 +2,7 @@ import { mapValues, sortBy } from 'lodash'
 import { WeeklySchedule } from 'src/types/relay-config.interface'
 import {
   LocalizedScheduleEntry,
-  processScheduleEntriesV2,
+  localizeScheduleEntries,
 } from 'src/utils/relay-schedule.utils'
 import { representTimeUnitAsSeconds } from './relay-schedule-presentation.utils'
 
@@ -69,7 +69,7 @@ export function localizeWeeklySchedule(
   targetZone: string
 ): ActualWeeklySchedule {
   const localizedWeeklySchedule = mapValues(weeklySchedule, (sched) =>
-    processScheduleEntriesV2(sched, utcOffset, targetZone)
+    localizeScheduleEntries(sched, utcOffset, targetZone)
   )
 
   return transferSpillovers(localizedWeeklySchedule)

@@ -6,7 +6,7 @@
 import { defineComponent, PropType, computed } from 'vue'
 import { DailySchedule } from 'src/types/relay-config.interface'
 import CHorizontalSchedulePreview from './CHorizontalSchedulePreview.vue'
-import { processScheduleEntriesV2 } from 'src/utils/relay-schedule.utils'
+import { localizeScheduleEntries } from 'src/utils/relay-schedule.utils'
 import { transformScheduleEntryForPresentation } from './relay-schedule-presentation.utils'
 import { sortBy } from 'lodash'
 import { DateTime } from 'luxon'
@@ -45,7 +45,7 @@ export default defineComponent({
       const { dailySchedule, utcOffset } = props
 
       // Can have multi-day items due to timezone conversion
-      const localized = processScheduleEntriesV2(
+      const localized = localizeScheduleEntries(
         dailySchedule,
         utcOffset,
         /*

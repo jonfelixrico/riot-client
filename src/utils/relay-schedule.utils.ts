@@ -6,7 +6,7 @@ import {
   ScheduleEntry,
 } from 'types/relay-config.interface'
 
-export interface ScheduleEntryWithDateTime extends ScheduleEntry {
+interface ScheduleEntryWithDateTime extends ScheduleEntry {
   start: DateTime
   end: DateTime
   state: RelayState
@@ -190,7 +190,7 @@ function transformScheduleEntryWithDateTime(
   }
 }
 
-export function processScheduleEntriesV2(
+export function localizeScheduleEntries(
   entries: ScheduleEntry[],
   utcOffset: string,
   targetZone: TargetZone = 'local'
