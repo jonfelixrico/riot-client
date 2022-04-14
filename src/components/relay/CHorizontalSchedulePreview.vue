@@ -13,6 +13,7 @@
           :now="now"
           :width="width"
           :icon-size="iconSize"
+          data-cy="time-indicator"
         />
 
         <CScheduleDisplay
@@ -20,6 +21,7 @@
           :items="entries"
           :height="barSize"
           :width="width"
+          data-cy="schedule-display"
         />
       </div>
     </div>
