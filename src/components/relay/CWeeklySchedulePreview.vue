@@ -92,7 +92,7 @@ export default defineComponent({
     const dowNow = computed(() => DOW_INDEX_TO_DOW_STR[props.now.weekday])
 
     const processedWeeklySchedule = computed(() => {
-      const { utcOffset, weeklySchedule } = props
+      const { utcOffset, weeklySchedule, now } = props
 
       /*
        * We could process the weekly schedules separately per DOW, but in the end
@@ -100,7 +100,11 @@ export default defineComponent({
        * just chuck them as a single array.
        */
       const flattened = Object.values(weeklySchedule).flat()
-      const processed = processScheduleEntries(flattened, utcOffset)
+      const processed = processScheduleEntries(
+        flattened,
+        utcOffset,
+        now.zoneName
+      )
 
       /*
        * Here, we're regenerating the lost DOW grouping. The DOW grouping here respects

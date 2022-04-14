@@ -37,10 +37,14 @@ export default defineComponent({
 
   setup(props) {
     const transformed = computed(() => {
-      const { dailySchedule, utcOffset } = props
+      const { dailySchedule, utcOffset, now } = props
 
       // Can have multi-day items due to timezone conversion
-      const processed = processScheduleEntries(dailySchedule, utcOffset)
+      const processed = processScheduleEntries(
+        dailySchedule,
+        utcOffset,
+        now.zoneName
+      )
 
       /**
        * Will end up ignoring the date part and will keep only the
