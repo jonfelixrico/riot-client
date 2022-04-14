@@ -43,14 +43,24 @@ export default defineComponent({
   },
 
   setup(props) {
+    const targetZone = computed(() => props.now.zoneName)
+
     const transformed = computed(() => {
-      const { dailySchedule, utcOffset, now } = props
+      const { dailySchedule, utcOffset } = props
 
       // Can have multi-day items due to timezone conversion
       const processed = processScheduleEntries(
         dailySchedule,
         utcOffset,
-        now.zoneName
+        /*
+         * Do NOT use props.now.zoneName directly here because it will
+         * cause this computed to keep on re-computing each update of now.
+         *
+         * We created the `targetZone` computed ref because even if the value
+         * of now changes, it will not cause unnecessary recomputes in this computed
+         * ref as long as the zone of the new value of `now` is the same as the old one.
+         */
+        targetZone.value
       )
 
       /**
