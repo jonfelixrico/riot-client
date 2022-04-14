@@ -5,6 +5,9 @@ import {
   ScheduleEntry,
 } from 'types/relay-config.interface'
 
+/**
+ * @deprecated We're not going to expose the involvement of DateTime in this API anymore.
+ */
 export interface ScheduleEntryWithDateTime extends ScheduleEntry {
   start: DateTime
   end: DateTime
@@ -163,6 +166,13 @@ function mergeEligibleEntries(entries: ScheduleEntryWithDateTime[]) {
   return processedArr
 }
 
+/**
+ * @deprecated It's problematic to expose the DateTime context.
+ * @param entries
+ * @param utcOffset
+ * @param targetZone
+ * @returns
+ */
 export function processScheduleEntries(
   entries: ScheduleEntry[],
   utcOffset: string,
