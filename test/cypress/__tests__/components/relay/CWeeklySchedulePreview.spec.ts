@@ -59,4 +59,13 @@ describe('CWeeklySchedulePreview', () => {
       .get('[data-current-day="true"]')
       .should('have.length', 1)
   })
+
+  it('each schedule should display the correct number of sub-bars', () => {
+    cy.dataCy('dow-item').each((item) => {
+      cy.wrap(item)
+        .dataCy('schedule-display')
+        .dataCy('items')
+        .should('have.length', 2)
+    })
+  })
 })
