@@ -61,11 +61,46 @@ describe('CWeeklySchedulePreview', () => {
   })
 
   it('each schedule should display the correct number of sub-bars', () => {
-    cy.dataCy('dow-item').each((item) => {
-      cy.wrap(item)
-        .dataCy('schedule-display')
-        .dataCy('items')
-        .should('have.length', 2)
-    })
+    cy.dataCy('dow-item')
+      .get('[data-day="mon"]')
+      .dataCy('schedule-display')
+      .dataCy('item')
+      .should('have.length', scheduleArr.length)
+
+    cy.dataCy('dow-item')
+      .get('[data-day="tues"]')
+      .dataCy('schedule-display')
+      .dataCy('item')
+      .should('have.length', scheduleArr.length)
+
+    cy.dataCy('dow-item')
+      .get('[data-day="wed"]')
+      .dataCy('schedule-display')
+      .dataCy('item')
+      .should('have.length', scheduleArr.length)
+
+    cy.dataCy('dow-item')
+      .get('[data-day="thurs"]')
+      .dataCy('schedule-display')
+      .dataCy('item')
+      .should('have.length', scheduleArr.length)
+
+    cy.dataCy('dow-item')
+      .get('[data-day="fri"]')
+      .dataCy('schedule-display')
+      .dataCy('item')
+      .should('have.length', scheduleArr.length)
+
+    cy.dataCy('dow-item')
+      .get('[data-day="sat"]')
+      .dataCy('schedule-display')
+      .dataCy('item')
+      .should('have.length', scheduleArr.length)
+
+    cy.dataCy('dow-item')
+      .get('[data-day="sun"]')
+      .dataCy('schedule-display')
+      .dataCy('item')
+      .should('have.length', scheduleArr.length)
   })
 })
