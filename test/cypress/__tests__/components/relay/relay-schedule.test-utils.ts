@@ -7,7 +7,7 @@ function timeStringToSeconds(timeStr: string): number {
   return hour * 3600 + minute * 60 + second
 }
 
-export function scheduleFromTimeString(
+export function timeStringToPresentationScheduleEntry(
   startStr: string,
   endStr: string,
   state?: RelayState
