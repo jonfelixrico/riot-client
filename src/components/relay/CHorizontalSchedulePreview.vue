@@ -1,19 +1,27 @@
 <template>
   <div>
     <q-resize-observer @resize="onResize" />
-    <div class="relative-position" style="height: 40px">
+    <div class="relative-position" :style="rootHeightStyle">
+      <!--
+        We can't put these two in the same level as QResizeObserver because
+        their widths can affect QResizeObserver, which can lead to a self-sustaining
+        loop of resizes.
+      -->
       <div class="absolute">
-        <!--
-          We can't put these in the same level as QResizeObserver because
-          their widths can affect QResizeObserver, which can lead to a self-sustaining
-          loop of resizes.
-        -->
-        <CHorizontalTimeIndicator :now="now" :width="width" :icon-size="30" />
+        <CHorizontalTimeIndicator
+          v-if="now"
+          :now="now"
+          :width="width"
+          :icon-size="iconSize"
+          data-cy="time-indicator"
+        />
+
         <CScheduleDisplay
           orientation="horizontal"
           :items="entries"
-          :height="10"
+          :height="barSize"
           :width="width"
+          data-cy="schedule-display"
         />
       </div>
     </div>
@@ -21,11 +29,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref } from 'vue'
+import { computed, defineComponent, PropType, ref } from 'vue'
 import CScheduleDisplay from './CScheduleDisplay.vue'
 import { PresentationScheduleEntry } from './relay-schedule-presentation.utils'
 import { DateTime } from 'luxon'
 import CHorizontalTimeIndicator from './CHorizontalTimeIndicator.vue'
+
+const ICON_SIZE = 30
+const BAR_SIZE = 10
 
 export default defineComponent({
   components: {
@@ -34,26 +45,47 @@ export default defineComponent({
   },
 
   props: {
+    /**
+     * Take note that the entries' timezone is advised to be aligned with
+     * the value of `now`.
+     */
     entries: {
       type: Array as PropType<PresentationScheduleEntry[]>,
       required: true,
     },
 
+    /**
+     * Not providing a value will not show the time indicator.
+     */
     now: {
       type: DateTime,
-      required: true,
+      default: null,
     },
   },
 
-  setup() {
+  setup(props) {
     const widthRef = ref(0)
     function onResize({ width }: { width: number }) {
       widthRef.value = width
     }
 
+    const rootHeightStyle = computed(() => {
+      let totalHeight = BAR_SIZE
+      if (props.now) {
+        totalHeight += ICON_SIZE
+      }
+
+      return {
+        height: `${totalHeight}px`,
+      }
+    })
+
     return {
       onResize,
       width: widthRef,
+      iconSize: ICON_SIZE,
+      barSize: BAR_SIZE,
+      rootHeightStyle,
     }
   },
 })

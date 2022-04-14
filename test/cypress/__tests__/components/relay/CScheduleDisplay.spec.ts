@@ -1,32 +1,9 @@
 import { mount } from '@cypress/vue'
 import CScheduleDisplay from 'components/relay/CScheduleDisplay.vue'
-import { PresentationScheduleEntry } from 'components/relay/relay-schedule-presentation.utils'
-import { RelayState } from 'types/relay-config.interface'
-
-function timeStringToSeconds(timeStr: string): number {
-  const [hour, minute, second] = timeStr.split(':').map(Number)
-
-  return hour * 3600 + minute * 60 + second
-}
-
-function scheduleHelper(
-  startStr: string,
-  endStr: string,
-  state?: RelayState
-): PresentationScheduleEntry {
-  return {
-    start: timeStringToSeconds(startStr),
-    end: timeStringToSeconds(endStr),
-    state: state ?? null,
-  }
-}
+import { SINGLE_DAY_SCHEDULE } from './relay-schedule.test-data'
 
 describe('CScheduleDisplay', () => {
-  const items: PresentationScheduleEntry[] = [
-    scheduleHelper('00:00:00', '11:00:00', 'ON'),
-    scheduleHelper('11:00:01', '12:59:59'),
-    scheduleHelper('13:00:00', '23:59:59', 'OFF'),
-  ]
+  const items = SINGLE_DAY_SCHEDULE
 
   it('should display all items', () => {
     mount(CScheduleDisplay, {
@@ -84,9 +61,9 @@ describe('CScheduleDisplay', () => {
     })
   })
 
-  it('should emit the active update', () => {
+  it('should emit the activeIndex update if clickable', () => {
     mount(CScheduleDisplay, {
-      props: { items },
+      props: { items, clickable: true },
     })
 
     cy.dataCy('item')
@@ -96,6 +73,21 @@ describe('CScheduleDisplay', () => {
         const value =
           Cypress.vueWrapper.emitted<[string]>('update:activeIndex')?.[0]?.[0]
         expect(value).equals(1)
+      })
+  })
+
+  it('should NOT emit the activeIndex update if not clickable', () => {
+    mount(CScheduleDisplay, {
+      props: { items, clickable: false },
+    })
+
+    cy.dataCy('item')
+      .get('[data-index="1"]')
+      .dblclick()
+      .should(() => {
+        const value =
+          Cypress.vueWrapper.emitted<[string]>('update:activeIndex')?.[0]?.[0]
+        expect(value).to.be.undefined
       })
   })
 })

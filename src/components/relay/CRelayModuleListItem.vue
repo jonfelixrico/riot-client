@@ -9,12 +9,14 @@
       v-else-if="relayConfig.schedule.type === 'DAILY'"
       :utc-offset="relayConfig.schedule.utcOffset"
       :daily-schedule="relayConfig.schedule.dailySchedule"
+      :now="now"
     />
 
     <CWeeklySchedulePreview
       v-else-if="relayConfig.schedule.type === 'WEEKLY'"
       :utc-offset="relayConfig.schedule.utcOffset"
       :weekly-schedule="relayConfig.schedule.weeklySchedule"
+      :now="now"
     />
   </div>
 </template>
@@ -27,6 +29,7 @@ import { useGetRelayConfigApi } from 'composables/get-relay-config-api.composabl
 import CDailySchedulePreview from './CDailySchedulePreview.vue'
 import CWeeklySchedulePreview from './CWeeklySchedulePreview.vue'
 import { computed } from '@vue/reactivity'
+import { useTickingDateTime } from 'src/composables/ticking-datetime.composable'
 
 export default defineComponent({
   components: {
@@ -63,8 +66,11 @@ export default defineComponent({
 
     onBeforeMount(fetch)
 
+    const { now } = useTickingDateTime()
+
     return {
       relayConfig,
+      now,
     }
   },
 })
