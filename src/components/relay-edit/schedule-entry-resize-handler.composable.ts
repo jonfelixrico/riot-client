@@ -1,5 +1,7 @@
 import { cloneDeep } from 'lodash'
+import { uid } from 'quasar'
 import { computed, ref, Ref, watch } from 'vue'
+import { MAX_SECONDS } from '../relay/relay.constants'
 import { ScheduleEntryForEditing } from './relay-edit.types'
 
 function mergeEntries(entries: ScheduleEntryForEditing[]) {
@@ -73,6 +75,9 @@ export function useScheduleEntryResizeHandler(
     }
 
     const { value: entries } = entriesRef
+    const activeEntryIndex = entries.findIndex(
+      (entry) => entry.id === activeEntry.id
+    )
 
     /*
      * Collect entries which are not overlapped by the active entry, or only
@@ -97,21 +102,41 @@ export function useScheduleEntryResizeHandler(
 
     const results: ScheduleEntryForEditing[] = []
 
-    results.push(...notOverlappedLeft)
+    const inverseState = activeEntry.state === 'OFF' ? 'ON' : 'OFF'
 
-    results.push({
-      ...overlappedLeft,
-      end: activeEntry.start - 1,
-    })
+    if (activeEntryIndex === 0 && activeEntry.start > 0) {
+      results.push({
+        start: 0,
+        end: activeEntry.start - 1,
+        state: inverseState,
+        id: uid(),
+      })
+    } else {
+      results.push(...notOverlappedLeft)
+
+      results.push({
+        ...overlappedLeft,
+        end: activeEntry.start - 1,
+      })
+    }
 
     results.push(activeEntry)
 
-    results.push({
-      ...overlappedRight,
-      start: activeEntry.end + 1,
-    })
+    if (activeEntryIndex === entries.length - 1) {
+      results.push({
+        start: activeEntry.end + 1,
+        end: MAX_SECONDS,
+        id: uid(),
+        state: inverseState,
+      })
+    } else {
+      results.push({
+        ...overlappedRight,
+        start: activeEntry.end + 1,
+      })
 
-    results.push(...notOverlappedRight)
+      results.push(...notOverlappedRight)
+    }
 
     return mergeEntries(results)
   })
