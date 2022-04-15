@@ -1,10 +1,15 @@
 import { cloneDeep } from 'lodash'
+import { uid } from 'quasar'
 import { ScheduleEntry } from 'types/relay-config.interface'
 import { Ref } from 'vue'
+import { ScheduleEntryForEditing } from './relay-edit.types'
 
-export function useScheduleEntryDeleteHandler(toMutate: Ref<ScheduleEntry[]>) {
-  function handleDelete(index: number) {
+export function useScheduleEntryDeleteHandler(
+  toMutate: Ref<ScheduleEntryForEditing[]>
+) {
+  function handleDelete(toDeleteId: string) {
     const { value } = toMutate
+    const index = toMutate.value.findIndex(({ id }) => id === toDeleteId)
 
     if (value.length === 1) {
       toMutate.value = [
@@ -20,6 +25,7 @@ export function useScheduleEntryDeleteHandler(toMutate: Ref<ScheduleEntry[]>) {
             second: 59,
           },
           state: 'OFF',
+          id: uid(),
         },
       ]
     } else if (index !== value.length - 1) {
