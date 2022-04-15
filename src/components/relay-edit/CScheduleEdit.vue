@@ -25,8 +25,12 @@ export default defineComponent({
   setup(props, { emit }) {
     const snapshot = ref<ScheduleEntryForEditing[]>([])
 
-    watch(props.modelValue, () => {
-      snapshot.value = cloneDeep(props.modelValue).map((entry) => {
+    /*
+     * Can't use watchEffect here because it will cause a loop since the watch
+     * will be triggered if snapshot.value is mutated.
+     */
+    watch(props.modelValue, (value) => {
+      snapshot.value = cloneDeep(value).map((entry) => {
         return {
           ...entry,
           id: uid(),
