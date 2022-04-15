@@ -17,6 +17,8 @@ function mergeEntries(entries: ScheduleEntryForEditing[]) {
       entry.state === lastItem.state
     ) {
       lastItem.end = entry.end
+    } else {
+      containsMerged.push(entry)
     }
   }
 
