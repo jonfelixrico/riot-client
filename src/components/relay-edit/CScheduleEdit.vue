@@ -3,7 +3,26 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, PropType, ref, watch } from 'vue'
+import { ScheduleEntry } from 'types/relay-config.interface'
+import { cloneDeep } from 'lodash'
 
-export default defineComponent({})
+export default defineComponent({
+  props: {
+    modelValue: {
+      type: Array as PropType<ScheduleEntry[]>,
+      required: true,
+    },
+  },
+
+  emits: ['update:modelValue'],
+
+  setup(props) {
+    const snapshot = ref<ScheduleEntry[]>([])
+
+    watch(props.modelValue, () => {
+      snapshot.value = cloneDeep(props.modelValue)
+    })
+  },
+})
 </script>
