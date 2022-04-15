@@ -1,18 +1,17 @@
 import { cloneDeep } from 'lodash'
 import { uid } from 'quasar'
-import { ScheduleEntry } from 'types/relay-config.interface'
 import { Ref } from 'vue'
 import { ScheduleEntryForEditing } from './relay-edit.types'
 
 export function useScheduleEntryDeleteHandler(
-  toMutate: Ref<ScheduleEntryForEditing[]>
+  entries: Ref<ScheduleEntryForEditing[]>
 ) {
   function handleDelete(toDeleteId: string) {
-    const { value } = toMutate
-    const index = toMutate.value.findIndex(({ id }) => id === toDeleteId)
+    const { value } = entries
+    const index = entries.value.findIndex(({ id }) => id === toDeleteId)
 
     if (value.length === 1) {
-      toMutate.value = [
+      entries.value = [
         {
           start: {
             hour: 0,
@@ -42,7 +41,7 @@ export function useScheduleEntryDeleteHandler(
       toTakeOver.start = toDelete.start
       clone.splice(index, 1)
 
-      toMutate.value = clone
+      entries.value = clone
     } else if (index === value.length - 1) {
       /*
        * This is the handling for the last item. The difference here is that the item
@@ -61,7 +60,7 @@ export function useScheduleEntryDeleteHandler(
       toTakeOver.start = toDelete.start
       clone.splice(index, -1)
 
-      toMutate.value = clone
+      entries.value = clone
     }
   }
 
