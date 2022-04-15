@@ -20,7 +20,7 @@ export default defineComponent({
 
   emits: ['update:modelValue'],
 
-  setup(props) {
+  setup(props, { emit }) {
     const snapshot = ref<ScheduleEntry[]>([])
 
     watch(props.modelValue, () => {
@@ -31,11 +31,17 @@ export default defineComponent({
       return snapshot.value.map(transformScheduleEntryForPresentation)
     })
 
-    const { handleDelete } = useScheduleEntryDeleteHandler(snapshot)
+    const { handleDelete: deleteEntry } =
+      useScheduleEntryDeleteHandler(snapshot)
+
+    function saveChanges() {
+      emit('update:modelValue', snapshot.value)
+    }
 
     return {
       forPresentation,
-      handleDelete,
+      deleteEntry,
+      saveChanges,
     }
   },
 })
