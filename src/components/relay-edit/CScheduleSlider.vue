@@ -1,12 +1,22 @@
 <template>
-  <q-range v-if="startModel !== 0 && endModel !== 0" v-model="rangeModel" />
-  <q-slider v-else-if="startModel === 0" v-model="endModel" />
-  <q-slider v-else-if="endModel === 0" v-model="startModel" reverse />
+  <q-range
+    v-if="modelValue.start !== 0 && modelValue.end !== 0"
+    v-model="rangeModel"
+  />
+
+  <q-slider v-else-if="modelValue.start === 0" v-model="sliderModel" />
+
+  <q-slider
+    v-else-if="modelValue.end === 0"
+    v-model="reverseSliderModel"
+    reverse
+  />
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue'
 import { PresentationScheduleEntry } from '../relay/relay-schedule-presentation.utils'
+import { MAX_SECONDS } from '../relay/relay.constants'
 
 export default defineComponent({
   props: {
@@ -19,20 +29,20 @@ export default defineComponent({
   emits: ['update:modelValue'],
 
   setup(props, { emit }) {
-    const startModel = computed<number>({
+    const reverseSliderModel = computed<number>({
       get() {
-        return props.modelValue.start
+        return MAX_SECONDS - props.modelValue.start
       },
 
-      set(start) {
+      set(value) {
         emit('update:modelValue', {
           ...props.modelValue,
-          start,
+          start: MAX_SECONDS - value,
         })
       },
     })
 
-    const endModel = computed<number>({
+    const sliderModel = computed<number>({
       get() {
         return props.modelValue.end
       },
@@ -64,8 +74,8 @@ export default defineComponent({
     })
 
     return {
-      startModel,
-      endModel,
+      reverseSliderModel,
+      sliderModel,
       rangeModel,
     }
   },
