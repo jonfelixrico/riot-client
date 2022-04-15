@@ -2,12 +2,31 @@ import { cloneDeep } from 'lodash'
 import { computed, ref, Ref, watch } from 'vue'
 import { ScheduleEntryForEditing } from './relay-edit.types'
 
+function mergeEntries(entries: ScheduleEntryForEditing[]) {
+  const containsMerged: ScheduleEntryForEditing[] = []
+
+  for (const entry of cloneDeep(entries)) {
+    const lastItem = containsMerged[containsMerged.length - 1]
+
+    if (!lastItem) {
+      containsMerged.push(entry)
+    } else if (
+      entry.start - lastItem.end === 1 &&
+      entry.state === lastItem.state
+    ) {
+      lastItem.end = entry.end
+    }
+  }
+
+  return containsMerged
+}
+
 export function useScheduleEntryResizeHandler(
-  entries: Ref<ScheduleEntryForEditing[]>,
-  activeEntry: Ref<ScheduleEntryForEditing | null>
+  entriesRef: Ref<ScheduleEntryForEditing[]>,
+  activeEntryRef: Ref<ScheduleEntryForEditing | null>
 ) {
   const snapshot: Ref<ScheduleEntryForEditing | null> = ref(null)
-  watch(activeEntry, (entry) => {
+  watch(activeEntryRef, (entry) => {
     if (!entry) {
       snapshot.value = null
       return
@@ -47,7 +66,58 @@ export function useScheduleEntryResizeHandler(
     },
   })
 
+  const resizeChangesPreview = computed(() => {
+    const { value: activeEntry } = activeEntryRef
+    if (!activeEntry) {
+      return null
+    }
+
+    const { value: entries } = entriesRef
+
+    /*
+     * Collect entries which are not overlapped by the active entry, or only
+     * partially overlapped. These items will be included in the final results in some form.
+     *
+     * Items completely overlapped by the active entry are considered as deleted.
+     */
+    const left = entries.filter((entry) => {
+      return entry.start < activeEntry.start || entry.end < activeEntry.start
+    })
+    const right = entries.filter((entry) => {
+      return entry.start > activeEntry.end || entry.end > activeEntry.end
+    })
+
+    const notOverlappedLeft = left.slice(0, left.length - 1)
+    // Only adjacent values are overlapped. TODO add a mathematically-backed explanation for this
+    const overlappedLeft = left[left.length - 1]
+
+    const notOverlappedRight = right.slice(1, right.length)
+    // Only adjacent values are overlapped. TODO add a mathematically-backed explanation for this
+    const overlappedRight = right[0]
+
+    const results: ScheduleEntryForEditing[] = []
+
+    results.push(...notOverlappedLeft)
+
+    results.push({
+      ...overlappedLeft,
+      end: activeEntry.start - 1,
+    })
+
+    results.push(activeEntry)
+
+    results.push({
+      ...overlappedRight,
+      start: activeEntry.end + 1,
+    })
+
+    results.push(...notOverlappedRight)
+
+    return mergeEntries(results)
+  })
+
   return {
     editModel,
+    resizeChangesPreview,
   }
 }
