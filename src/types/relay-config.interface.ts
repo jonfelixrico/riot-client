@@ -47,10 +47,10 @@ export interface Override {
   overrideUntil?: Date
 }
 
-export type RelaySchedule = DailySchedule | WeeklySchedule
+type Schedule = DailySchedule | WeeklySchedule
 
 export interface RelayConfig {
-  schedule: RelaySchedule
+  schedule: Schedule
 
   /**
    * If not null, then that means that the switch's schedule is being overridden.
