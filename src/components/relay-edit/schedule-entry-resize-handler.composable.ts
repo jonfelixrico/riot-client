@@ -29,16 +29,16 @@ export function useScheduleEntryResizeHandler(
   entriesRef: Ref<ScheduleEntryForEditing[]>,
   activeEntryRef: Ref<ScheduleEntryForEditing | null>
 ) {
-  const snapshot: Ref<ScheduleEntryForEditing | null> = ref(null)
+  const snapshotRef: Ref<ScheduleEntryForEditing | null> = ref(null)
   watch(
     activeEntryRef,
     (entry) => {
       if (!entry) {
-        snapshot.value = null
+        snapshotRef.value = null
         return
       }
 
-      snapshot.value = cloneDeep(entry)
+      snapshotRef.value = cloneDeep(entry)
     },
     {
       immediate: true,
@@ -47,11 +47,11 @@ export function useScheduleEntryResizeHandler(
 
   const editModel = computed({
     get() {
-      if (!snapshot.value) {
+      if (!snapshotRef.value) {
         return null
       }
 
-      const { start, end } = snapshot.value
+      const { start, end } = snapshotRef.value
       return {
         start,
         end,
@@ -59,7 +59,7 @@ export function useScheduleEntryResizeHandler(
     },
 
     set(newValue: { start: number; end: number } | null) {
-      if (!snapshot.value) {
+      if (!snapshotRef.value) {
         console.warn(
           'useScheduleEntryResizeHandler: editModel was mutated even if there is no active entry'
         )
@@ -69,22 +69,22 @@ export function useScheduleEntryResizeHandler(
         return
       }
 
-      snapshot.value = {
-        ...snapshot.value,
+      snapshotRef.value = {
+        ...snapshotRef.value,
         ...newValue,
       }
     },
   })
 
   const resizeChangesPreview = computed(() => {
-    const { value: activeEntry } = activeEntryRef
-    if (!activeEntry) {
+    const { value: snapshot } = snapshotRef
+    if (!snapshot) {
       return null
     }
 
     const { value: entries } = entriesRef
     const activeEntryIndex = entries.findIndex(
-      (entry) => entry.id === activeEntry.id
+      (entry) => entry.id === snapshot.id
     )
 
     /*
@@ -94,10 +94,10 @@ export function useScheduleEntryResizeHandler(
      * Items completely overlapped by the active entry are considered as deleted.
      */
     const left = entries.filter((entry) => {
-      return entry.start < activeEntry.start || entry.end < activeEntry.start
+      return entry.start < snapshot.start || entry.end < snapshot.start
     })
     const right = entries.filter((entry) => {
-      return entry.start > activeEntry.end || entry.end > activeEntry.end
+      return entry.start > snapshot.end || entry.end > snapshot.end
     })
 
     const notOverlappedLeft = left.slice(0, left.length - 1)
@@ -110,12 +110,12 @@ export function useScheduleEntryResizeHandler(
 
     const results: ScheduleEntryForEditing[] = []
 
-    const inverseState = activeEntry.state === 'OFF' ? 'ON' : 'OFF'
+    const inverseState = snapshot.state === 'OFF' ? 'ON' : 'OFF'
 
-    if (activeEntryIndex === 0 && activeEntry.start > 0) {
+    if (activeEntryIndex === 0 && snapshot.start > 0) {
       results.push({
         start: 0,
-        end: activeEntry.start - 1,
+        end: snapshot.start - 1,
         state: inverseState,
         id: uid(),
       })
@@ -125,19 +125,16 @@ export function useScheduleEntryResizeHandler(
       if (overlappedLeft) {
         results.push({
           ...overlappedLeft,
-          end: activeEntry.start - 1,
+          end: snapshot.start - 1,
         })
       }
     }
 
-    results.push(activeEntry)
+    results.push(snapshot)
 
-    if (
-      activeEntryIndex === entries.length - 1 &&
-      activeEntry.end < MAX_SECONDS
-    ) {
+    if (activeEntryIndex === entries.length - 1 && snapshot.end < MAX_SECONDS) {
       results.push({
-        start: activeEntry.end + 1,
+        start: snapshot.end + 1,
         end: MAX_SECONDS,
         id: uid(),
         state: inverseState,
@@ -146,7 +143,7 @@ export function useScheduleEntryResizeHandler(
       if (overlappedRight) {
         results.push({
           ...overlappedRight,
-          start: activeEntry.end + 1,
+          start: snapshot.end + 1,
         })
       }
 
