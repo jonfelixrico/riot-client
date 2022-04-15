@@ -28,14 +28,20 @@ export function useScheduleEntryResizeHandler(
   activeEntryRef: Ref<ScheduleEntryForEditing | null>
 ) {
   const snapshot: Ref<ScheduleEntryForEditing | null> = ref(null)
-  watch(activeEntryRef, (entry) => {
-    if (!entry) {
-      snapshot.value = null
-      return
-    }
+  watch(
+    activeEntryRef,
+    (entry) => {
+      if (!entry) {
+        snapshot.value = null
+        return
+      }
 
-    snapshot.value = cloneDeep(entry)
-  })
+      snapshot.value = cloneDeep(entry)
+    },
+    {
+      immediate: true,
+    }
+  )
 
   const editModel = computed({
     get() {

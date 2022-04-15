@@ -43,14 +43,18 @@ export default defineComponent({
      * Can't use watchEffect here because it will cause a loop since the watch
      * will be triggered if snapshot.value is mutated.
      */
-    watch(props.modelValue, (value) => {
-      snapshot.value = cloneDeep(value).map((entry) => {
-        return {
-          ...entry,
-          id: uid(),
-        }
-      })
-    })
+    watch(
+      props.modelValue,
+      (value) => {
+        snapshot.value = cloneDeep(value).map((entry) => {
+          return {
+            ...entry,
+            id: uid(),
+          }
+        })
+      },
+      { immediate: true }
+    )
 
     const { handleDelete: deleteEntry } =
       useScheduleEntryDeleteHandler(snapshot)
