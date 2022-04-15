@@ -5,7 +5,7 @@
       :items="forPresentation"
     />
     <template v-if="activeEntry">
-      <!-- TODO add QRange wrapped in schedule here -->
+      <CScheduleSlider v-model="activeEntry" />
     </template>
   </div>
 </template>
@@ -19,10 +19,12 @@ import { ScheduleEntryForEditing } from './relay-edit.types'
 import { uid } from 'quasar'
 import { useScheduleEntryResizeHandler } from './schedule-entry-resize-handler.composable'
 import CScheduleDisplay from 'components/relay/CScheduleDisplay.vue'
+import CScheduleSlider from './CScheduleSlider.vue'
 
 export default defineComponent({
   components: {
     CScheduleDisplay,
+    CScheduleSlider,
   },
 
   props: {
