@@ -1,15 +1,30 @@
 <template>
-  <q-range
-    v-if="modelValue.start !== 0 && modelValue.end !== 0"
-    v-model="rangeModel"
+  <q-slider
+    v-if="modelValue.start === 0"
+    v-model="sliderModel"
+    :min="0"
+    :max="MAX_SECONDS"
+    data-cy="slider"
+    data-type="slider"
   />
 
-  <q-slider v-else-if="modelValue.start === 0" v-model="sliderModel" />
-
   <q-slider
-    v-else-if="modelValue.end === 0"
+    v-else-if="modelValue.end === MAX_SECONDS"
     v-model="reverseSliderModel"
     reverse
+    :min="0"
+    :max="MAX_SECONDS"
+    data-cy="slider"
+    data-type="reverse-slider"
+  />
+
+  <q-range
+    v-else
+    v-model="rangeModel"
+    :min="0"
+    :max="MAX_SECONDS"
+    data-cy="slider"
+    data-type="range"
   />
 </template>
 
@@ -77,6 +92,7 @@ export default defineComponent({
       reverseSliderModel,
       sliderModel,
       rangeModel,
+      MAX_SECONDS,
     }
   },
 })
