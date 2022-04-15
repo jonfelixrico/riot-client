@@ -9,17 +9,18 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'devices',
         name: 'device-list',
-        component: () => import('src/pages/DeviceList.vue'),
+        component: () => import('src/pages/device/DeviceList.vue'),
       },
       {
         path: 'devices/:deviceId/versions/:version',
         name: 'device-details',
-        component: () => import('src/pages/DeviceDetails.vue'),
+        component: () => import('src/pages/device/DeviceDetails.vue'),
       },
       {
         path: 'devices/unregistered',
         name: 'unregistered-devices',
-        component: () => import('src/pages/UnregisteredDeviceList.vue'),
+        component: () =>
+          import('src/pages/unregistered/UnregisteredDeviceList.vue'),
       },
     ],
   },

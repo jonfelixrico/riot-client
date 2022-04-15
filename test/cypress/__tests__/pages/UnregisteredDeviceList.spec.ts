@@ -4,7 +4,7 @@ import {
 } from 'src/composables/unregistered-list-api.composable'
 import { mount } from '@cypress/vue'
 import LayoutContainer from 'app/test/cypress/wrappers/LayoutContainer.vue'
-import UnregisteredDeviceList from 'pages/UnregisteredDeviceList.vue'
+import UnregisteredDeviceList from 'src/pages/unregistered/UnregisteredDeviceList.vue'
 import { ref } from 'vue'
 import { UnregisteredDevice } from 'types/unregistered-device.interface'
 import { DateTime } from 'luxon'
