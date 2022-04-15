@@ -1,5 +1,13 @@
 <template>
-  <div>stub</div>
+  <div>
+    <CScheduleDisplay
+      v-model:activeIndex="activeIndex"
+      :items="forPresentation"
+    />
+    <template v-if="activeEntry">
+      <!-- TODO add QRange wrapped in schedule here -->
+    </template>
+  </div>
 </template>
 
 <script lang="ts">
@@ -10,8 +18,13 @@ import { useScheduleEntryDeleteHandler } from './schedule-entry-delete-handler.c
 import { ScheduleEntryForEditing } from './relay-edit.types'
 import { uid } from 'quasar'
 import { useScheduleEntryResizeHandler } from './schedule-entry-resize-handler.composable'
+import CScheduleDisplay from 'components/relay/CScheduleDisplay.vue'
 
 export default defineComponent({
+  components: {
+    CScheduleDisplay,
+  },
+
   props: {
     modelValue: {
       type: Array as PropType<PresentationScheduleEntry[]>,
@@ -52,6 +65,12 @@ export default defineComponent({
         ) as ScheduleEntryForEditing
     )
 
+    const activeIndex = computed({
+      get: () =>
+        snapshot.value.findIndex(({ id }) => id === activeEntryId.value),
+      set: setActiveEntry,
+    })
+
     const { editModel, resizeChangesPreview } = useScheduleEntryResizeHandler(
       snapshot,
       activeEntry
@@ -71,6 +90,8 @@ export default defineComponent({
       saveChanges,
       setActiveEntry,
       editModel,
+      activeIndex,
+      activeEntry,
     }
   },
 })
