@@ -126,6 +126,7 @@ export function useScheduleEntryResizeHandler(
         results.push({
           ...overlappedLeft,
           end: snapshot.start - 1,
+          state: inverseState,
         })
       }
     }
@@ -144,6 +145,7 @@ export function useScheduleEntryResizeHandler(
         results.push({
           ...overlappedRight,
           start: snapshot.end + 1,
+          state: inverseState,
         })
       }
 
