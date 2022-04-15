@@ -122,15 +122,20 @@ export function useScheduleEntryResizeHandler(
     } else {
       results.push(...notOverlappedLeft)
 
-      results.push({
-        ...overlappedLeft,
-        end: activeEntry.start - 1,
-      })
+      if (overlappedLeft) {
+        results.push({
+          ...overlappedLeft,
+          end: activeEntry.start - 1,
+        })
+      }
     }
 
     results.push(activeEntry)
 
-    if (activeEntryIndex === entries.length - 1) {
+    if (
+      activeEntryIndex === entries.length - 1 &&
+      activeEntry.end < MAX_SECONDS
+    ) {
       results.push({
         start: activeEntry.end + 1,
         end: MAX_SECONDS,
@@ -138,10 +143,12 @@ export function useScheduleEntryResizeHandler(
         state: inverseState,
       })
     } else {
-      results.push({
-        ...overlappedRight,
-        start: activeEntry.end + 1,
-      })
+      if (overlappedRight) {
+        results.push({
+          ...overlappedRight,
+          start: activeEntry.end + 1,
+        })
+      }
 
       results.push(...notOverlappedRight)
     }
