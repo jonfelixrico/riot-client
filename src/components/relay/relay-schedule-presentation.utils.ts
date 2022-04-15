@@ -4,7 +4,7 @@ import {
   TimeUnit,
 } from 'src/types/relay-config.interface'
 export interface PresentationScheduleEntry {
-  state: RelayState | null
+  state: RelayState
   start: number
   end: number
 }
