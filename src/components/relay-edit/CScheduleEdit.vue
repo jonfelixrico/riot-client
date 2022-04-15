@@ -4,9 +4,11 @@
       v-model:activeIndex="activeIndex"
       :items="forPresentation"
     />
-    <template v-if="activeEntry">
-      <CScheduleSlider v-model="activeEntry" />
-    </template>
+    <div v-if="activeEntry">
+      <div>
+        <q-range v-model="rangeModel" :min="0" :max="MAX_SECONDS" />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -19,12 +21,11 @@ import { ScheduleEntryForEditing } from './relay-edit.types'
 import { uid } from 'quasar'
 import { useScheduleEntryResizeHandler } from './schedule-entry-resize-handler.composable'
 import CScheduleDisplay from 'components/relay/CScheduleDisplay.vue'
-import CScheduleSlider from './CScheduleSlider.vue'
+import { MAX_SECONDS } from '../relay/relay.constants'
 
 export default defineComponent({
   components: {
     CScheduleDisplay,
-    CScheduleSlider,
   },
 
   props: {
@@ -78,6 +79,27 @@ export default defineComponent({
       activeEntry
     )
 
+    const rangeModel = computed({
+      get() {
+        const { start, end } = editModel.value ?? {}
+        return {
+          min: start ?? 0,
+          max: end ?? MAX_SECONDS,
+        }
+      },
+
+      set({ min, max }) {
+        if (!editModel.value) {
+          return
+        }
+
+        editModel.value = {
+          end: max,
+          start: min,
+        }
+      },
+    })
+
     function saveChanges() {
       emit('update:modelValue', snapshot.value)
     }
@@ -91,9 +113,10 @@ export default defineComponent({
       deleteEntry,
       saveChanges,
       setActiveEntry,
-      editModel,
       activeIndex,
       activeEntry,
+      rangeModel,
+      MAX_SECONDS,
     }
   },
 })
