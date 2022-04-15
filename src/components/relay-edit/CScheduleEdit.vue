@@ -3,6 +3,7 @@
     <CScheduleDisplay
       v-model:activeIndex="activeIndex"
       :items="forPresentation"
+      clickable
     />
     <div v-if="activeEntry">
       <div>
@@ -62,7 +63,7 @@ export default defineComponent({
     const activeEntryId = ref<string | null>(null)
     function setActiveEntry(index: number) {
       const entry = snapshot.value[index]
-      activeEntryId.value === entry.id
+      activeEntryId.value = entry.id
     }
 
     const activeEntry = computed(
