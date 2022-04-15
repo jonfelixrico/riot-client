@@ -4,10 +4,8 @@
 
 <script lang="ts">
 import { defineComponent, PropType, ref, watch } from 'vue'
-import { ScheduleEntry } from 'types/relay-config.interface'
 import { cloneDeep } from 'lodash'
-import { computed } from '@vue/reactivity'
-import { transformScheduleEntryForPresentation } from '../relay/relay-schedule-presentation.utils'
+import { PresentationScheduleEntry } from '../relay/relay-schedule-presentation.utils'
 import { useScheduleEntryDeleteHandler } from './schedule-entry-delete-handler.composable'
 import { ScheduleEntryForEditing } from './relay-edit.types'
 import { uid } from 'quasar'
@@ -15,7 +13,7 @@ import { uid } from 'quasar'
 export default defineComponent({
   props: {
     modelValue: {
-      type: Array as PropType<ScheduleEntry[]>,
+      type: Array as PropType<PresentationScheduleEntry[]>,
       required: true,
     },
   },
@@ -38,10 +36,6 @@ export default defineComponent({
       })
     })
 
-    const forPresentation = computed(() => {
-      return snapshot.value.map(transformScheduleEntryForPresentation)
-    })
-
     const { handleDelete: deleteEntry } =
       useScheduleEntryDeleteHandler(snapshot)
 
@@ -50,7 +44,7 @@ export default defineComponent({
     }
 
     return {
-      forPresentation,
+      forPresentation: snapshot,
       deleteEntry,
       saveChanges,
     }

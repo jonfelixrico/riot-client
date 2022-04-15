@@ -1,6 +1,7 @@
 import { cloneDeep } from 'lodash'
 import { uid } from 'quasar'
 import { Ref } from 'vue'
+import { MAX_SECONDS } from '../relay/relay.constants'
 import { ScheduleEntryForEditing } from './relay-edit.types'
 
 export function useScheduleEntryDeleteHandler(
@@ -13,16 +14,8 @@ export function useScheduleEntryDeleteHandler(
     if (value.length === 1) {
       entries.value = [
         {
-          start: {
-            hour: 0,
-            minute: 0,
-            second: 0,
-          },
-          end: {
-            hour: 23,
-            minute: 59,
-            second: 59,
-          },
+          start: 0,
+          end: MAX_SECONDS,
           state: 'OFF',
           id: uid(),
         },
