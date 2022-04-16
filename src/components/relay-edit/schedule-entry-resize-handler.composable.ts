@@ -27,11 +27,16 @@ function mergeEntries(entries: ScheduleEntryForEditing[]) {
 
 export function useScheduleEntryResizeHandler(
   entriesRef: Ref<ScheduleEntryForEditing[]>,
-  activeEntryRef: Ref<ScheduleEntryForEditing | null>
+  selectedIdRef: Ref<string | null>
 ) {
   const snapshotRef: Ref<ScheduleEntryForEditing | null> = ref(null)
+  const selectedRef = computed(
+    () =>
+      entriesRef.value.find((entry) => selectedIdRef.value === entry.id) ?? null
+  )
+
   watch(
-    activeEntryRef,
+    selectedRef,
     (entry) => {
       if (!entry) {
         snapshotRef.value = null
@@ -83,7 +88,7 @@ export function useScheduleEntryResizeHandler(
     }
 
     const { value: entries } = entriesRef
-    const activeEntryIndex = entries.findIndex(
+    const indexInSnapshot = entries.findIndex(
       (entry) => entry.id === snapshot.id
     )
 
@@ -112,7 +117,7 @@ export function useScheduleEntryResizeHandler(
 
     const inverseState = snapshot.state === 'OFF' ? 'ON' : 'OFF'
 
-    if (activeEntryIndex === 0 && snapshot.start > 0) {
+    if (indexInSnapshot === 0 && snapshot.start > 0) {
       results.push({
         start: 0,
         end: snapshot.start - 1,
@@ -133,7 +138,7 @@ export function useScheduleEntryResizeHandler(
 
     results.push(snapshot)
 
-    if (activeEntryIndex === entries.length - 1 && snapshot.end < MAX_SECONDS) {
+    if (indexInSnapshot === entries.length - 1 && snapshot.end < MAX_SECONDS) {
       results.push({
         start: snapshot.end + 1,
         end: MAX_SECONDS,
