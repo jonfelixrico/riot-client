@@ -1,52 +1,54 @@
 <template>
   <q-expansion-item>
     <template #header>
-      <div
-        :style="{ height: `${SCHEDULE_BAR_HEIGHT}px` }"
-        class="relative-position"
-      >
-        <q-resize-observer @resize="onResize" />
-        <div class="absolute">
-          <CScheduleDisplay
-            :items="modelValue"
-            :height="SCHEDULE_BAR_HEIGHT"
-            :width="width"
-          />
+      <div class="fit row items-center">
+        <div
+          :style="{ height: `${SCHEDULE_BAR_HEIGHT}px` }"
+          class="relative-position col"
+        >
+          <q-resize-observer @resize="onResize" />
+          <div class="absolute">
+            <CScheduleDisplay
+              :items="modelValue"
+              :height="SCHEDULE_BAR_HEIGHT"
+              :width="width"
+            />
+          </div>
         </div>
       </div>
     </template>
 
     <template #default>
-      <div class="row q-col-gutter-x-sm">
-        <div class="col q-gutter-y-sm">
-          <div
-            v-for="{ entry, i18nParts } in forPresentation"
-            :key="`${entry.start}-${entry.end}`"
-          >
-            <i18n-t keypath="relay.timeSlotLabel.format">
-              <template #start>
-                <span class="text-weight-bold">{{ i18nParts.start }}</span>
-              </template>
+      <div class="q-pa-sm">
+        <div class="row q-col-gutter-x-sm">
+          <div class="col q-gutter-y-sm">
+            <div
+              v-for="{ entry, i18nParts } in forPresentation"
+              :key="`${entry.start}-${entry.end}`"
+            >
+              <i18n-t keypath="relay.timeSlotLabel.format">
+                <template #start>
+                  <span class="text-weight-bold">{{ i18nParts.start }}</span>
+                </template>
 
-              <template #end>
-                <span class="text-weight-bold">{{ i18nParts.end }}</span>
-              </template>
+                <template #end>
+                  <span class="text-weight-bold">{{ i18nParts.end }}</span>
+                </template>
 
-              <template #state>
-                <span class="text-weight-bold">
-                  {{ t(`relay.timeSlotLabel.${i18nParts.stateKey}`) }}
-                </span>
-              </template>
-            </i18n-t>
+                <template #state>
+                  <span class="text-weight-bold">
+                    {{ t(`relay.timeSlotLabel.${i18nParts.stateKey}`) }}
+                  </span>
+                </template>
+              </i18n-t>
+            </div>
           </div>
-        </div>
 
-        <q-separator vertical />
-
-        <div>
-          <q-btn unelevated color="primary" no-caps>
-            {{ t('relay.setSchedule') }}
-          </q-btn>
+          <div>
+            <q-btn unelevated color="primary" no-caps dense>
+              {{ t('relay.setSchedule') }}
+            </q-btn>
+          </div>
         </div>
       </div>
     </template>
