@@ -1,11 +1,11 @@
 <template>
   <div>
     <CScheduleDisplay
-      v-model:activeIndex="activeIndex"
+      v-model:activeIndex="selectedIndex"
       :items="forPresentation"
       clickable
     />
-    <div v-if="activeEntry">
+    <div v-if="selectedEntry">
       <div>
         <q-range v-model="rangeModel" :min="0" :max="MAX_SECONDS" />
       </div>
@@ -57,33 +57,27 @@ export default defineComponent({
       { immediate: true }
     )
 
-    const activeEntryId = ref<string | null>(null)
-    function setActiveEntry(index: number) {
-      const entry = snapshot.value[index]
-      activeEntryId.value = entry.id
-    }
-
-    const activeEntry = computed(
-      () =>
-        snapshot.value.find(
-          ({ id }) => id === activeEntryId.value
-        ) as ScheduleEntryForEditing
-    )
-
-    const activeIndex = computed({
-      get: () =>
-        snapshot.value.findIndex(({ id }) => id === activeEntryId.value),
-      set: setActiveEntry,
+    const selectedId = ref<string | null>(null)
+    const selectedIndex = computed({
+      get: () => snapshot.value.findIndex(({ id }) => id === selectedId.value),
+      set(index) {
+        const entry = snapshot.value[index]
+        selectedId.value = entry.id
+      },
     })
+
+    const selectedEntry = computed(
+      () => snapshot.value[selectedIndex.value] ?? null
+    )
 
     const { handleDelete: deleteEntry } = useScheduleEntryDeleteHandler(
       snapshot,
-      activeEntryId
+      selectedId
     )
 
     const { editModel, resizeChangesPreview } = useScheduleEntryResizeHandler(
       snapshot,
-      activeEntry
+      selectedId
     )
 
     const rangeModel = computed({
@@ -119,11 +113,11 @@ export default defineComponent({
       forPresentation,
       deleteEntry,
       saveChanges,
-      setActiveEntry,
-      activeIndex,
-      activeEntry,
       rangeModel,
       MAX_SECONDS,
+
+      selectedIndex,
+      selectedEntry,
     }
   },
 })
