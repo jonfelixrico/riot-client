@@ -8,4 +8,10 @@ export default {
     sat: 'Saturday',
     sun: 'Sunday',
   },
+
+  timeSlotLabel: {
+    on: 'On',
+    off: 'Off',
+    format: '{state} from {start} to {end}',
+  },
 }
