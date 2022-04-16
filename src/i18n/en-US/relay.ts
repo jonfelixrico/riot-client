@@ -14,4 +14,6 @@ export default {
     off: 'Off',
     format: '{state} from {start} to {end}',
   },
+
+  setSchedule: 'Set Schedule',
 }

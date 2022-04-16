@@ -17,7 +17,7 @@
     </template>
 
     <template #default>
-      <div class="row">
+      <div class="row q-col-gutter-x-sm">
         <div class="col q-gutter-y-sm">
           <div
             v-for="{ entry, i18nParts } in forPresentation"
@@ -41,8 +41,12 @@
           </div>
         </div>
 
+        <q-separator vertical />
+
         <div>
-          <q-btn unelevated color="primary" no-caps></q-btn>
+          <q-btn unelevated color="primary" no-caps>
+            {{ t('relay.setSchedule') }}
+          </q-btn>
         </div>
       </div>
     </template>
