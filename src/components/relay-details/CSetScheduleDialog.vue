@@ -1,13 +1,23 @@
 <template>
   <q-dialog ref="dialogRef" @hide="onDialogHide">
     <q-card class="q-dialog-plugin">
+      <q-card-section>
+        <div class="text-h6" role="heading" aria-level="1">
+          {{ t('relay.dialogs.setSchedule.title') }}
+        </div>
+      </q-card-section>
+
+      <q-card-section class="q-pt-none">
+        <!-- content goes here -->
+      </q-card-section>
+
       <q-card-actions align="right">
         <q-btn
           color="primary"
           no-caps
           unelevated
           dense
-          :label="t('common.ok')"
+          :label="t('relay.dialogs.setSchedule.ok')"
           @click="onDialogOK"
         />
         <q-btn
