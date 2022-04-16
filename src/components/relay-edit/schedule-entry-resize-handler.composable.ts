@@ -81,6 +81,34 @@ export function useScheduleEntryResizeHandler(
     },
   })
 
+  const rangeModel = computed<{ min: number; max: number } | null>({
+    get() {
+      const { value: model } = editModel
+      if (!model) {
+        return null
+      }
+
+      const { start, end } = model
+      return {
+        min: start,
+        max: end,
+      }
+    },
+
+    set(value) {
+      if (!value) {
+        editModel.value = null
+        return
+      }
+
+      const { min, max } = value
+      editModel.value = {
+        start: min,
+        end: max,
+      }
+    },
+  })
+
   const resizeChangesPreview = computed(() => {
     const { value: snapshot } = snapshotRef
     if (!snapshot) {
@@ -161,7 +189,7 @@ export function useScheduleEntryResizeHandler(
   })
 
   return {
-    editModel,
     resizeChangesPreview,
+    rangeModel,
   }
 }

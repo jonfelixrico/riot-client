@@ -75,31 +75,10 @@ export default defineComponent({
       selectedId
     )
 
-    const { editModel, resizeChangesPreview } = useScheduleEntryResizeHandler(
+    const { rangeModel, resizeChangesPreview } = useScheduleEntryResizeHandler(
       snapshot,
       selectedId
     )
-
-    const rangeModel = computed({
-      get() {
-        const { start, end } = editModel.value ?? {}
-        return {
-          min: start ?? 0,
-          max: end ?? MAX_SECONDS,
-        }
-      },
-
-      set({ min, max }) {
-        if (!editModel.value) {
-          return
-        }
-
-        editModel.value = {
-          end: max,
-          start: min,
-        }
-      },
-    })
 
     function saveChanges() {
       emit('update:modelValue', snapshot.value)
