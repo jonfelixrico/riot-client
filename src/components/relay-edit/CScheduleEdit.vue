@@ -57,9 +57,6 @@ export default defineComponent({
       { immediate: true }
     )
 
-    const { handleDelete: deleteEntry } =
-      useScheduleEntryDeleteHandler(snapshot)
-
     const activeEntryId = ref<string | null>(null)
     function setActiveEntry(index: number) {
       const entry = snapshot.value[index]
@@ -78,6 +75,11 @@ export default defineComponent({
         snapshot.value.findIndex(({ id }) => id === activeEntryId.value),
       set: setActiveEntry,
     })
+
+    const { handleDelete: deleteEntry } = useScheduleEntryDeleteHandler(
+      snapshot,
+      activeEntryId
+    )
 
     const { editModel, resizeChangesPreview } = useScheduleEntryResizeHandler(
       snapshot,

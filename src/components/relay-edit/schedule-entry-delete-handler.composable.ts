@@ -1,18 +1,36 @@
 import { cloneDeep } from 'lodash'
 import { uid } from 'quasar'
-import { Ref } from 'vue'
+import { computed, Ref } from 'vue'
 import { MAX_SECONDS } from '../relay/relay.constants'
 import { ScheduleEntryForEditing } from './relay-edit.types'
 
 export function useScheduleEntryDeleteHandler(
-  entries: Ref<ScheduleEntryForEditing[]>
+  entriesRef: Ref<ScheduleEntryForEditing[]>,
+  selectedIdRef: Ref<string | null>
 ) {
-  function handleDelete(toDeleteId: string) {
-    const { value } = entries
-    const index = entries.value.findIndex(({ id }) => id === toDeleteId)
+  const selectedIdxRef = computed(() => {
+    const { value: selectedId } = selectedIdRef
 
-    if (value.length === 1) {
-      entries.value = [
+    if (!selectedId) {
+      return null
+    }
+
+    return entriesRef.value.findIndex(({ id }) => selectedId === id)
+  })
+
+  function handleDelete() {
+    const { value: entries } = entriesRef
+    const { value: index } = selectedIdxRef
+
+    if (index === null) {
+      console.warn(
+        'scheduleEntryDeleteHandler: handleDelete was called even if there are no selected entries'
+      )
+      return
+    }
+
+    if (entries.length === 1) {
+      entriesRef.value = [
         {
           start: 0,
           end: MAX_SECONDS,
@@ -20,9 +38,9 @@ export function useScheduleEntryDeleteHandler(
           id: uid(),
         },
       ]
-    } else if (index !== value.length - 1) {
+    } else if (index !== entries.length - 1) {
       // handling for index 0 to 2nd to the last item
-      const clone = cloneDeep(value)
+      const clone = cloneDeep(entries)
 
       const toDelete = clone[index]
       const toTakeOver = clone[index + 1]
@@ -34,14 +52,14 @@ export function useScheduleEntryDeleteHandler(
       toTakeOver.start = toDelete.start
       clone.splice(index, 1)
 
-      entries.value = clone
-    } else if (index === value.length - 1) {
+      entriesRef.value = clone
+    } else if (index === entries.length - 1) {
       /*
        * This is the handling for the last item. The difference here is that the item
        * to the left will take over instead of the item to the right.
        */
 
-      const clone = cloneDeep(value)
+      const clone = cloneDeep(entries)
 
       /*
        * The item to the left will "occupy" the space that the entry to be
@@ -53,7 +71,7 @@ export function useScheduleEntryDeleteHandler(
       toTakeOver.start = toDelete.start
       clone.splice(index, -1)
 
-      entries.value = clone
+      entriesRef.value = clone
     }
   }
 
