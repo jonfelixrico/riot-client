@@ -16,4 +16,10 @@ export default {
   },
 
   setSchedule: 'Set Schedule',
+  dialogs: {
+    setSchedule: {
+      title: 'Set Schedule',
+      ok: 'Save',
+    },
+  },
 }
