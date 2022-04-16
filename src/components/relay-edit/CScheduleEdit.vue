@@ -75,10 +75,11 @@ export default defineComponent({
       selectedId
     )
 
-    const { rangeModel, resizeChangesPreview } = useScheduleEntryResizeHandler(
-      snapshot,
-      selectedId
-    )
+    const {
+      rangeModel,
+      resizeChangesPreview,
+      saveChanges: saveResizeChanges,
+    } = useScheduleEntryResizeHandler(snapshot, selectedId)
 
     function saveChanges() {
       emit('update:modelValue', snapshot.value)
@@ -90,13 +91,21 @@ export default defineComponent({
 
     return {
       forPresentation,
-      deleteEntry,
+
+      // general model-related
       saveChanges,
+
+      // delete-related
+      deleteEntry,
+
+      // resize-related
       rangeModel,
-      MAX_SECONDS,
+      saveResizeChanges,
 
       selectedIndex,
       selectedEntry,
+
+      MAX_SECONDS,
     }
   },
 })

@@ -188,8 +188,18 @@ export function useScheduleEntryResizeHandler(
     return mergeEntries(results)
   })
 
+  function saveChanges() {
+    const { value } = resizeChangesPreview
+    if (!value) {
+      return
+    }
+
+    entriesRef.value = value
+  }
+
   return {
     resizeChangesPreview,
     rangeModel,
+    saveChanges,
   }
 }
