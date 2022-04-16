@@ -45,7 +45,13 @@
           </div>
 
           <div>
-            <q-btn unelevated color="primary" no-caps dense>
+            <q-btn
+              unelevated
+              color="primary"
+              no-caps
+              dense
+              @click="openSetScheduleDialog"
+            >
               {{ t('relay.setSchedule') }}
             </q-btn>
           </div>
@@ -62,6 +68,23 @@ import CScheduleDisplay from 'components/relay/CScheduleDisplay.vue'
 import { DateTime } from 'luxon'
 import { TimeUnit } from 'src/types/relay-config.interface'
 import { useI18n } from 'vue-i18n'
+
+import CSetScheduleDialog from './CSetScheduleDialog.vue'
+import { useQuasar } from 'quasar'
+
+function useSetScheduleDialog() {
+  const $q = useQuasar()
+
+  function openDialog() {
+    return $q.dialog({
+      component: CSetScheduleDialog,
+    })
+  }
+
+  return {
+    openDialog,
+  }
+}
 
 function secondsToTimeUnit(timeAsSeconds: number): TimeUnit {
   const hour = Math.floor(timeAsSeconds / 3600)
@@ -116,6 +139,7 @@ export default defineComponent({
     })
 
     const { t } = useI18n()
+    const { openDialog: openSetScheduleDialog } = useSetScheduleDialog()
 
     return {
       width,
@@ -123,6 +147,7 @@ export default defineComponent({
       SCHEDULE_BAR_HEIGHT: 10,
       forPresentation,
       t,
+      openSetScheduleDialog,
     }
   },
 })
