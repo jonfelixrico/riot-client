@@ -48,6 +48,9 @@ function timeStringToSeconds(timeStr: string): number {
 }
 
 export default {
+  components: {
+    CTimeInput,
+  },
   emits: [...useDialogPluginComponent.emits],
 
   setup() {
@@ -113,10 +116,6 @@ export default {
       start,
       end,
     }
-  },
-
-  computed: {
-    CTimeInput,
   },
 }
 </script>
