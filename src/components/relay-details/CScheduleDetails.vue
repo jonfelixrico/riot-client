@@ -23,7 +23,7 @@
             v-for="{ entry, i18nParts } in forPresentation"
             :key="`${entry.start}-${entry.end}`"
           >
-            <i18n-t keypath="relay.timeSlotLabel">
+            <i18n-t keypath="relay.timeSlotLabel.format">
               <template #start>
                 <span class="text-weight-bold">{{ i18nParts.start }}</span>
               </template>
@@ -33,13 +33,16 @@
               </template>
 
               <template #state>
-                <span class="text-weight-bold">{{ i18nParts.state }}</span>
+                <span class="text-weight-bold">
+                  {{ t(`relay.timeSlotLabel.${i18nParts.stateKey}`) }}
+                </span>
               </template>
             </i18n-t>
           </div>
         </div>
+
         <div>
-          <!-- edit button goes here -->
+          <q-btn unelevated color="primary" no-caps></q-btn>
         </div>
       </div>
     </template>
@@ -52,6 +55,7 @@ import { PresentationScheduleEntry } from '../relay/relay-schedule-presentation.
 import CScheduleDisplay from 'components/relay/CScheduleDisplay.vue'
 import { DateTime } from 'luxon'
 import { TimeUnit } from 'src/types/relay-config.interface'
+import { useI18n } from 'vue-i18n'
 
 function secondsToTimeUnit(timeAsSeconds: number): TimeUnit {
   const hour = Math.floor(timeAsSeconds / 3600)
@@ -97,17 +101,22 @@ export default defineComponent({
             end: DateTime.now()
               .set(secondsToTimeUnit(entry.end))
               .toLocaleString(DateTime.TIME_WITH_SECONDS),
-            state: entry.state.toLowerCase(),
+
+            // Need to force this to lowercase since lowercase state text is used in relay.timeSlotLabel
+            stateKey: entry.state.toLowerCase(),
           },
         }
       })
     })
+
+    const { t } = useI18n()
 
     return {
       width,
       onResize,
       SCHEDULE_BAR_HEIGHT: 10,
       forPresentation,
+      t,
     }
   },
 })
