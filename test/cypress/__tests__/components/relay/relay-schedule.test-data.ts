@@ -3,6 +3,5 @@ import { timeStringToPresentationScheduleEntry } from './relay-schedule.test-uti
 
 export const SINGLE_DAY_SCHEDULE: PresentationScheduleEntry[] = [
   timeStringToPresentationScheduleEntry('00:00:00', '11:00:00', 'ON'),
-  timeStringToPresentationScheduleEntry('11:00:01', '12:59:59'),
-  timeStringToPresentationScheduleEntry('13:00:00', '23:59:59', 'OFF'),
+  timeStringToPresentationScheduleEntry('11:00:01', '23:59:59', 'OFF'),
 ]

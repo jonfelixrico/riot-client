@@ -14,12 +14,12 @@ function timeStringToSeconds(timeStr: string): number {
 export function timeStringToPresentationScheduleEntry(
   startStr: string,
   endStr: string,
-  state?: RelayState
+  state: RelayState
 ): PresentationScheduleEntry {
   return {
     start: timeStringToSeconds(startStr),
     end: timeStringToSeconds(endStr),
-    state: state ?? null,
+    state,
   }
 }
 
