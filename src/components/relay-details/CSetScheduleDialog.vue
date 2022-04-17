@@ -8,6 +8,20 @@
       </q-card-section>
 
       <q-card-section class="q-pt-none">
+        <q-radio
+          v-model="type"
+          val="SINGLE_ON"
+          :label="t('relay.setScheduleType.singleOn')"
+        />
+
+        <q-radio
+          v-model="type"
+          val="CYCLE"
+          :label="t('relay.setScheduleType.cycle')"
+        />
+      </q-card-section>
+
+      <q-card-section>
         <CSingleOnInput
           v-if="type === 'SINGLE_ON'"
           v-model:start="singleOnModel.start"
