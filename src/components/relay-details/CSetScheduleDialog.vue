@@ -8,8 +8,11 @@
       </q-card-section>
 
       <q-card-section class="q-pt-none">
-        <CTimeInput v-model="start" />
-        <CTimeInput v-model="end" />
+        <CSingleOnInput
+          v-if="type === 'SINGLE_ON'"
+          v-model:start="singleOnModel.start"
+          v-model:end="singleOnModel.end"
+        />
       </q-card-section>
 
       <q-card-actions align="right">
@@ -35,21 +38,44 @@
 
 <script lang="ts">
 import { useDialogPluginComponent } from 'quasar'
-import { ref } from 'vue'
+import { useSetScheduleStore } from 'src/stores/set-schedule-store'
+import { computed, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PresentationScheduleEntry } from '../relay/relay-schedule-presentation.utils'
-import { MAX_SECONDS } from '../relay/relay.constants'
-import CTimeInput from './CTimeInput.vue'
+import CSingleOnInput from './CSingleOnInput.vue'
 
-function timeStringToSeconds(timeStr: string): number {
-  const [hour, minute, second] = timeStr.split(':').map(Number)
+type SetScheduleType = 'CYCLE' | 'SINGLE_ON'
 
-  return hour * 3600 + minute * 60 + second
+function useSingleOnModel() {
+  const { singleOn, setSingleOnSchedule } = useSetScheduleStore()
+  const start = computed<string>({
+    get() {
+      return singleOn.start ?? ''
+    },
+
+    set(start) {
+      setSingleOnSchedule({ start })
+    },
+  })
+
+  const end = computed<string>({
+    get() {
+      return singleOn.end ?? ''
+    },
+
+    set(end) {
+      setSingleOnSchedule({ end })
+    },
+  })
+
+  return reactive({
+    start,
+    end,
+  })
 }
 
 export default {
   components: {
-    CTimeInput,
+    CSingleOnInput,
   },
   emits: [...useDialogPluginComponent.emits],
 
@@ -58,52 +84,35 @@ export default {
       useDialogPluginComponent()
     const { t } = useI18n()
 
-    const start = ref<string>('')
-    const end = ref<string>('')
+    const store = useSetScheduleStore()
+    const singleOnModel = useSingleOnModel()
 
-    function convertToScheduleArray(startString: string, endString: string) {
-      if (!startString || !endString) {
-        return
+    const type = ref<SetScheduleType[keyof SetScheduleType]>('SINGLE_ON')
+
+    const reducedResult = computed(() => {
+      switch (type.value) {
+        case 'CYCLE': {
+          // TODO return getter
+          return null
+        }
+
+        case 'SINGLE_ON': {
+          return store.singleOnSchedule
+        }
+
+        default: {
+          return null
+        }
       }
-
-      const startSeconds = timeStringToSeconds(startString)
-      const endSeconds = timeStringToSeconds(endString)
-
-      const schedules: PresentationScheduleEntry[] = []
-
-      if (startSeconds !== 0) {
-        schedules.push({
-          start: 0,
-          end: startSeconds - 1,
-          state: 'OFF',
-        })
-      }
-
-      schedules.push({
-        start: startSeconds,
-        end: endSeconds,
-        state: 'ON',
-      })
-
-      if (endSeconds !== MAX_SECONDS) {
-        schedules.push({
-          start: endSeconds + 1,
-          end: MAX_SECONDS,
-          state: 'OFF',
-        })
-      }
-
-      return schedules
-    }
+    })
 
     // TODO maybe its better to use a QForm?
     function onOk() {
-      const value = convertToScheduleArray(start.value, end.value)
-      if (!value) {
+      if (!reducedResult.value) {
         return
       }
 
-      onDialogOK(value)
+      onDialogOK(reducedResult.value)
     }
 
     return {
@@ -112,9 +121,8 @@ export default {
       onOk,
       onDialogCancel,
       t,
-
-      start,
-      end,
+      singleOnModel,
+      type,
     }
   },
 }
