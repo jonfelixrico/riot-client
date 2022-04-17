@@ -16,6 +16,11 @@ export default {
   },
 
   setSchedule: 'Set Schedule',
+  setScheduleType: {
+    singleOn: 'Single On',
+    cycle: 'Cyclical',
+  },
+
   dialogs: {
     setSchedule: {
       title: 'Set Schedule',
