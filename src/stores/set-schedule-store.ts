@@ -8,8 +8,9 @@ export interface SetScheduleStore {
   }
 
   cycle: {
-    start: string | null
-    end: string | null
+    onDuration: number | null
+    offDuration: number | null
+    firstState: 'ON' | 'OFF'
   }
 }
 
@@ -21,8 +22,9 @@ export const useSetScheduleStore = defineStore('setStore', {
     },
 
     cycle: {
-      start: null,
-      end: null,
+      onDuration: null,
+      offDuration: null,
+      firstState: 'ON',
     },
   }),
   getters: {
