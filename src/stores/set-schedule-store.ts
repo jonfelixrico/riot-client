@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import { convertSingleOnScheduleToScheduleArray } from 'src/components/relay-details/set-schedule.utils'
-import { MAX_SECONDS } from 'src/components/relay/relay.constants'
 
 export interface SetScheduleStore {
   singleOn: {
@@ -14,7 +13,7 @@ export interface SetScheduleStore {
   }
 }
 
-export const useSetScheduleStore = defineStore('counter', {
+export const useSetScheduleStore = defineStore('setStore', {
   state: (): SetScheduleStore => ({
     singleOn: {
       start: null,
@@ -31,23 +30,20 @@ export const useSetScheduleStore = defineStore('counter', {
       const { start, end } = singleOn
 
       if (!start || !end) {
-        return [
-          {
-            start: 0,
-            end: MAX_SECONDS,
-            state: 'OFF',
-          },
-        ]
+        return null
       }
 
       return convertSingleOnScheduleToScheduleArray(start, end)
     },
   },
   actions: {
-    setSingleOnSchedule(start: string, end: string) {
-      this.singleOn = {
-        start,
-        end,
+    setSingleOnSchedule(input: { start?: string; end?: string }) {
+      if (input.start) {
+        this.singleOn.start = input.start
+      }
+
+      if (input.end) {
+        this.singleOn.end = input.end
       }
     },
   },
