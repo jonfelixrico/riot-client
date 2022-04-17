@@ -14,7 +14,7 @@ export interface SetScheduleStore {
   }
 }
 
-export const useCounterStore = defineStore('counter', {
+export const useSetScheduleStore = defineStore('counter', {
   state: (): SetScheduleStore => ({
     singleOn: {
       start: null,
