@@ -1,9 +1,9 @@
 import { omit } from 'lodash'
-import { computed, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { useCycleScheduleModel } from './cycle-schedule-model.composable'
 import { useSingleOnScheduleModel } from './single-on-schedule-model.composable'
 
-export function useScheduleModel() {
+export function useSetScheduleModel() {
   const cycle = useCycleScheduleModel()
   const singleOn = useSingleOnScheduleModel()
   const mode = ref<'CYCLE' | 'SINGLE_ON'>('CYCLE')
@@ -17,8 +17,8 @@ export function useScheduleModel() {
   })
 
   return {
-    cycle: omit(cycle, 'schedule'),
-    singleOn: omit(singleOn, 'schedule'),
+    cycle: reactive(omit(cycle, 'schedule')),
+    singleOn: reactive(omit(singleOn, 'schedule')),
     mode,
     schedule,
   }
