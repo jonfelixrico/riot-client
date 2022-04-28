@@ -72,7 +72,7 @@ export default defineComponent({
 
     const offFirstModel = computed({
       get() {
-        return props.firstState === 'Off'
+        return props.firstState === 'OFF'
       },
 
       set(value) {
