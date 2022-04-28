@@ -1,6 +1,6 @@
 import { computed, ref } from 'vue'
-import { PresentationScheduleEntry } from '../relay/relay-schedule-presentation.utils'
-import { MAX_SECONDS } from '../relay/relay.constants'
+import { PresentationScheduleEntry } from 'components/relay/relay-schedule-presentation.utils'
+import { MAX_SECONDS } from 'components/relay/relay.constants'
 
 function timeStringToSeconds(timeStr: string): number {
   const [hour, minute, second] = timeStr.split(':').map(Number)
