@@ -9,13 +9,13 @@
 
       <q-card-section class="q-pt-none">
         <q-radio
-          v-model="type"
+          v-model="mode"
           val="SINGLE_ON"
           :label="t('relay.setScheduleType.singleOn')"
         />
 
         <q-radio
-          v-model="type"
+          v-model="mode"
           val="CYCLE"
           :label="t('relay.setScheduleType.cycle')"
         />
@@ -24,8 +24,8 @@
       <q-card-section>
         <CSingleOnInput
           v-if="type === 'SINGLE_ON'"
-          v-model:start="singleOnModel.start"
-          v-model:end="singleOnModel.end"
+          v-model:start="singleOn.start"
+          v-model:end="singleOn.end"
         />
       </q-card-section>
 
@@ -52,40 +52,9 @@
 
 <script lang="ts">
 import { useDialogPluginComponent } from 'quasar'
-import { useSetScheduleStore } from 'src/stores/set-schedule-store'
-import { computed, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import CSingleOnInput from './CSingleOnInput.vue'
-
-type SetScheduleType = 'CYCLE' | 'SINGLE_ON'
-
-function useSingleOnModel() {
-  const { singleOn, setSingleOnSchedule } = useSetScheduleStore()
-  const start = computed<string>({
-    get() {
-      return singleOn.start ?? ''
-    },
-
-    set(start) {
-      setSingleOnSchedule({ start })
-    },
-  })
-
-  const end = computed<string>({
-    get() {
-      return singleOn.end ?? ''
-    },
-
-    set(end) {
-      setSingleOnSchedule({ end })
-    },
-  })
-
-  return reactive({
-    start,
-    end,
-  })
-}
+import { useSetScheduleModel } from './composables/set-schedule-model.composable'
 
 export default {
   components: {
@@ -98,35 +67,16 @@ export default {
       useDialogPluginComponent()
     const { t } = useI18n()
 
-    const store = useSetScheduleStore()
-    const singleOnModel = useSingleOnModel()
-
-    const type = ref<SetScheduleType[keyof SetScheduleType]>('SINGLE_ON')
-
-    const reducedResult = computed(() => {
-      switch (type.value) {
-        case 'CYCLE': {
-          // TODO return getter
-          return null
-        }
-
-        case 'SINGLE_ON': {
-          return store.singleOnSchedule
-        }
-
-        default: {
-          return null
-        }
-      }
-    })
+    const { schedule, mode, cycle, singleOn } = useSetScheduleModel()
 
     // TODO maybe its better to use a QForm?
     function onOk() {
-      if (!reducedResult.value) {
+      if (!schedule.value) {
+        console.warn('Attempted to send blank schedule.')
         return
       }
 
-      onDialogOK(reducedResult.value)
+      onDialogOK(schedule.value)
     }
 
     return {
@@ -135,8 +85,9 @@ export default {
       onOk,
       onDialogCancel,
       t,
-      singleOnModel,
-      type,
+      cycle,
+      singleOn,
+      mode,
     }
   },
 }
