@@ -2,11 +2,13 @@ import { computed, ref } from 'vue'
 import { PresentationScheduleEntry } from 'components/relay/relay-schedule-presentation.utils'
 import { MAX_SECONDS } from 'components/relay/relay.constants'
 
+export type FirstState = 'ON' | 'Off'
+
 export function useCycleScheduleModel() {
   // on and off represent seconds
   const on = ref<number | null>(null)
   const off = ref<number | null>(null)
-  const firstState = ref<'ON' | 'OFF'>('ON')
+  const firstState = ref<FirstState>('ON')
 
   const schedule = computed(() => {
     if (!on.value || !off.value) {
