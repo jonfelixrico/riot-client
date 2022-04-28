@@ -2,7 +2,7 @@ import { computed, ref } from 'vue'
 import { PresentationScheduleEntry } from 'components/relay/relay-schedule-presentation.utils'
 import { MAX_SECONDS } from 'components/relay/relay.constants'
 
-export type FirstState = 'ON' | 'Off'
+export type FirstState = 'ON' | 'OFF'
 
 export function useCycleScheduleModel() {
   // on and off represent seconds
