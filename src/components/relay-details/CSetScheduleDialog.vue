@@ -27,6 +27,13 @@
           v-model:start="singleOn.start"
           v-model:end="singleOn.end"
         />
+
+        <CCycleInput
+          v-else
+          v-model:on="cycle.on"
+          v-model:off="cycle.off"
+          v-model:firstState="cycle.firstState"
+        />
       </q-card-section>
 
       <q-card-actions align="right">
@@ -55,10 +62,12 @@ import { useDialogPluginComponent } from 'quasar'
 import { useI18n } from 'vue-i18n'
 import CSingleOnInput from './CSingleOnInput.vue'
 import { useSetScheduleModel } from './composables/set-schedule-model.composable'
+import CCycleInput from './CCycleInput.vue'
 
 export default {
   components: {
     CSingleOnInput,
+    CCycleInput,
   },
   emits: [...useDialogPluginComponent.emits],
 
