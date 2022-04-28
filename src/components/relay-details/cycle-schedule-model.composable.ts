@@ -14,26 +14,26 @@ export function useCycleScheduleModel() {
     }
 
     const schedule: PresentationScheduleEntry[] = []
-
     let state = firstState.value
+
     while (true) {
       const lastSchedule = schedule[schedule.length - 1]
+      const stateValue = state === 'ON' ? on.value : off.value
+
       if (lastSchedule?.end === MAX_SECONDS) {
+        // we have reached the full day cycle
         break
       } else if (!lastSchedule) {
+        // first iteration
         schedule.push({
           state,
           start: 0,
-          end: state === 'ON' ? on.value : off.value,
+          end: stateValue,
         })
-
-        state = state === 'ON' ? 'OFF' : 'ON'
       } else if (lastSchedule.end !== MAX_SECONDS) {
+        // last iteration
         const start = lastSchedule.end + 1
-        const end = Math.min(
-          start + (state === 'ON' ? on.value : off.value),
-          MAX_SECONDS
-        )
+        const end = Math.min(lastSchedule.end + stateValue, MAX_SECONDS)
 
         schedule.push({
           start,
