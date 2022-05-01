@@ -9,20 +9,24 @@
 
       <q-separator />
 
-      <q-card-section class="row">
-        <q-radio
-          v-model="mode"
-          class="col"
-          val="CYCLE"
-          :label="t('relay.setScheduleType.cycle')"
-        />
+      <q-card-section>
+        <div class="row">
+          <q-radio
+            v-model="mode"
+            class="col"
+            val="CYCLE"
+            :label="t('relay.setScheduleType.cycle')"
+          />
 
-        <q-radio
-          v-model="mode"
-          class="col"
-          val="SINGLE_ON"
-          :label="t('relay.setScheduleType.singleOn')"
-        />
+          <q-radio
+            v-model="mode"
+            class="col"
+            val="SINGLE_ON"
+            :label="t('relay.setScheduleType.singleOn')"
+          />
+        </div>
+
+        <CHorizontalSchedulePreview :entries="schedToDisplay" />
       </q-card-section>
 
       <q-separator />
@@ -71,12 +75,26 @@ import { useI18n } from 'vue-i18n'
 import CSingleOnInput from './CSingleOnInput.vue'
 import { useSetScheduleModel } from './composables/set-schedule-model.composable'
 import CCycleInput from './CCycleInput.vue'
+import { PresentationScheduleEntry } from '../relay/relay-schedule-presentation.utils'
+import { MAX_SECONDS } from 'components/relay/relay.constants'
+import { computed } from '@vue/reactivity'
+import CHorizontalSchedulePreview from 'components/relay/CHorizontalSchedulePreview.vue'
+
+const NULL_SCHEDULE: PresentationScheduleEntry[] = [
+  {
+    start: 0,
+    end: MAX_SECONDS,
+    state: 'OFF',
+  },
+]
 
 export default {
   components: {
     CSingleOnInput,
     CCycleInput,
+    CHorizontalSchedulePreview,
   },
+
   emits: [...useDialogPluginComponent.emits],
 
   setup() {
@@ -96,6 +114,8 @@ export default {
       onDialogOK(schedule.value)
     }
 
+    const schedToDisplay = computed(() => schedule.value ?? NULL_SCHEDULE)
+
     return {
       dialogRef,
       onDialogHide,
@@ -105,6 +125,7 @@ export default {
       cycle,
       singleOn,
       mode,
+      schedToDisplay,
     }
   },
 }
