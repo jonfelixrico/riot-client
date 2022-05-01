@@ -1,5 +1,5 @@
 import DialogWrapper from 'app/test/cypress/wrappers/DialogWrapper.vue'
-import CSetScheduleDialog from 'components/relay-details/CSetScheduleDialog.vue'
+import CSetScheduleDialog from 'components/relay-details/set-schedule-dialog/CSetScheduleDialog.vue'
 
 import { mount } from '@cypress/vue'
 import { i18n } from 'boot/i18n'

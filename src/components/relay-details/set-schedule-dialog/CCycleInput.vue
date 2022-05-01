@@ -43,7 +43,7 @@
 import { computed } from '@vue/reactivity'
 import { defineComponent, PropType } from 'vue'
 import { useI18n } from 'vue-i18n'
-import type { FirstState } from './composables/cycle-schedule-model.composable'
+import type { FirstState } from './cycle-schedule-model.composable'
 
 export default defineComponent({
   props: {
