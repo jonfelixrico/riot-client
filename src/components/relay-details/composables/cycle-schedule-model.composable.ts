@@ -22,7 +22,8 @@ export function useCycleScheduleModel() {
       const lastSchedule = schedule[schedule.length - 1]
       const stateValue = state === 'ON' ? on.value : off.value
 
-      if (lastSchedule?.end === MAX_SECONDS) {
+      // don't use ">" here since it'll cause an infinite loop
+      if (lastSchedule?.end >= MAX_SECONDS) {
         // we have reached the full day cycle
         break
       } else if (!lastSchedule) {
