@@ -9,19 +9,23 @@
 
       <q-separator />
 
-      <q-card-section class="q-pt-none">
+      <q-card-section class="row">
         <q-radio
           v-model="mode"
+          class="col"
           val="CYCLE"
           :label="t('relay.setScheduleType.cycle')"
         />
 
         <q-radio
           v-model="mode"
+          class="col"
           val="SINGLE_ON"
           :label="t('relay.setScheduleType.singleOn')"
         />
       </q-card-section>
+
+      <q-separator />
 
       <q-card-section>
         <CSingleOnInput
