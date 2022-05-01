@@ -7,6 +7,7 @@
     :rules="['fulltime']"
     :label="label"
     :hint="hint"
+    :dense="dense"
   >
     <template #append>
       <q-btn icon="access_time" round dense unelevated color="primary">
@@ -40,6 +41,11 @@ export default defineComponent({
     hint: {
       type: String,
       default: undefined,
+    },
+
+    dense: {
+      type: Boolean,
+      default: false,
     },
   },
 

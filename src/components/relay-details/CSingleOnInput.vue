@@ -3,10 +3,12 @@
     <CTimeInput
       v-model="startModel"
       :label="t('relay.singleOnInput.start.label')"
+      dense
     />
     <CTimeInput
       v-model="endModel"
       :label="t('relay.singleOnInput.end.label')"
+      dense
     />
   </div>
 </template>
