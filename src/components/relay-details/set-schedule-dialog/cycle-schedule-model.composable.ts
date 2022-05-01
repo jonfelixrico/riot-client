@@ -6,13 +6,13 @@ export type FirstState = 'ON' | 'OFF'
 
 export function useCycleScheduleModel() {
   // on and off represent seconds
-  const on = ref<number | null>(null)
-  const off = ref<number | null>(null)
+  const on = ref<number>()
+  const off = ref<number>()
   const firstState = ref<FirstState>('ON')
 
   const schedule = computed(() => {
     if (!on.value || !off.value) {
-      return null
+      return undefined
     }
 
     const schedule: PresentationScheduleEntry[] = []

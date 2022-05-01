@@ -26,21 +26,21 @@ export default defineComponent({
   props: {
     start: {
       type: String,
-      required: true,
+      default: undefined,
     },
 
     end: {
       type: String,
-      required: true,
+      default: undefined,
     },
   },
 
   emits: ['update:start', 'update:end'],
 
   setup(props, { emit }) {
-    const startModel = computed<string>({
+    const startModel = computed<string | undefined>({
       get() {
-        return props.start
+        return props.start ?? undefined
       },
 
       set(value) {
@@ -48,7 +48,7 @@ export default defineComponent({
       },
     })
 
-    const endModel = computed<string>({
+    const endModel = computed<string | undefined>({
       get() {
         return props.end
       },

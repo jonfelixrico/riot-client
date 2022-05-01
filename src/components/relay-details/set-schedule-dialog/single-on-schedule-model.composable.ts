@@ -9,12 +9,12 @@ function timeStringToSeconds(timeStr: string): number {
 }
 
 export function useSingleOnScheduleModel() {
-  const start = ref<string | null>(null)
-  const end = ref<string | null>(null)
+  const start = ref<string>()
+  const end = ref<string>()
 
   const schedule = computed(() => {
     if (!start.value || !end.value) {
-      return null
+      return undefined
     }
 
     const startSeconds = timeStringToSeconds(start.value)

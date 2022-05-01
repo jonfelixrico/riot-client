@@ -49,12 +49,12 @@ export default defineComponent({
   props: {
     on: {
       type: Number,
-      default: null,
+      default: undefined,
     },
 
     off: {
       type: Number,
-      default: null,
+      default: undefined,
     },
 
     firstState: {
@@ -68,9 +68,9 @@ export default defineComponent({
   setup(props, { emit }) {
     // NOTE: the model uses seconds, but we want the input to use minutes
 
-    const onModel = computed<number | null>({
+    const onModel = computed<number | undefined>({
       get() {
-        return props.on / 60
+        return props.on && props.on / 60
       },
 
       set(value) {
@@ -78,9 +78,9 @@ export default defineComponent({
       },
     })
 
-    const offModel = computed<number | null>({
+    const offModel = computed<number | undefined>({
       get() {
-        return props.off / 60
+        return props.off && props.off / 60
       },
 
       set(value) {
