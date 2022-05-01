@@ -15,6 +15,7 @@
           class="col"
           val="CYCLE"
           :label="t('relay.setScheduleType.cycle')"
+          data-cy="mode-radio-cycle"
         />
 
         <q-radio
@@ -22,6 +23,7 @@
           class="col"
           val="SINGLE_ON"
           :label="t('relay.setScheduleType.singleOn')"
+          data-cy="mode-radio-single-on"
         />
       </div>
 
@@ -35,6 +37,7 @@
         v-if="mode === 'SINGLE_ON'"
         v-model:start="singleOn.start"
         v-model:end="singleOn.end"
+        data-cy="mode-input-single-on"
       />
 
       <CCycleInput
@@ -42,6 +45,7 @@
         v-model:on="cycle.on"
         v-model:off="cycle.off"
         v-model:firstState="cycle.firstState"
+        data-cy="mode-input-cycle"
       />
     </q-card-section>
 
