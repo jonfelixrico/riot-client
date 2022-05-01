@@ -1,12 +1,19 @@
 <template>
   <div>
-    <CTimeInput v-model="startModel" />
-    <CTimeInput v-model="endModel" />
+    <CTimeInput
+      v-model="startModel"
+      :label="t('relay.singleOnInput.start.label')"
+    />
+    <CTimeInput
+      v-model="endModel"
+      :label="t('relay.singleOnInput.end.label')"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
+import { useI18n } from 'vue-i18n'
 import CTimeInput from './CTimeInput.vue'
 
 export default defineComponent({
@@ -49,9 +56,12 @@ export default defineComponent({
       },
     })
 
+    const { t } = useI18n()
+
     return {
       startModel,
       endModel,
+      t,
     }
   },
 })

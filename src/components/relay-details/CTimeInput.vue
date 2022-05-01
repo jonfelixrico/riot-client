@@ -5,6 +5,8 @@
     outlined
     mask="fulltime"
     :rules="['fulltime']"
+    :label="label"
+    :hint="hint"
   >
     <template #append>
       <q-btn icon="access_time" round dense unelevated color="primary">
@@ -28,6 +30,16 @@ export default defineComponent({
     modelValue: {
       type: String,
       default: null,
+    },
+
+    label: {
+      type: String,
+      default: undefined,
+    },
+
+    hint: {
+      type: String,
+      default: undefined,
     },
   },
 
