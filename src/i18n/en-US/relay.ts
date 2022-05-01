@@ -27,4 +27,26 @@ export default {
       ok: 'Save',
     },
   },
+
+  cyclicalInput: {
+    on: {
+      label: 'Duration On',
+      hint: 'In minutes',
+    },
+
+    off: {
+      label: 'Duration Off',
+      hint: 'In minutes',
+    },
+  },
+
+  singleOnInput: {
+    start: {
+      label: 'Starts at',
+    },
+
+    send: {
+      label: 'Ends at',
+    },
+  },
 }
