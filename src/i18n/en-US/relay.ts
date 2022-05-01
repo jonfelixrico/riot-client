@@ -45,7 +45,7 @@ export default {
       label: 'Starts at',
     },
 
-    send: {
+    end: {
       label: 'Ends at',
     },
   },
