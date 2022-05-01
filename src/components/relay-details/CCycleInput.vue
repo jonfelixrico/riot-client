@@ -7,6 +7,7 @@
         outlined
         class="col"
         :hint="t('relay.cyclicalInput.on.hint')"
+        dense
       />
       <q-radio v-model="firstStateModel" val="ON" />
     </div>
@@ -18,6 +19,7 @@
         outlined
         class="col"
         :hint="t('relay.cyclicalInput.off.hint')"
+        dense
       />
       <q-radio v-model="firstStateModel" val="OFF" />
     </div>
