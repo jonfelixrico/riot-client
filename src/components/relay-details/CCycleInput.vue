@@ -3,13 +3,13 @@
     <div class="row items-center q-gutter-x-sm">
       <!-- TODO add i18n -->
       <q-input v-model="onModel" label="On" />
-      <q-checkbox v-model="onFirstModel" />
+      <q-radio v-model="firstStateModel" val="ON" />
     </div>
 
     <div class="row items-center q-gutter-x-sm">
       <!-- TODO add i18n -->
       <q-input v-model="offModel" label="Off" />
-      <q-checkbox v-model="offFirstModel" />
+      <q-radio v-model="firstStateModel" val="OFF" />
     </div>
   </div>
 </template>
@@ -60,31 +60,20 @@ export default defineComponent({
       },
     })
 
-    const onFirstModel = computed({
+    const firstStateModel = computed<FirstState>({
       get() {
-        return props.firstState === 'ON'
+        return props.firstState
       },
 
       set(value) {
-        emit('update:firstState', value ? 'ON' : 'OFF')
-      },
-    })
-
-    const offFirstModel = computed({
-      get() {
-        return props.firstState === 'OFF'
-      },
-
-      set(value) {
-        emit('update:firstState', value ? 'OFF' : 'ON')
+        emit('update:firstState', value)
       },
     })
 
     return {
       onModel,
       offModel,
-      offFirstModel,
-      onFirstModel,
+      firstStateModel,
     }
   },
 })
