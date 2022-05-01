@@ -16,6 +16,7 @@ import { PresentationScheduleEntry } from 'components/relay/relay-schedule-prese
 import { MAX_SECONDS } from 'components/relay/relay.constants'
 import { computed } from '@vue/reactivity'
 import CSetScheduleDialogContent from './CSetScheduleDialogContent.vue'
+import { defineComponent } from 'vue'
 
 const NULL_SCHEDULE: PresentationScheduleEntry[] = [
   {
@@ -25,7 +26,7 @@ const NULL_SCHEDULE: PresentationScheduleEntry[] = [
   },
 ]
 
-export default {
+export default defineComponent({
   components: {
     CSetScheduleDialogContent,
   },
@@ -53,5 +54,5 @@ export default {
       schedToDisplay,
     }
   },
-}
+})
 </script>
