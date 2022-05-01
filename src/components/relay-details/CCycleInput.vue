@@ -2,7 +2,8 @@
   <div class="q-gutter-y-md">
     <div class="q-gutter-y-sm">
       <q-input
-        v-model="onModel"
+        v-model.number="onModel"
+        type="number"
         :label="t('relay.cyclicalInput.on.label')"
         outlined
         class="col"
@@ -11,7 +12,8 @@
       />
 
       <q-input
-        v-model="offModel"
+        v-model.number="offModel"
+        type="number"
         :label="t('relay.cyclicalInput.off.label')"
         outlined
         class="col"
