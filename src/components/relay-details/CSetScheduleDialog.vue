@@ -12,14 +12,14 @@
       <q-card-section class="q-pt-none">
         <q-radio
           v-model="mode"
-          val="SINGLE_ON"
-          :label="t('relay.setScheduleType.singleOn')"
+          val="CYCLE"
+          :label="t('relay.setScheduleType.cycle')"
         />
 
         <q-radio
           v-model="mode"
-          val="CYCLE"
-          :label="t('relay.setScheduleType.cycle')"
+          val="SINGLE_ON"
+          :label="t('relay.setScheduleType.singleOn')"
         />
       </q-card-section>
 
