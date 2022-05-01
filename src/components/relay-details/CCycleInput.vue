@@ -1,6 +1,6 @@
 <template>
   <div class="q-gutter-y-md">
-    <div class="row items-center q-gutter-x-sm">
+    <div class="q-gutter-y-sm">
       <q-input
         v-model="onModel"
         :label="t('relay.cyclicalInput.on.label')"
@@ -9,10 +9,7 @@
         :hint="t('relay.cyclicalInput.on.hint')"
         dense
       />
-      <q-radio v-model="firstStateModel" val="ON" />
-    </div>
 
-    <div class="row items-center q-gutter-x-sm">
       <q-input
         v-model="offModel"
         :label="t('relay.cyclicalInput.off.label')"
@@ -21,7 +18,21 @@
         :hint="t('relay.cyclicalInput.off.hint')"
         dense
       />
-      <q-radio v-model="firstStateModel" val="OFF" />
+    </div>
+
+    <q-separator />
+
+    <div class="column">
+      <q-radio
+        v-model="firstStateModel"
+        val="ON"
+        :label="t('relay.cyclicalInput.firstState.on.label')"
+      />
+      <q-radio
+        v-model="firstStateModel"
+        val="OFF"
+        :label="t('relay.cyclicalInput.firstState.off.label')"
+      />
     </div>
   </div>
 </template>

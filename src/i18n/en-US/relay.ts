@@ -38,6 +38,16 @@ export default {
       label: 'Duration Off',
       hint: 'In minutes',
     },
+
+    firstState: {
+      on: {
+        label: 'Turn on first',
+      },
+
+      off: {
+        label: 'Turn off first',
+      },
+    },
   },
 
   singleOnInput: {
