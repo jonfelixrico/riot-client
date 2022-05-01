@@ -23,7 +23,7 @@
 
       <q-card-section>
         <CSingleOnInput
-          v-if="type === 'SINGLE_ON'"
+          v-if="mode === 'SINGLE_ON'"
           v-model:start="singleOn.start"
           v-model:end="singleOn.end"
         />
