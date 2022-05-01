@@ -1,7 +1,13 @@
 <template>
-  <q-input v-model="model" filled mask="fulltime" :rules="['fulltime']">
+  <q-input
+    v-model="model"
+    readonly
+    outlined
+    mask="fulltime"
+    :rules="['fulltime']"
+  >
     <template #append>
-      <q-icon name="access_time" class="cursor-pointer">
+      <q-btn icon="access_time" round dense unelevated color="primary">
         <q-popup-proxy cover transition-show="scale" transition-hide="scale">
           <q-time v-model="model" with-seconds format24h>
             <div class="row items-center justify-end">
@@ -9,7 +15,7 @@
             </div>
           </q-time>
         </q-popup-proxy>
-      </q-icon>
+      </q-btn>
     </template>
   </q-input>
 </template>

@@ -7,6 +7,8 @@
         </div>
       </q-card-section>
 
+      <q-separator />
+
       <q-card-section class="q-pt-none">
         <q-radio
           v-model="mode"
@@ -35,6 +37,8 @@
           v-model:firstState="cycle.firstState"
         />
       </q-card-section>
+
+      <q-separator />
 
       <q-card-actions align="right">
         <q-btn

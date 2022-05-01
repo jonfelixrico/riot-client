@@ -2,13 +2,13 @@
   <div class="q-gutter-y-md">
     <div class="row items-center q-gutter-x-sm">
       <!-- TODO add i18n -->
-      <q-input v-model="onModel" label="On" />
+      <q-input v-model="onModel" label="On" outlined class="col" />
       <q-radio v-model="firstStateModel" val="ON" />
     </div>
 
     <div class="row items-center q-gutter-x-sm">
       <!-- TODO add i18n -->
-      <q-input v-model="offModel" label="Off" />
+      <q-input v-model="offModel" label="Off" outlined class="col" />
       <q-radio v-model="firstStateModel" val="OFF" />
     </div>
   </div>
