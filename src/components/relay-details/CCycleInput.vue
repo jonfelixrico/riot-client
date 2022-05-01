@@ -1,14 +1,24 @@
 <template>
   <div class="q-gutter-y-md">
     <div class="row items-center q-gutter-x-sm">
-      <!-- TODO add i18n -->
-      <q-input v-model="onModel" label="On" outlined class="col" />
+      <q-input
+        v-model="onModel"
+        :label="t('relay.cyclicalInput.on.label')"
+        outlined
+        class="col"
+        :hint="t('relay.cyclicalInput.on.hint')"
+      />
       <q-radio v-model="firstStateModel" val="ON" />
     </div>
 
     <div class="row items-center q-gutter-x-sm">
-      <!-- TODO add i18n -->
-      <q-input v-model="offModel" label="Off" outlined class="col" />
+      <q-input
+        v-model="offModel"
+        :label="t('relay.cyclicalInput.off.label')"
+        outlined
+        class="col"
+        :hint="t('relay.cyclicalInput.off.hint')"
+      />
       <q-radio v-model="firstStateModel" val="OFF" />
     </div>
   </div>
@@ -17,6 +27,7 @@
 <script lang="ts">
 import { computed } from '@vue/reactivity'
 import { defineComponent, PropType } from 'vue'
+import { useI18n } from 'vue-i18n'
 import type { FirstState } from './composables/cycle-schedule-model.composable'
 
 export default defineComponent({
@@ -70,10 +81,13 @@ export default defineComponent({
       },
     })
 
+    const { t } = useI18n()
+
     return {
       onModel,
       offModel,
       firstStateModel,
+      t,
     }
   },
 })
