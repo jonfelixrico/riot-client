@@ -24,7 +24,9 @@
     </q-item-section>
 
     <q-item-section side>
-      <q-btn unelevated no-caps color="primary">{{ t('common.edit') }}</q-btn>
+      <q-btn unelevated no-caps color="primary" @click="onEditClick">
+        {{ t('common.edit') }}
+      </q-btn>
     </q-item-section>
   </q-item>
 </template>
@@ -39,6 +41,8 @@ import CWeeklySchedulePreview from './CWeeklySchedulePreview.vue'
 import { computed } from '@vue/reactivity'
 import { useTickingDateTime } from 'src/composables/ticking-datetime.composable'
 import { useI18n } from 'vue-i18n'
+import { useQuasar } from 'quasar'
+import CSetScheduleDialog from 'components/relay-details/set-schedule-dialog/CSetScheduleDialog.vue'
 
 export default defineComponent({
   components: {
@@ -79,10 +83,19 @@ export default defineComponent({
 
     const { t } = useI18n()
 
+    const $q = useQuasar()
+
+    function onEditClick() {
+      $q.dialog({
+        component: CSetScheduleDialog,
+      })
+    }
+
     return {
       relayConfig,
       now,
       t,
+      onEditClick,
     }
   },
 })
