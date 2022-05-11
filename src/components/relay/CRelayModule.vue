@@ -1,3 +1,5 @@
+<!-- This represents a relay module. This is meant to be used with module listing. -->
+
 <template>
   <q-item>
     <q-item-section>
@@ -20,6 +22,10 @@
         :now="now"
       />
     </q-item-section>
+
+    <q-item-section side>
+      <q-btn unelevated no-caps color="primary">{{ t('common.edit') }}</q-btn>
+    </q-item-section>
   </q-item>
 </template>
 
@@ -32,6 +38,7 @@ import CDailySchedulePreview from './CDailySchedulePreview.vue'
 import CWeeklySchedulePreview from './CWeeklySchedulePreview.vue'
 import { computed } from '@vue/reactivity'
 import { useTickingDateTime } from 'src/composables/ticking-datetime.composable'
+import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   components: {
@@ -70,9 +77,12 @@ export default defineComponent({
 
     const { now } = useTickingDateTime()
 
+    const { t } = useI18n()
+
     return {
       relayConfig,
       now,
+      t,
     }
   },
 })
