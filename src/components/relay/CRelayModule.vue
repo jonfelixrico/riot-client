@@ -1,24 +1,26 @@
 <template>
-  <div>
-    <CDeviceModuleHeader :device-module="deviceModule" />
-    <q-separator />
-    <!-- TODO do not hardcode the height value -->
-    <q-skeleton v-if="!relayConfig" height="200px" />
+  <q-item>
+    <q-item-section>
+      <CDeviceModuleHeader :device-module="deviceModule" />
+      <q-separator />
+      <!-- TODO do not hardcode the height value -->
+      <q-skeleton v-if="!relayConfig" height="200px" />
 
-    <CDailySchedulePreview
-      v-else-if="relayConfig.schedule.type === 'DAILY'"
-      :utc-offset="relayConfig.schedule.utcOffset"
-      :daily-schedule="relayConfig.schedule.dailySchedule"
-      :now="now"
-    />
+      <CDailySchedulePreview
+        v-else-if="relayConfig.schedule.type === 'DAILY'"
+        :utc-offset="relayConfig.schedule.utcOffset"
+        :daily-schedule="relayConfig.schedule.dailySchedule"
+        :now="now"
+      />
 
-    <CWeeklySchedulePreview
-      v-else-if="relayConfig.schedule.type === 'WEEKLY'"
-      :utc-offset="relayConfig.schedule.utcOffset"
-      :weekly-schedule="relayConfig.schedule.weeklySchedule"
-      :now="now"
-    />
-  </div>
+      <CWeeklySchedulePreview
+        v-else-if="relayConfig.schedule.type === 'WEEKLY'"
+        :utc-offset="relayConfig.schedule.utcOffset"
+        :weekly-schedule="relayConfig.schedule.weeklySchedule"
+        :now="now"
+      />
+    </q-item-section>
+  </q-item>
 </template>
 
 <script lang="ts">
