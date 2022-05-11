@@ -10,14 +10,15 @@
     :key="dModule.moduleId"
     data-cy="device-module"
     :data-module-id="dModule.moduleId"
+    :device-module="dModule"
+    :device="device"
   />
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 import { Device, DeviceModule } from 'types/device.interface'
-import CDeviceModuleListItem from './CDeviceModuleListItem.vue'
-import CRelayModuleListItem from 'components/relay/CRelayModuleListItem.vue'
+import CRelayModule from 'components/relay/CRelayModule.vue'
 import CUnknownModule from './CUnknownModule.vue'
 
 /**
@@ -25,12 +26,10 @@ import CUnknownModule from './CUnknownModule.vue'
  * component definition to map to that type.
  */
 const COMPONENT_MAPPING: Record<string, ReturnType<typeof defineComponent>> = {
-  RELAY: CRelayModuleListItem,
+  RELAY: CRelayModule,
 }
 
 export default defineComponent({
-  components: { CDeviceModuleListItem },
-
   props: {
     device: {
       type: Object as PropType<Device>,
