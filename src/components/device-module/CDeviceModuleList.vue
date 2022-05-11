@@ -1,6 +1,7 @@
 <!--
-  All this does is that it lists up the modules of a device and displays
-  the component associated with each type.
+  This simply lists down the modules of a device.
+  This acts as the dispatcher as to what component to render depending on the
+  type of a module.
 -->
 
 <template>
@@ -38,6 +39,9 @@ export default defineComponent({
   },
 
   methods: {
+    /**
+     * Determines which component to display based on the given device module.
+     */
     getComponent({ type }: DeviceModule) {
       if (COMPONENT_MAPPING[type]) {
         return COMPONENT_MAPPING[type]
