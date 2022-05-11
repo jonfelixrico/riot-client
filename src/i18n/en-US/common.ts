@@ -3,4 +3,5 @@ export default {
   refresh: 'Refresh',
   ok: 'Ok',
   cancel: 'Cancel',
+  edit: 'Edit',
 }
