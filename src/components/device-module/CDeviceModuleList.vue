@@ -18,7 +18,7 @@ import { defineComponent, PropType } from 'vue'
 import { Device, DeviceModule } from 'types/device.interface'
 import CDeviceModuleListItem from './CDeviceModuleListItem.vue'
 import CRelayModuleListItem from 'components/relay/CRelayModuleListItem.vue'
-import CUnknownDeviceModule from './CUnknownDeviceModule.vue'
+import CUnknownModule from './CUnknownModule.vue'
 
 /**
  * The key is supposed to be the device module types and the values are the actual
@@ -44,7 +44,7 @@ export default defineComponent({
         return COMPONENT_MAPPING[type]
       }
 
-      return CUnknownDeviceModule
+      return CUnknownModule
     },
   },
 })
